@@ -3,7 +3,3 @@
 /*.egg-info/
 __pycache__
 .idea/
-
-tnnt_templates/static/tnnt_templates/css/theme/terra-nanotech/v3/css/tampered_bootstrap.min.css
-
-tnnt_templates/static/tnnt_templates/css/theme/terra-nanotech/v3/css/tampered_bootstrap.css
