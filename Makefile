@@ -1,5 +1,5 @@
-appname = tn-nt-auth-templates
-package = tnnt_templates
+appname = tn-nt-discordbot-cogs
+package = tnnt_discordbot_cogs
 
 help:
 	@echo "Makefile for $(appname)"
