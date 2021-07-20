@@ -44,9 +44,9 @@ package_classifiers = [
 ]
 
 project_urls = {
-    "Git Repository": package_git_url,
-    "Change Log": package_changelog_url,
     "Issue / Bug Reports": package_issues_url,
+    "Change Log": package_changelog_url,
+    "Git Repository": package_git_url,
 }
 
 setup(
