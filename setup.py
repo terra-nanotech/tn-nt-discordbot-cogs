@@ -43,6 +43,7 @@ package_classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 
+# URLs are listed in reverse on Pypi
 project_urls = {
     "Issue / Bug Reports": package_issues_url,
     "Change Log": package_changelog_url,
