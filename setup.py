@@ -59,6 +59,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=package_git_url,
+    project_urls=project_urls,
     author=package_author,
     author_email=package_author_email,
     classifiers=package_classifiers,
