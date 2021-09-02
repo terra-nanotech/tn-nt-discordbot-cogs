@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [0.0.4] - 2021-09-02
+
+### Changed
+
+- Optimized time cogg to reduce the number of SQL queries and use Django's own
+  method to determine the URL to the timezones module
+
+
 ## [0.0.3] - 2021-07-20
 
 ### Change
