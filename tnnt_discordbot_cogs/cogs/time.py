@@ -11,6 +11,8 @@ from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
 
+from django.urls import reverse
+
 logger = logging.getLogger(__name__)
 
 
@@ -46,8 +48,12 @@ class Time(commands.Cog):
         if timezones_active():
             from timezones.models import Timezones
 
-            url = get_site_url() + "/timezones/"
-            configured_timezones = Timezones.objects.filter(is_enabled=True)
+            url = get_site_url() + reverse("timezones:index")
+            configured_timezones = (
+                Timezones.objects.select_related("timezone")
+                .filter(is_enabled=True)
+                .order_by("panel_name")
+            )
 
             # Get configured timezones from module setting
             if configured_timezones.count() > 0:
