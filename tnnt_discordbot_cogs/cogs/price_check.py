@@ -147,7 +147,7 @@ class PriceCheck(commands.Cog):
                         market_min_sell_order_price = "No sell orders found"
 
                     embed.add_field(
-                        name="Sell Order Price",
+                        name=f"Sell Order Price ({sell_order_count} Orders)",
                         value=market_min_sell_order_price,
                         inline=True,
                     )
@@ -159,7 +159,7 @@ class PriceCheck(commands.Cog):
                         market_max_buy_order_price = "No buy orders found"
 
                     embed.add_field(
-                        name="Buy Order Price",
+                        name=f"Buy Order Price ({buy_order_count} Orders)",
                         value=market_max_buy_order_price,
                         inline=True,
                     )
