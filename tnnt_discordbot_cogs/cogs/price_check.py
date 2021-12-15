@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class PriceCheck(commands.Cog):
     """
-    Price checks on Jita and Amarr markets
+    Price checks on Jita, Amarr, Rens, Hek, Dodixie and Perimeter markets
     """
 
     imageserver_url = "https://images.evetech.net"
@@ -25,7 +25,7 @@ class PriceCheck(commands.Cog):
     @commands.command(pass_context=True)
     async def price(self, ctx):
         """
-        Check an item price on Jita and Amarr market
+        Check an item price on all major market hubs
         :param ctx:
         :return:
         """
@@ -33,6 +33,10 @@ class PriceCheck(commands.Cog):
         markets = [
             {"name": "Jita", "api_key": "jita"},
             {"name": "Amarr", "api_key": "amarr"},
+            {"name": "Rens", "api_key": "rens"},
+            {"name": "Hek", "api_key": "hek"},
+            {"name": "Dodixie", "api_key": "dodixie"},
+            {"name": "Perimeter", "api_key": "perimeter"},
         ]
 
         await ctx.trigger_typing()
