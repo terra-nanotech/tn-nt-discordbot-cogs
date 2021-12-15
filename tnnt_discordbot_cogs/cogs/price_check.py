@@ -17,6 +17,8 @@ class PriceCheck(commands.Cog):
     Price checks on Jita and Amarr markets
     """
 
+    imageserver_url = "https://images.evetech.net"
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -96,10 +98,8 @@ class PriceCheck(commands.Cog):
 
             for market in markets:
                 embed.add_field(
-                    name="{market_name} Market".format(market_name=market["name"]),
-                    value="Prices for {item_name} on the {market_name} Market.".format(
-                        item_name=item_name, market_name=market["name"]
-                    ),
+                    name=market["name"],
+                    value=f'Prices for {item_name} on the {market["name"]} Market.',
                     inline=False,
                 )
 
@@ -114,63 +114,58 @@ class PriceCheck(commands.Cog):
                 if market_data.status_code == 200:
                     market_json = market_data.json()
 
+                    type_id = market_json["appraisal"]["items"][0]["typeID"]
+                    sell_min = market_json["appraisal"]["items"][0]["prices"]["sell"][
+                        "min"
+                    ]
+                    sell_order_count = market_json["appraisal"]["items"][0]["prices"][
+                        "sell"
+                    ]["order_count"]
+                    buy_max = market_json["appraisal"]["items"][0]["prices"]["buy"][
+                        "max"
+                    ]
+                    buy_order_count = market_json["appraisal"]["items"][0]["prices"][
+                        "buy"
+                    ]["order_count"]
+                    thumbnail_url = (
+                        f"{self.imageserver_url}/types/{type_id}/icon?size=64"
+                    )
+
                     if has_thumbnail is False:
-                        embed.set_thumbnail(
-                            url=(
-                                "{imageserver_url}/types/{type_id}/icon?size=64"
-                            ).format(
-                                imageserver_url="https://images.evetech.net",
-                                type_id=market_json["appraisal"]["items"][0]["typeID"],
-                            )
-                        )
+                        embed.set_thumbnail(url=thumbnail_url)
 
                         has_thumbnail = True
 
                     # Sell order price
-                    market_api_sell_price = market_json["appraisal"]["items"][0][
-                        "prices"
-                    ]["sell"]["min"]
-                    market_sell_order_price = f"{market_api_sell_price:,} ISK"
+                    market_min_sell_order_price = f"{sell_min:,} ISK"
 
-                    if (
-                        market_json["appraisal"]["items"][0]["prices"]["sell"][
-                            "order_count"
-                        ]
-                        == 0
-                    ):
-                        market_sell_order_price = "No sell orders found"
+                    if sell_order_count == 0:
+                        market_min_sell_order_price = "No sell orders found"
 
                     embed.add_field(
                         name="Sell Order Price",
-                        value=market_sell_order_price,
+                        value=market_min_sell_order_price,
                         inline=True,
                     )
 
                     # Buy order price
-                    market_api_buy_price = market_json["appraisal"]["items"][0][
-                        "prices"
-                    ]["buy"]["max"]
-                    market_buy_order_price = f"{market_api_buy_price:,} ISK"
+                    market_max_buy_order_price = f"{buy_max:,} ISK"
 
-                    if (
-                        market_json["appraisal"]["items"][0]["prices"]["buy"][
-                            "order_count"
-                        ]
-                        == 0
-                    ):
-                        market_buy_order_price = "No buy orders found"
+                    if buy_order_count == 0:
+                        market_max_buy_order_price = "No buy orders found"
 
                     embed.add_field(
                         name="Buy Order Price",
-                        value=market_buy_order_price,
+                        value=market_max_buy_order_price,
                         inline=True,
                     )
                 else:
                     embed.add_field(
                         name="API Error",
                         value=(
-                            "Couldn't not fetch the price for the {market_name} market."
-                        ).format(market_name=market["name"]),
+                            f"Could not not fetch the price "
+                            f'for the {market["name"]} market.'
+                        ),
                         inline=False,
                     )
         else:
