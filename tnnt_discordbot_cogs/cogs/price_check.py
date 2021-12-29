@@ -2,8 +2,10 @@
 Market Price Checks
 """
 
+# Standard Library
 import logging
 
+# Third Party
 import requests
 from discord.colour import Color
 from discord.embeds import Embed

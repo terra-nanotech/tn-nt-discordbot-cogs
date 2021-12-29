@@ -2,9 +2,11 @@
 All about the timers ....
 """
 
+# Standard Library
 import datetime
 import logging
 
+# Third Party
 from aadiscordbot.app_settings import ADMIN_DISCORD_BOT_CHANNELS, get_site_url
 from aadiscordbot.cogs.utils.decorators import message_in_channels
 from discord.colour import Color
@@ -12,9 +14,11 @@ from discord.embeds import Embed
 from discord.ext import commands
 from structuretimers.models import Timer
 
+# Django
 from django.apps import apps
 from django.utils import timezone
 
+# Alliance Auth
 from allianceauth.eveonline.templatetags.evelinks import dotlan_solar_system_url
 
 logger = logging.getLogger(__name__)

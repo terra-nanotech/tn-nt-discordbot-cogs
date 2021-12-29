@@ -2,10 +2,13 @@
 Application setup
 """
 
+# Standard Library
 import os
 
+# Third Party
 from setuptools import find_packages, setup
 
+# Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs import __version__
 
 # Read the contents of your README file

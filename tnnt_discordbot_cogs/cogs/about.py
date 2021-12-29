@@ -4,8 +4,10 @@
 Since we don't want to have it branded for "The Initiative", we have to build our own
 """
 
+# Standard Library
 import logging
 
+# Third Party
 import pendulum
 from aadiscordbot.app_settings import get_site_url
 from aadiscordbot.cogs.utils.decorators import sender_is_admin
@@ -14,8 +16,10 @@ from discord.embeds import Embed
 from discord.ext import commands
 from discord.utils import get
 
+# Django
 from django.conf import settings
 
+# Alliance Auth
 from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,
