@@ -2,16 +2,20 @@
 "Auth" cog for discordbot - https://github.com/pvyParts/allianceauth-discordbot
 """
 
+# Standard Library
 import logging
 
+# Third Party
 from aadiscordbot.app_settings import get_site_url
 from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
 
+# Django
 from django.conf import settings
 
+# Alliance Auth
 from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,

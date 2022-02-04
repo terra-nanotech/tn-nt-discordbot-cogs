@@ -2,15 +2,18 @@
 "Time" cog for discordbot - https://github.com/pvyParts/allianceauth-discordbot
 """
 
+# Standard Library
 import logging
 from datetime import datetime
 
+# Third Party
 import pytz
 from aadiscordbot.app_settings import get_site_url, timezones_active
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
 
+# Django
 from django.urls import reverse
 
 logger = logging.getLogger(__name__)
@@ -46,6 +49,7 @@ class Time(commands.Cog):
         )
 
         if timezones_active():
+            # Third Party
             from timezones.models import Timezones
 
             url = get_site_url() + reverse("timezones:index")
@@ -74,10 +78,12 @@ class Time(commands.Cog):
 
             # get default timezones from module
             else:
+                # Third Party
                 from packaging import version
                 from timezones import __version__ as timezones_version
 
                 if version.parse(timezones_version) >= version.parse("1.3.1"):
+                    # Third Party
                     from timezones.constants import AA_TIMEZONE_DEFAULT_PANELS
 
                     configured_timezones = AA_TIMEZONE_DEFAULT_PANELS

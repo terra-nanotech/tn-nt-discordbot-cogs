@@ -1,5 +1,7 @@
+# Standard Library
 import logging
 
+# Third Party
 from aadiscordbot.app_settings import (
     ADMIN_DISCORD_BOT_CHANNELS,
     DISCORD_BOT_MEMBER_ALLIANCES,
@@ -10,9 +12,11 @@ from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
 
+# Django
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
+# Alliance Auth
 from allianceauth.eveonline.evelinks import evewho
 from allianceauth.eveonline.models import EveCharacter
 

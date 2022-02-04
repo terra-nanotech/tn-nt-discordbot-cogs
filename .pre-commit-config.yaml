@@ -5,7 +5,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
       - id: check-case-conflict
       - id: check-json
@@ -24,6 +24,7 @@ repos:
       - id: check-added-large-files
       - id: check-ast  # Is it valid Python?
       - id: debug-statements  # Check for debugger imports and py37+ breakpoint() calls
+      - id: check-merge-conflict
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 2.4.0
@@ -32,7 +33,7 @@ repos:
         exclude: ^(LICENSE)
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.29.1
+    rev: v2.30.0
     hooks:
       - id: pyupgrade
         args: [ --py37-plus ]

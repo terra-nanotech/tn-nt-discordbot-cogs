@@ -2,10 +2,13 @@
 Application setup
 """
 
+# Standard Library
 import os
 
+# Third Party
 from setuptools import find_packages, setup
 
+# Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs import __version__
 
 # Read the contents of your README file
@@ -26,7 +29,10 @@ package_issues_url = f"{package_git_url}/issues"
 package_changelog_url = f"{package_git_url}/blob/master/CHANGELOG.md"
 project_homepage_url = package_git_url
 project_python_requires = "~=3.7"
-package_install_requirements = ["allianceauth>=2.9.3", "allianceauth-discordbot>=0.5.3"]
+package_install_requirements = [
+    "allianceauth>=2.9.3",
+    "allianceauth-discordbot<3.0.0",
+]
 package_classifiers = [
     "Environment :: Web Environment",
     "Framework :: Django",
