@@ -21,3 +21,7 @@ compiletranslationfiles:
 	django-admin compilemessages -l ko  && \
 	django-admin compilemessages -l ru  && \
 	django-admin compilemessages -l zh_Hans
+
+build_test:
+	rm -rfv dist && \
+	python3 -m build

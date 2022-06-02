@@ -59,7 +59,7 @@ jobs:
 
       # Upload the SARIF file generated in the previous step
       - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: results.sarif
 
@@ -73,6 +73,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # Minimum supported Python version by AllianceAuth
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
@@ -81,10 +82,11 @@ jobs:
       - name: Install Tools
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel
+          python -m pip install --upgrade build
+          python -m pip install --upgrade setuptools wheel
 
       - name: Package Build
         env:
           STACKMANAGER_VERSION: 9999
         run: |
-          python setup.py sdist bdist_wheel
+          python -m build
