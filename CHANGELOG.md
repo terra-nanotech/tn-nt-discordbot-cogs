@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [In Development] - Unreleased
 
+### Removed
+
+- Time cog. Will be provided by `aa-timezones`
+
 
 ## [0.2.2] - 2022-06-02
 
