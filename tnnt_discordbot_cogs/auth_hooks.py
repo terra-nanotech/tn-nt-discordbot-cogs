@@ -19,6 +19,5 @@ def register_cogs():
         "tnnt_discordbot_cogs.cogs.auth",
         "tnnt_discordbot_cogs.cogs.members",
         "tnnt_discordbot_cogs.cogs.price_check",
-        "tnnt_discordbot_cogs.cogs.time",
         "tnnt_discordbot_cogs.cogs.timers",
     ]
