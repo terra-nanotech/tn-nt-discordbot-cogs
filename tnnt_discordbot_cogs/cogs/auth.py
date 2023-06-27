@@ -66,13 +66,9 @@ class Auth(commands.Cog):
             "server are handled through our Alliance Auth instance."
         )
 
-        url = get_site_url()
+        auth_url = get_site_url()
 
-        embed.add_field(
-            name="Auth Link",
-            value="[{auth_url}]({auth_url})".format(auth_url=url),
-            inline=False,
-        )
+        embed.add_field(name="Auth Link", value=auth_url, inline=False)
 
         return await ctx.send(embed=embed)
 
