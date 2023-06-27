@@ -68,12 +68,7 @@ class Auth(commands.Cog):
 
         auth_url = get_site_url()
 
-        embed.add_field(
-            name="Auth Link",
-            # value="[{auth_url}]({auth_url})".format(auth_url=auth_url),
-            value=auth_url,
-            inline=False,
-        )
+        embed.add_field(name="Auth Link", value=auth_url, inline=False)
 
         return await ctx.send(embed=embed)
 
