@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [In Development] - Unreleased
 
 
+## [0.3.1] - 2023-06-27
+
+### Fixed
+
+- Auth link (Thanks Discord for f**king up your MD parser)
+
+
 ## [0.3.0] - 2022-06-16
 
 ### Removed
