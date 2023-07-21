@@ -191,7 +191,7 @@ class PriceCheck(commands.Cog):
                         embed.add_field(
                             name="API Error",
                             value=(
-                                f"Could not not fetch the price "
+                                "Could not not fetch the price "
                                 f'for the {market["name"]} market.'
                             ),
                             inline=False,
