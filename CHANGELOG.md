@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [In Development] - Unreleased
 
+### Added
+
+- Dependency to `django-eveuniverse`
+
 ### Changed
 
 - Moved the build process to PEP 621 / pyproject.toml
