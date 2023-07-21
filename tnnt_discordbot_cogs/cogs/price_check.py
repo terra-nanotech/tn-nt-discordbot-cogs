@@ -1,8 +1,8 @@
 """
 Market Price Checks
 """
-
 # Standard Library
+import locale
 import logging
 
 # Third Party
@@ -10,6 +10,9 @@ import requests
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
+
+# Alliance Auth (External Libs)
+from eveuniverse.models import EveEntity
 
 logger = logging.getLogger(__name__)
 
@@ -33,12 +36,11 @@ class PriceCheck(commands.Cog):
         """
 
         markets = [
-            {"name": "Jita", "api_key": "jita"},
-            {"name": "Amarr", "api_key": "amarr"},
-            {"name": "Rens", "api_key": "rens"},
-            {"name": "Hek", "api_key": "hek"},
-            {"name": "Dodixie", "api_key": "dodixie"},
-            {"name": "Perimeter", "api_key": "perimeter"},
+            {"name": "Jita", "system_id": 30000142},
+            {"name": "Amarr", "system_id": 30002187},
+            {"name": "Rens", "system_id": 60004588},
+            {"name": "Hek", "system_id": 60005686},
+            {"name": "Dodixie", "system_id": 30002659},
         ]
 
         await ctx.trigger_typing()
@@ -56,7 +58,7 @@ class PriceCheck(commands.Cog):
         """
 
         markets = [
-            {"name": "Jita", "api_key": "jita"},
+            {"name": "Jita", "system_id": 30000142},
         ]
 
         await ctx.trigger_typing()
@@ -74,7 +76,7 @@ class PriceCheck(commands.Cog):
         """
 
         markets = [
-            {"name": "Amarr", "api_key": "amarr"},
+            {"name": "Amarr", "system_id": 60008494},
         ]
 
         await ctx.trigger_typing()
@@ -93,87 +95,107 @@ class PriceCheck(commands.Cog):
         """
 
         has_thumbnail = False
+        eve_type_id = None
 
         await ctx.trigger_typing()
 
         if item_name != "":
-            embed = Embed(
-                title=f"Price Lookup for {item_name}",
-                color=Color.green(),
-            )
+            try:
+                eve_type = (
+                    EveEntity.objects.fetch_by_names_esi([item_name])
+                    .filter(category=EveEntity.CATEGORY_INVENTORY_TYPE)
+                    .values_list("id", flat=True)
+                )
 
-            for market in markets:
+                eve_type_id = str(eve_type[0])
+            except (EveEntity.DoesNotExist, IndexError):
+                embed = Embed(
+                    title=f"Price Lookup for {item_name}",
+                    color=Color.orange(),
+                )
+
                 embed.add_field(
-                    name=market["name"],
-                    value=f'Prices for {item_name} on the {market["name"]} Market.',
+                    name="Error",
+                    value=(
+                        f"{item_name} could not be found. "
+                        "Are you sure you spelled it correctly?"
+                    ),
                     inline=False,
                 )
-
-                market_data = requests.post(
-                    "https://evepraisal.com/appraisal/structured.json",
-                    json={
-                        "market_name": market["api_key"],
-                        "items": [{"name": item_name}],
-                    },
+            else:
+                embed = Embed(
+                    title=f"Price Lookup for {item_name}",
+                    color=Color.green(),
                 )
 
-                if market_data.status_code == 200:
-                    market_json = market_data.json()
-
-                    type_id = market_json["appraisal"]["items"][0]["typeID"]
-                    sell_min = market_json["appraisal"]["items"][0]["prices"]["sell"][
-                        "min"
-                    ]
-                    sell_order_count = market_json["appraisal"]["items"][0]["prices"][
-                        "sell"
-                    ]["order_count"]
-                    buy_max = market_json["appraisal"]["items"][0]["prices"]["buy"][
-                        "max"
-                    ]
-                    buy_order_count = market_json["appraisal"]["items"][0]["prices"][
-                        "buy"
-                    ]["order_count"]
-                    thumbnail_url = (
-                        f"{self.imageserver_url}/types/{type_id}/icon?size=64"
-                    )
-
-                    if has_thumbnail is False:
-                        embed.set_thumbnail(url=thumbnail_url)
-
-                        has_thumbnail = True
-
-                    # Sell order price
-                    market_min_sell_order_price = f"{sell_min:,} ISK"
-
-                    if sell_order_count == 0:
-                        market_min_sell_order_price = "No sell orders found"
-
+                for market in markets:
                     embed.add_field(
-                        name=f"Sell Order Price ({sell_order_count} Orders)",
-                        value=market_min_sell_order_price,
-                        inline=True,
-                    )
-
-                    # Buy order price
-                    market_max_buy_order_price = f"{buy_max:,} ISK"
-
-                    if buy_order_count == 0:
-                        market_max_buy_order_price = "No buy orders found"
-
-                    embed.add_field(
-                        name=f"Buy Order Price ({buy_order_count} Orders)",
-                        value=market_max_buy_order_price,
-                        inline=True,
-                    )
-                else:
-                    embed.add_field(
-                        name="API Error",
-                        value=(
-                            f"Could not not fetch the price "
-                            f'for the {market["name"]} market.'
-                        ),
+                        name=market["name"],
+                        value=f'Prices for {item_name} on the {market["name"]} Market.',
                         inline=False,
                     )
+
+                    system_id = market["system_id"]
+                    url = "https://market.fuzzwork.co.uk/aggregates/"
+                    url_params = {"system": system_id, "types": eve_type_id}
+                    market_data = requests.get(url=url, params=url_params, timeout=2.50)
+
+                    if market_data.status_code == 200:
+                        market_json = market_data.json()
+
+                        sell_min = market_json[eve_type_id]["sell"]["min"]
+                        sell_order_count = market_json[eve_type_id]["sell"][
+                            "orderCount"
+                        ]
+                        buy_max = market_json[eve_type_id]["buy"]["max"]
+                        buy_order_count = market_json[eve_type_id]["buy"]["orderCount"]
+                        thumbnail_url = (
+                            f"{self.imageserver_url}/types/{eve_type_id}/icon?size=64"
+                        )
+
+                        if has_thumbnail is False:
+                            embed.set_thumbnail(url=thumbnail_url)
+                            has_thumbnail = True
+
+                        # locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
+                        locale.setlocale(locale.LC_ALL, "")
+
+                        # Sell order price
+                        market_min_sell_order_price = locale.format_string(
+                            "%.2f", float(sell_min), grouping=True
+                        )
+
+                        if sell_order_count == 0:
+                            market_min_sell_order_price = "No sell orders found"
+
+                        embed.add_field(
+                            name=f"Sell Order Price ({sell_order_count} Orders)",
+                            value=f"{market_min_sell_order_price} ISK",
+                            inline=True,
+                        )
+
+                        # Buy order price
+                        market_max_buy_order_price = locale.format_string(
+                            "%.2f", float(buy_max), grouping=True
+                        )
+
+                        if buy_order_count == 0:
+                            market_max_buy_order_price = "No buy orders found"
+
+                        embed.add_field(
+                            name=f"Buy Order Price ({buy_order_count} Orders)",
+                            value=f"{market_max_buy_order_price} ISK",
+                            inline=True,
+                        )
+                    else:
+                        embed.add_field(
+                            name="API Error",
+                            value=(
+                                f"Could not not fetch the price "
+                                f'for the {market["name"]} market.'
+                            ),
+                            inline=False,
+                        )
         else:
             embed = Embed(
                 title="Price Lookup",

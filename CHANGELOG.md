@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Moved the build process to PEP 621 / pyproject.toml
+- Switched to [Fuzzwork Market Data API](https://market.fuzzwork.co.uk/api/) (RIP evepraisal)
 
 
 ## [0.3.1] - 2023-06-27
