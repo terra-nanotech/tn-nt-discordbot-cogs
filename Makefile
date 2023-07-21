@@ -35,3 +35,6 @@ compiletranslationfiles:
 build_test:
 	rm -rfv dist && \
 	python3 -m build
+
+hatchling:
+	hatch new --init

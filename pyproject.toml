@@ -1,6 +1,53 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tnnt-discordbot-cogs"
+version = "0.4.0"
+description = "TN-NT customized cogs for aa-discordbot"
+readme = "README.md"
+license = "GPL-3.0"
+requires-python = "~=3.8"
+authors = [
+    { name = "Peter Pfeufer", email = "develop@ppfeufer.de" },
 ]
-build-backend = "setuptools.build_meta"
+keywords = [
+    "allianceauth",
+    "discord",
+    "eveonline",
+    "terra_nanotech",
+]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = [
+    "allianceauth-discordbot",
+    "allianceauth>=3.0.0",
+    "django-eveuniverse>=1.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs"
+Documentation = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/README.md"
+Source = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs.git"
+Changelog = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/CHANGELOG.md"
+Tracker = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/issues"
+
+[tool.hatch.build]
+include = [
+    "/tnnt_discordbot_cogs",
+]

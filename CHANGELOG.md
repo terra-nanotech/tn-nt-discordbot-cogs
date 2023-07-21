@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [In Development] - Unreleased
 
 
+## [0.4.0] - 2023-07-21
+
+### Added
+
+- Dependency to `django-eveuniverse`
+
+### Changed
+
+- Moved the build process to PEP 621 / pyproject.toml
+- Switched to [Fuzzwork Market Data API](https://market.fuzzwork.co.uk/api/) (RIP evepraisal)
+
+
 ## [0.3.1] - 2023-06-27
 
 ### Fixed
