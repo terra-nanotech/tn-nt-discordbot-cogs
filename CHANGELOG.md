@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [In Development] - Unreleased
 
+### Changed
+
+- Moved the build process to PEP 621 / pyproject.toml
+
 
 ## [0.3.1] - 2023-06-27
 
