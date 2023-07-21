@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [In Development] - Unreleased
 
+
+## [0.4.0] - 2023-07-21
+
 ### Added
 
 - Dependency to `django-eveuniverse`
