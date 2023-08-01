@@ -1,5 +1,5 @@
 """
-All about the timers ....
+All about the timers …
 """
 
 # Standard Library
@@ -7,7 +7,7 @@ import datetime
 import logging
 
 # Third Party
-from aadiscordbot.app_settings import ADMIN_DISCORD_BOT_CHANNELS, get_site_url
+from aadiscordbot.app_settings import ADMIN_DISCORD_BOT_CHANNELS
 from aadiscordbot.cogs.utils.decorators import message_in_channels
 from discord.colour import Color
 from discord.embeds import Embed
@@ -20,6 +20,9 @@ from django.utils import timezone
 
 # Alliance Auth
 from allianceauth.eveonline.templatetags.evelinks import dotlan_solar_system_url
+
+# Alliance Auth (External Libs)
+from app_utils.urls import reverse_absolute
 
 logger = logging.getLogger(__name__)
 
@@ -44,6 +47,23 @@ def timezones_active():
     return apps.is_installed("timezones")
 
 
+def add_empty_line(embed: Embed) -> None:
+    """
+    Adding an empty line to the embed
+
+    :param embed:
+    :type embed:
+    :return:
+    :rtype:
+    """
+
+    embed.add_field(
+        name="\u200b",
+        value="\u200b",
+        inline=False,
+    )
+
+
 class Timers(commands.Cog):
     """
     TimerBoard Stuffs!
@@ -57,8 +77,11 @@ class Timers(commands.Cog):
     async def timer(self, ctx):
         """
         Gets the Next Timer!
+
         :param ctx:
+        :type ctx:
         :return:
+        :rtype:
         """
 
         embed = Embed(title="Next Timer")
@@ -81,7 +104,7 @@ class Timers(commands.Cog):
             elif next_timer.objective == Timer.OBJECTIVE_UNDEFINED:
                 embed.colour = Color.dark_gray()
             else:
-                embed.colour = Color.from_rgb(255, 255, 255)
+                embed.colour = Color.from_rgb(r=255, g=255, b=255)
 
             user_has_profile = True
 
@@ -97,55 +120,60 @@ class Timers(commands.Cog):
                     if creator_profile.main_character is not None:
                         creator_name = creator_profile.main_character.character_name
 
-                embed.set_footer(
-                    text="Timer added by {creator_name}".format(
-                        creator_name=creator_name
-                    )
-                )
+                embed.set_footer(text=f"Timer added by {creator_name}")
 
             embed.add_field(name="Structure:", value=next_timer.structure_type.name)
 
+            solar_system_name = next_timer.eve_solar_system.name
+            solar_system_link = dotlan_solar_system_url(next_timer.eve_solar_system)
+            solar_system_md_link = f"[{solar_system_name}]({solar_system_link})"
+            location_details = next_timer.location_details
+
             embed.add_field(
-                name="Location:",
-                value="{system}\n{location}".format(
-                    system="[{solar_system_name}]({solar_system_link})".format(
-                        solar_system_name=next_timer.eve_solar_system.name,
-                        solar_system_link=dotlan_solar_system_url(
-                            next_timer.eve_solar_system
-                        ),
-                    ),
-                    location=next_timer.location_details,
-                ),
+                name="Location:", value=f"{solar_system_md_link}\n{location_details}"
             )
 
+            add_empty_line(embed=embed)
+
+            timer_timestamp = str(int(next_timer.date.timestamp()))
+
             if timezones_active():
+                timezones_url = reverse_absolute(
+                    viewname="timezones:index",
+                    args=[timer_timestamp],
+                )
+                timezones_md_link = f"[TZ Conversion]({timezones_url})"
+                timer_eve_time = next_timer.date.strftime("%Y-%m-%d %H:%M")
+
                 embed.add_field(
                     name="Eve Time:",
-                    value="{eve_time} ({tz_link})".format(
-                        eve_time=next_timer.date.strftime("%Y-%m-%d %H:%M"),
-                        tz_link="[{tz_lnk_text}]({tz_link_url}/)".format(
-                            tz_lnk_text="Time Zone Conversion",
-                            tz_link_url=get_site_url()
-                            + "/timezones/"
-                            + str(int(next_timer.date.timestamp())),
-                        ),
-                    ),
-                    inline=False,
+                    value=f"{timer_eve_time} ({timezones_md_link})",
+                    inline=True,
                 )
             else:
                 embed.add_field(
                     name="Eve Time:",
                     value=next_timer.eve_time.strftime("%Y-%m-%d %H:%M"),
-                    inline=False,
+                    inline=True,
                 )
+
+            embed.add_field(
+                name="Local Time:",
+                value=f"<t:{timer_timestamp}:F>",
+                inline=True,
+            )
 
         return await ctx.send(embed=embed)
 
 
 def setup(bot):
     """
-    Setup the cog
+    Set up the cog
+
     :param bot:
+    :type bot:
+    :return:
+    :rtype:
     """
 
     if structuretimers_active():

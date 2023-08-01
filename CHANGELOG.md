@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [In Development] - Unreleased
 
 
+## [0.5.0] - 2023-08-01
+
+### Added
+
+- Dependency to `allianceauth-app-utils`
+
+### Changed
+
+- `about` cog modernised/updated
+- `auth` cog modernised/updated
+- `members` cog modernised/updated
+- `price_check` cog modernised/updated
+- `timer` cog modernised/updated
+
+### Removed
+
+- Unnecessary functions from `price_check` cog
+
+
 ## [0.4.0] - 2023-07-21
 
 ### Added
