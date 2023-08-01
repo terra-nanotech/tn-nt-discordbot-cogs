@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [In Development] - Unreleased
 
+### Changed
+
+- `auth` cog modernised/updated
+
+### Removed
+
+- Unnecessary functions from `price_check` cog
+
 
 ## [0.4.0] - 2023-07-21
 

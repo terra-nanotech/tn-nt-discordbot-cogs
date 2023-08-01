@@ -38,23 +38,34 @@ class Auth(commands.Cog):
         """
         Returns a link to TN-NT Auth
         Used by many other Bots and is a common command that users will attempt to run.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.trigger_typing()
 
+        auth_url = get_site_url()
         embed = Embed(title="Alliance Auth")
 
         try:
             if settings.TNNT_TEMPLATE_ENTITY_ID == 1:
-                embed.set_thumbnail(url=get_site_url + "static/icons/allianceauth.png")
+                aa_icon = f"{auth_url}/static/allianceauth/icons/allianceauth.png"
+                embed.set_thumbnail(url=aa_icon)
             else:
                 if settings.TNNT_TEMPLATE_ENTITY_TYPE == "alliance":
                     embed.set_thumbnail(
-                        url=alliance_logo_url(settings.TNNT_TEMPLATE_ENTITY_ID, 256)
+                        url=alliance_logo_url(
+                            alliance_id=settings.TNNT_TEMPLATE_ENTITY_ID, size=256
+                        )
                     )
                 elif settings.TNNT_TEMPLATE_ENTITY_TYPE == "corporation":
                     embed.set_thumbnail(
-                        url=corporation_logo_url(settings.TNNT_TEMPLATE_ENTITY_ID, 256)
+                        url=corporation_logo_url(
+                            corporation_id=settings.TNNT_TEMPLATE_ENTITY_ID, size=256
+                        )
                     )
         except AttributeError:
             pass
@@ -66,8 +77,6 @@ class Auth(commands.Cog):
             "server are handled through our Alliance Auth instance."
         )
 
-        auth_url = get_site_url()
-
         embed.add_field(name="Auth Link", value=auth_url, inline=False)
 
         return await ctx.send(embed=embed)
@@ -77,6 +86,11 @@ class Auth(commands.Cog):
     async def orphans(self, ctx):
         """
         Returns a list of users on this server, who are unknown to TN-NT Auth
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.trigger_typing()
@@ -94,7 +108,7 @@ class Auth(commands.Cog):
             try:
                 discord_member_exists = DiscordUser.objects.get(uid=discord_member_id)
             except DiscordUser.DoesNotExist as exception:
-                logger.error(exception)
+                logger.error(msg=exception)
                 discord_member_exists = False
 
             if discord_member_exists is not False:
@@ -113,24 +127,28 @@ class Auth(commands.Cog):
                         payload = (
                             "The following Users cannot be located in Alliance Auth\n"
                         )
-                    except Exception as e:
-                        logger.error(e)
+                    except Exception as exc:
+                        logger.error(msg=exc)
 
                 # keep building the payload
                 payload = payload + member.mention + "\n"
 
         try:
             await ctx.send(payload)
-        except Exception as e:
-            logger.error(e)
+        except Exception as exc:
+            logger.error(msg=exc)
             # await ctx.send(payload[0:1999])
             # await ctx.send("Maximum Discord message length reached")
 
 
 def setup(bot):
     """
-    setup the cog
+    Set up the cog
+
     :param bot:
+    :type bot:
+    :return:
+    :rtype:
     """
 
     bot.add_cog(Auth(bot))
