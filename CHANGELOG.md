@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - `auth` cog modernised/updated
+- `members` cog modernised/updated
 
 ### Removed
 

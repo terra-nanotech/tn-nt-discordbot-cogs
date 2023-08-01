@@ -1,3 +1,7 @@
+"""
+"Members" cog for discordbot - https://github.com/pvyParts/allianceauth-discordbot
+"""
+
 # Standard Library
 import logging
 
@@ -39,11 +43,15 @@ class Members(commands.Cog):
     async def lookup(self, ctx):
         """
         Gets Auth data about a character
-        Input: a Eve Character Name
+        Input: An Eve Character Name
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         input_name = ctx.message.content[8:]
-
         embed = Embed(title=f"Character Lookup {input_name}")
 
         try:
@@ -57,15 +65,13 @@ class Members(commands.Cog):
                 )
 
                 try:
-                    discord_string = "<@{}>".format(
-                        char.character_ownership.user.discord.uid
-                    )
+                    discord_string = f"<@{char.character_ownership.user.discord.uid}>"
                 except Exception as e:
-                    logger.error(e)
+                    logger.error(msg=e)
                     discord_string = "unknown"
 
                 if aastatistics_active():
-                    alts = (
+                    alt_characters = (
                         char.character_ownership.user.character_ownerships.all()
                         .select_related("character", "character_stats")
                         .values_list(
@@ -80,7 +86,7 @@ class Members(commands.Cog):
                     zk12 = 0
                     zk3 = 0
                 else:
-                    alts = (
+                    alt_characters = (
                         char.character_ownership.user.character_ownerships.all()
                         .select_related("character")
                         .values_list(
@@ -94,29 +100,29 @@ class Members(commands.Cog):
                     zk3 = "Not Installed"
 
                 if aastatistics_active():
-                    for alt in alts:
-                        if alt[4]:
-                            zk12 += alt[4]
-                            zk3 += alt[5]
+                    for alt_character in alt_characters:
+                        if alt_character[4]:
+                            zk12 += alt_character[4]
+                            zk3 += alt_character[5]
 
                 embed.colour = Color.blue()
-                embed.description = (
-                    "**{character}** is linked to **{main} "
-                    "[{corp_ticker}]** (State: {state})"
-                ).format(
-                    character=char,
-                    main=main,
-                    corp_ticker=main.corporation_ticker,
-                    state=state,
-                )
 
-                alt_list = [
-                    (
-                        "[{}](https://evewho.com/character/{}) "
-                        "[[{}](https://evewho.com/corporation/{})]"
-                    ).format(a[0], a[2], a[1], a[3])
-                    for a in alts
-                ]
+                if main is None:
+                    embed.description = (
+                        f"**{char}** is not associated with any Auth account …"
+                    )
+                else:
+                    embed.description = (
+                        f"**{char}** is linked to **{main} "
+                        f"[{main.corporation_ticker}]** (State: {state})"
+                    )
+
+                alt_list = []
+                for alt_character in alt_characters:
+                    alt_list.append(
+                        f"[{alt_character[0]}](https://evewho.com/character/{alt_character[2]}) "  # pylint: disable=line-too-long
+                        f"[[{alt_character[1]}](https://evewho.com/corporation/{alt_character[3]})]"  # pylint: disable=line-too-long
+                    )
 
                 for idx, names in enumerate(
                     [alt_list[i : i + 6] for i in range(0, len(alt_list), 6)]
@@ -130,9 +136,9 @@ class Members(commands.Cog):
                     else:
                         embed.add_field(
                             name=(
-                                "Linked Characters {} "
+                                f"Linked Characters {idx} "
                                 "**(Discord Limited There are More)**"
-                            ).format(idx),
+                            ),
                             value="\n".join(names),
                             inline=False,
                         )
@@ -160,26 +166,20 @@ class Members(commands.Cog):
                 embed.colour = Color.blue()
 
                 embed.description = (
-                    "**{}** is unlinked, searching for any "
+                    f"**{char}** is unlinked, searching for any "
                     "characters linked to known users"
-                ).format(char)
+                )
                 user_names = [f"{user.username}" for user in users]
                 embed.add_field(
                     name="Old Users", value="\n".join(user_names), inline=False
                 )
 
-                alt_list = [
-                    (
-                        "[{}](https://evewho.com/character/{}) "
-                        "[[{}](https://evewho.com/corporation/{})]"
-                    ).format(
-                        a.character_name,
-                        a.character_id,
-                        a.corporation_ticker,
-                        a.corporation_id,
+                alt_list = []
+                for character in characters:
+                    alt_list.append(
+                        f"[{character.character_name}](https://evewho.com/character/{character.character_id}) "  # pylint: disable=line-too-long
+                        f"[[{character.corporation_ticker}](https://evewho.com/corporation/{character.corporation_id})]"  # pylint: disable=line-too-long
                     )
-                    for a in characters
-                ]
 
                 for idx, names in enumerate(
                     [alt_list[i : i + 6] for i in range(0, len(alt_list), 6)]
@@ -193,9 +193,9 @@ class Members(commands.Cog):
                     else:
                         embed.add_field(
                             name=(
-                                "Found Characters {} "
+                                f"Found Characters {idx} "
                                 "**(Discord Limited There are More)**"
-                            ).format(idx),
+                            ),
                             value="\n".join(names),
                             inline=False,
                         )
@@ -206,8 +206,8 @@ class Members(commands.Cog):
             embed.colour = Color.red()
 
             embed.description = (
-                "Character **{character_name}** does not exist in our Auth system"
-            ).format(character_name=input_name)
+                f"Character **{input_name}** does not exist in our Auth system"
+            )
 
             return await ctx.send(embed=embed)
 
@@ -219,7 +219,12 @@ class Members(commands.Cog):
     async def altcorp(self, ctx):
         """
         Gets Auth data about an altcorp
-        Input: a Eve Character Name
+        Input: An Eve Corporation Name
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         input_name = ctx.message.content[9:]
@@ -227,15 +232,15 @@ class Members(commands.Cog):
         own_ids = [DISCORD_BOT_MEMBER_ALLIANCES]
         alts_in_corp = []
 
-        for c in chars:
-            if c.alliance_id not in own_ids:
-                alts_in_corp.append(c)
+        for char in chars:
+            if char.alliance_id not in own_ids:
+                alts_in_corp.append(char)
 
         mains = {}
 
-        for a in alts_in_corp:
+        for alt_char in alts_in_corp:
             try:
-                main = a.character_ownership.user.profile.main_character
+                main = alt_char.character_ownership.user.profile.main_character
 
                 if main.character_id not in mains:
                     mains[main.character_id] = [main, 0]
@@ -243,21 +248,20 @@ class Members(commands.Cog):
                 mains[main.character_id][1] += 1
                 # alt_corp_id = a.corporation_id
             except Exception as e:
-                logger.error(e)
-                pass
+                logger.error(msg=e)
 
         output = []
-        base_string = "[{}]({}) [ [{}]({}) ] has {} alt{}"
+        base_string = "[{}]({}) [[{}]({})] has {} alt{}"
 
-        for k, m in mains.items():
+        for _, main_char in mains.items():
             output.append(
                 base_string.format(
-                    m[0],
-                    evewho.character_url(m[0].character_id),
-                    m[0].corporation_ticker,
-                    evewho.corporation_url(m[0].corporation_id),
-                    m[1],
-                    "s" if m[1] > 1 else "",
+                    main_char[0],
+                    evewho.character_url(main_char[0].character_id),
+                    main_char[0].corporation_ticker,
+                    evewho.corporation_url(main_char[0].corporation_id),
+                    main_char[1],
+                    "s" if main_char[1] > 1 else "",
                 )
             )
 
@@ -270,4 +274,12 @@ class Members(commands.Cog):
 
 
 def setup(bot):
+    """
+    Set up the cog
+
+    :param bot:
+    :type bot:
+    :return:
+    :rtype:
+    """
     bot.add_cog(Members(bot))
