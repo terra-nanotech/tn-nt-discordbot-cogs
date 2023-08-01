@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [In Development] - Unreleased
 
+
+## [0.5.0] - 2023-08-01
+
+### Added
+
+- Dependency to `allianceauth-app-utils`
+
 ### Changed
 
 - `about` cog modernised/updated
