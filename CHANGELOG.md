@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `auth` cog modernised/updated
 - `members` cog modernised/updated
 - `price_check` cog modernised/updated
+- `timer` cog modernised/updated
 
 ### Removed
 

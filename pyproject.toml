@@ -35,8 +35,9 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 dependencies = [
-    "allianceauth-discordbot",
     "allianceauth>=3.0.0",
+    "allianceauth-discordbot",
+    "allianceauth-app-utils>=1.14.1",
     "django-eveuniverse>=1.3.0",
 ]
 
