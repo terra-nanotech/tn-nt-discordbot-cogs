@@ -1,6 +1,7 @@
 """
-Market Price Checks
+Market Price Checks cog for discordbot - https://github.com/pvyParts/allianceauth-discordbot
 """
+
 # Standard Library
 import locale
 import logging
@@ -31,8 +32,11 @@ class PriceCheck(commands.Cog):
     async def price(self, ctx):
         """
         Check an item price on all major market hubs
+
         :param ctx:
+        :type ctx:
         :return:
+        :rtype:
         """
 
         markets = [
@@ -53,13 +57,14 @@ class PriceCheck(commands.Cog):
     async def jita(self, ctx):
         """
         Check an item price on Jita market
+
         :param ctx:
+        :type ctx:
         :return:
+        :rtype:
         """
 
-        markets = [
-            {"name": "Jita", "system_id": 30000142},
-        ]
+        markets = [{"name": "Jita", "system_id": 30000142}]
 
         await ctx.trigger_typing()
 
@@ -71,13 +76,14 @@ class PriceCheck(commands.Cog):
     async def amarr(self, ctx):
         """
         Check an item price on Amarr market
+
         :param ctx:
+        :type ctx:
         :return:
+        :rtype:
         """
 
-        markets = [
-            {"name": "Amarr", "system_id": 60008494},
-        ]
+        markets = [{"name": "Amarr", "system_id": 60008494}]
 
         await ctx.trigger_typing()
 
@@ -88,14 +94,18 @@ class PriceCheck(commands.Cog):
     async def price_check(self, ctx, markets, item_name: str = None):
         """
         Do the price checks and post to Discord
+
         :param ctx:
+        :type ctx:
         :param markets:
+        :type markets:
         :param item_name:
+        :type item_name:
         :return:
+        :rtype:
         """
 
         has_thumbnail = False
-        eve_type_id = None
 
         await ctx.trigger_typing()
 
@@ -157,12 +167,11 @@ class PriceCheck(commands.Cog):
                             embed.set_thumbnail(url=thumbnail_url)
                             has_thumbnail = True
 
-                        # locale.setlocale(locale.LC_ALL, "de_DE.UTF-8")
-                        locale.setlocale(locale.LC_ALL, "")
+                        locale.setlocale(category=locale.LC_ALL, locale="")
 
                         # Sell order price
                         market_min_sell_order_price = locale.format_string(
-                            "%.2f", float(sell_min), grouping=True
+                            f="%.2f", val=float(sell_min), grouping=True
                         )
 
                         if sell_order_count == 0:
@@ -176,7 +185,7 @@ class PriceCheck(commands.Cog):
 
                         # Buy order price
                         market_max_buy_order_price = locale.format_string(
-                            "%.2f", float(buy_max), grouping=True
+                            f="%.2f", val=float(buy_max), grouping=True
                         )
 
                         if buy_order_count == 0:
@@ -215,9 +224,12 @@ class PriceCheck(commands.Cog):
 
 def setup(bot):
     """
-    Add the cogg
+    Set up the cogg
+
     :param bot:
+    :type bot:
     :return:
+    :rtype:
     """
 
     bot.add_cog(PriceCheck(bot))

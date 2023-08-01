@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `about` cog modernised/updated
 - `auth` cog modernised/updated
 - `members` cog modernised/updated
+- `price_check` cog modernised/updated
 
 ### Removed
 
