@@ -48,7 +48,7 @@ class Auth(commands.Cog):
         await ctx.trigger_typing()
 
         auth_url = get_site_url()
-        embed = Embed(title="Alliance Auth")
+        embed = Embed(title="Terra Nanotech Auth")
 
         try:
             if settings.TNNT_TEMPLATE_ENTITY_ID == 1:
@@ -74,7 +74,7 @@ class Auth(commands.Cog):
 
         embed.description = (
             "All authentication functions for this Discord "
-            "server are handled through our Alliance Auth instance."
+            "server are handled through our Auth system."
         )
 
         embed.add_field(name="Auth Link", value=auth_url, inline=False)
