@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- `about` cog modernised/updated
 - `auth` cog modernised/updated
 - `members` cog modernised/updated
 
