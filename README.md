@@ -1,21 +1,21 @@
-# Terra Nanotech Discordbot Cogs
+# Terra Nanotech Discordbot Cogs<a name="terra-nanotech-discordbot-cogs"></a>
 
 A collection of cogs for
 [AA-Discordbot](https://github.com/pvyParts/allianceauth-discordbot)
 
+______________________________________________________________________
 
----
+<!-- mdformat-toc start --slug=github --maxlevel=6 --minlevel=1 -->
 
-<!-- TOC -->
-* [Terra Nanotech Discordbot Cogs](#terra-nanotech-discordbot-cogs)
-  * [Important Information](#important-information)
-  * [Install](#install)
-<!-- TOC -->
+- [Terra Nanotech Discordbot Cogs](#terra-nanotech-discordbot-cogs)
+  - [Important Information](#important-information)
+  - [Install](#install)
 
----
+<!-- mdformat-toc end -->
 
+______________________________________________________________________
 
-## Important Information
+## Important Information<a name="important-information"></a>
 
 These Discord bot COGs are specially tailored for the corporation Terra Nanotech.
 They COGs of apps we use, so they fit our needs.
@@ -23,10 +23,10 @@ They COGs of apps we use, so they fit our needs.
 > **Note**
 >
 > If you install this app, you need to be aware that there will be
-no support for any kind of issues you might encounter, and you have to figure it out
-on your own.
+> no support for any kind of issues you might encounter, and you have to figure it out
+> on your own.
 
-## Install
+## Install<a name="install"></a>
 
 ```shell
 pip install tnnt-discordbot-cogs
