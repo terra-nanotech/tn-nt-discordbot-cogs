@@ -1,5 +1,7 @@
 # Terra Nanotech Discordbot Cogs<a name="terra-nanotech-discordbot-cogs"></a>
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/terra-nanotech/tn-nt-discordbot-cogs/master.svg)](https://results.pre-commit.ci/latest/github/terra-nanotech/tn-nt-discordbot-cogs/master)
+
 A collection of cogs for
 [AA-Discordbot](https://github.com/pvyParts/allianceauth-discordbot)
 
