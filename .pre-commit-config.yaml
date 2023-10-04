@@ -207,4 +207,4 @@ repos:
 #    hooks:
 #      - id: pylint
 #        args:
-#          - --py-version=3.8.0
+#          - --py-version=3.8
