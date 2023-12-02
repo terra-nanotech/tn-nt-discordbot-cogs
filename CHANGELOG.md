@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Dependency to `allianceauth-app-utils`
 
+### Fixed
+
+- Pluralization in `price` cog
+
 ### Changed
 
 - `about` cog modernised/updated

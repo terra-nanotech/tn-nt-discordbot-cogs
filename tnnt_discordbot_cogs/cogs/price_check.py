@@ -64,9 +64,9 @@ class PriceCheck(commands.Cog):
             market_json = market_data.json()
 
             sell_min = market_json[eve_type_id]["sell"]["min"]
-            sell_order_count = market_json[eve_type_id]["sell"]["orderCount"]
+            sell_order_count = int(market_json[eve_type_id]["sell"]["orderCount"])
             buy_max = market_json[eve_type_id]["buy"]["max"]
-            buy_order_count = market_json[eve_type_id]["buy"]["orderCount"]
+            buy_order_count = int(market_json[eve_type_id]["buy"]["orderCount"])
             thumbnail_url = f"{cls.imageserver_url}/types/{eve_type_id}/icon?size=64"
 
             # Set the Embed thumbnail
@@ -79,11 +79,16 @@ class PriceCheck(commands.Cog):
                 f="%.2f", val=float(sell_min), grouping=True
             )
 
+            sell_orders_string = f"{sell_order_count} Orders"
             if sell_order_count == 0:
                 market_min_sell_order_price = "No sell orders found"
+                sell_orders_string = "No Orders"
+
+            if 0 < sell_order_count < 2:
+                sell_orders_string = f"{sell_order_count} Order"
 
             embed.add_field(
-                name=f"Sell Order Price ({sell_order_count} Orders)",
+                name=f"Sell Order Price ({sell_orders_string})",
                 value=f"{market_min_sell_order_price} ISK",
                 inline=True,
             )
@@ -93,11 +98,16 @@ class PriceCheck(commands.Cog):
                 f="%.2f", val=float(buy_max), grouping=True
             )
 
+            buy_orders_string = f"{buy_order_count} Orders"
             if buy_order_count == 0:
                 market_max_buy_order_price = "No buy orders found"
+                buy_orders_string = "No Orders"
+
+            if 0 < buy_order_count < 2:
+                buy_orders_string = f"{buy_order_count} Order"
 
             embed.add_field(
-                name=f"Buy Order Price ({buy_order_count} Orders)",
+                name=f"Buy Order Price ({buy_orders_string})",
                 value=f"{market_max_buy_order_price} ISK",
                 inline=True,
             )
