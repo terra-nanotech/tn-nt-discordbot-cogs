@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## \[In Development\] - Unreleased
 
+### Changed
+
+- Embed creation for a market moved to its own function
+
 ## \[0.5.0\] - 2023-08-01
 
 ### Added
@@ -23,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
-- Unnecessary functions from `price_check` cog
+- Unnecessary f-strings from `price_check` cog
 
 ## \[0.4.0\] - 2023-07-21
 
