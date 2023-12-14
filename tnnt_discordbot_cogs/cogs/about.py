@@ -98,7 +98,7 @@ class About(commands.Cog):
         :rtype:
         """
 
-        await ctx.send(
+        return await ctx.send(
             pendulum.now(tz="UTC").diff_for_humans(
                 self.bot.currentuptime, absolute=True
             )
