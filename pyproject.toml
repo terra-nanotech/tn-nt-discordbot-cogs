@@ -6,7 +6,6 @@ requires = [
 
 [project]
 name = "tnnt-discordbot-cogs"
-version = "0.5.0"
 description = "TN-NT customized cogs for aa-discordbot"
 readme = "README.md"
 keywords = [
@@ -36,8 +35,11 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
+dynamic = [
+    "version",
+]
 dependencies = [
-    "allianceauth>=3",
+    "allianceauth<5.0.0,>=3",
     "allianceauth-app-utils>=1.14.1",
     "allianceauth-discordbot",
     "django-eveuniverse>=1.3",
@@ -53,3 +55,6 @@ Tracker = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/issues"
 include = [
     "/tnnt_discordbot_cogs",
 ]
+
+[tool.hatch.version]
+path = "tnnt_discordbot_cogs/__init__.py"
