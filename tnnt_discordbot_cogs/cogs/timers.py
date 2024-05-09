@@ -16,7 +16,6 @@ from structuretimers.models import Timer
 
 # Django
 from django.apps import apps
-from django.utils import timezone
 
 # Alliance Auth
 from allianceauth.eveonline.templatetags.evelinks import dotlan_solar_system_url
@@ -89,7 +88,7 @@ class Timers(commands.Cog):
         next_timer = Timer.objects.filter(
             is_opsec=False,
             visibility=Timer.VISIBILITY_UNRESTRICTED,
-            date__gte=datetime.datetime.utcnow().replace(tzinfo=timezone.utc),
+            date__gte=datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc),
         ).first()
 
         if next_timer is None:
