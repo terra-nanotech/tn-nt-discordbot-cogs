@@ -5,7 +5,7 @@ Market Price Checks cog for discordbot - https://github.com/pvyParts/allianceaut
 # Standard Library
 import locale
 import logging
-from typing import Coroutine
+from collections.abc import Coroutine
 
 # Third Party
 import requests
