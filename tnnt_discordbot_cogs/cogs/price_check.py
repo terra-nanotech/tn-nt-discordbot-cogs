@@ -9,6 +9,7 @@ from collections.abc import Coroutine
 
 # Third Party
 import requests
+from aadiscordbot import app_settings
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -52,7 +53,7 @@ class PriceCheck(commands.Cog):
         market_system_id = market["system_id"]
         url = "https://market.fuzzwork.co.uk/aggregates/"
         url_params = {"system": market_system_id, "types": eve_type_id}
-        market_data = requests.get(url=url, params=url_params, timeout=2.50)
+        market_data = requests.get(url=url, params=url_params, timeout=5.00)
 
         embed.add_field(
             name=market_system_name,
@@ -120,8 +121,9 @@ class PriceCheck(commands.Cog):
                 inline=False,
             )
 
-    @commands.command(pass_context=True)
-    async def price(self, ctx):
+    # @commands.command(pass_context=True)
+    @commands.slash_command(name="price", guild_ids=app_settings.get_all_servers())
+    async def price(self, ctx, item_name: str):
         """
         Check an item price on all major market hubs
 
@@ -131,22 +133,22 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        markets = [
-            {"name": "Jita", "system_id": 30000142},
-            {"name": "Amarr", "system_id": 30002187},
-            {"name": "Rens", "system_id": 60004588},
-            {"name": "Hek", "system_id": 60005686},
-            {"name": "Dodixie", "system_id": 30002659},
-        ]
+        return await ctx.respond(
+            embed=self.price_check(
+                markets=[
+                    {"name": "Jita", "system_id": 30000142},
+                    {"name": "Amarr", "system_id": 30002187},
+                    {"name": "Rens", "system_id": 60004588},
+                    {"name": "Hek", "system_id": 60005686},
+                    {"name": "Dodixie", "system_id": 30002659},
+                ],
+                item_name=item_name,
+            ),
+            ephemeral=True,
+        )
 
-        await ctx.trigger_typing()
-
-        item_name = ctx.message.content[7:]
-
-        await self.price_check(ctx=ctx, markets=markets, item_name=item_name)
-
-    @commands.command(pass_context=True)
-    async def jita(self, ctx):
+    @commands.slash_command(name="jita", guild_ids=app_settings.get_all_servers())
+    async def jita(self, ctx, item_name: str):
         """
         Check an item price on Jita market
 
@@ -156,16 +158,15 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        markets = [{"name": "Jita", "system_id": 30000142}]
+        return await ctx.respond(
+            embed=self.price_check(
+                markets=[{"name": "Jita", "system_id": 30000142}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
 
-        await ctx.trigger_typing()
-
-        item_name = ctx.message.content[6:]
-
-        await self.price_check(ctx=ctx, markets=markets, item_name=item_name)
-
-    @commands.command(pass_context=True)
-    async def amarr(self, ctx):
+    @commands.slash_command(name="amarr", guild_ids=app_settings.get_all_servers())
+    async def amarr(self, ctx, item_name: str):
         """
         Check an item price on Amarr market
 
@@ -175,15 +176,70 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        markets = [{"name": "Amarr", "system_id": 60008494}]
+        return await ctx.respond(
+            embed=self.price_check(
+                markets=[{"name": "Amarr", "system_id": 60008494}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
 
-        await ctx.trigger_typing()
+    @commands.slash_command(name="rens", guild_ids=app_settings.get_all_servers())
+    async def rens(self, ctx, item_name: str):
+        """
+        Check an item price on Rens market
 
-        item_name = ctx.message.content[7:]
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
+        """
 
-        await self.price_check(ctx=ctx, markets=markets, item_name=item_name)
+        return await ctx.respond(
+            embed=self.price_check(
+                markets=[{"name": "Rens", "system_id": 60004588}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
 
-    async def price_check(self, ctx, markets, item_name: str = None) -> Coroutine:
+    @commands.slash_command(name="hek", guild_ids=app_settings.get_all_servers())
+    async def hek(self, ctx, item_name: str):
+        """
+        Check an item price on Hek market
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self.price_check(
+                markets=[{"name": "Hek", "system_id": 60005686}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
+
+    @commands.slash_command(name="dodixie", guild_ids=app_settings.get_all_servers())
+    async def dodixie(self, ctx, item_name: str):
+        """
+        Check an item price on Dodixie market
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self.price_check(
+                markets=[{"name": "Dodixie", "system_id": 30002659}],
+                item_name=item_name,
+            ),
+            ephemeral=True,
+        )
+
+    @classmethod
+    def price_check(cls, markets, item_name: str = None) -> Coroutine:
         """
         Do the price checks and post to Discord
 
@@ -196,8 +252,6 @@ class PriceCheck(commands.Cog):
         :return:
         :rtype:
         """
-
-        await ctx.trigger_typing()
 
         if item_name != "":
             try:
@@ -229,7 +283,7 @@ class PriceCheck(commands.Cog):
                 )
 
                 for market in markets:
-                    self._build_market_price_embed(
+                    cls._build_market_price_embed(
                         embed=embed,
                         market=market,
                         item_name=item_name,
@@ -249,7 +303,7 @@ class PriceCheck(commands.Cog):
                 inline=False,
             )
 
-        return await ctx.send(embed=embed)
+        return embed
 
 
 def setup(bot) -> None:
