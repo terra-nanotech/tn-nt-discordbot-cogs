@@ -274,7 +274,7 @@ repos:
         description: Validate the pyproject.toml file.
 
 #  - repo: https://github.com/pylint-dev/pylint
-#    rev: v3.3.1
+#    rev: v3.3.2
 #    hooks:
 #      - id: pylint
 #        name: Pylint
