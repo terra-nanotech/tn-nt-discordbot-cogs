@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Embed creation for a market moved to its own function
+- Switch to slash commands for price checks
 
 ## \[0.5.0\] - 2023-08-01
 
