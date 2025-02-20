@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.6.0] - 2025-02-20
+
 ### Added
 
 - Admin cog
