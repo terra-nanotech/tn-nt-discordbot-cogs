@@ -6,12 +6,6 @@
 import logging
 
 # Third Party
-from aadiscordbot.app_settings import (
-    ADMIN_DISCORD_BOT_CHANNELS,
-    DISCORD_BOT_MEMBER_ALLIANCES,
-    aastatistics_active,
-)
-from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_any_perm
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -23,6 +17,14 @@ from django.core.exceptions import ObjectDoesNotExist
 # Alliance Auth
 from allianceauth.eveonline.evelinks import evewho
 from allianceauth.eveonline.models import EveCharacter
+
+# Alliance Auth Discord Bot
+from aadiscordbot.app_settings import (
+    ADMIN_DISCORD_BOT_CHANNELS,
+    DISCORD_BOT_MEMBER_ALLIANCES,
+    aastatistics_active,
+)
+from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_any_perm
 
 logger = logging.getLogger(__name__)
 

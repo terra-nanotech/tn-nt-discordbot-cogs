@@ -37,6 +37,7 @@ Section Order:
 
 ### Added
 
+- Admin cog
 - Welcome cog
 
 ### Changed

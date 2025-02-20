@@ -16,6 +16,7 @@ def register_cogs():
 
     return [
         "tnnt_discordbot_cogs.cogs.about",
+        "tnnt_discordbot_cogs.cogs.admin",
         "tnnt_discordbot_cogs.cogs.auth",
         "tnnt_discordbot_cogs.cogs.members",
         "tnnt_discordbot_cogs.cogs.price_check",

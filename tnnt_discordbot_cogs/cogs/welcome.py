@@ -8,14 +8,16 @@ import logging
 
 # Third Party
 import discord
-from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.models import WelcomeMessage
-from aadiscordbot.utils.auth import is_user_authenticated
 from discord.ext import commands
 
 # Django
 from django.conf import settings
 from django.db.models import Q
+
+# Alliance Auth Discord Bot
+from aadiscordbot.app_settings import get_site_url
+from aadiscordbot.models import WelcomeMessage
+from aadiscordbot.utils.auth import is_user_authenticated
 
 logger = logging.getLogger(__name__)
 

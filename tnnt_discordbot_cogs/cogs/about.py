@@ -9,8 +9,6 @@ import logging
 
 # Third Party
 import pendulum
-from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -23,6 +21,10 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,
 )
+
+# Alliance Auth Discord Bot
+from aadiscordbot.app_settings import get_site_url
+from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
 logger = logging.getLogger(name=__name__)
 

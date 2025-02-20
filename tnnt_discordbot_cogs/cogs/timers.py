@@ -7,8 +7,6 @@ import datetime
 import logging
 
 # Third Party
-from aadiscordbot.app_settings import ADMIN_DISCORD_BOT_CHANNELS
-from aadiscordbot.cogs.utils.decorators import message_in_channels
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -19,6 +17,10 @@ from django.apps import apps
 
 # Alliance Auth
 from allianceauth.eveonline.templatetags.evelinks import dotlan_solar_system_url
+
+# Alliance Auth Discord Bot
+from aadiscordbot.app_settings import ADMIN_DISCORD_BOT_CHANNELS
+from aadiscordbot.cogs.utils.decorators import message_in_channels
 
 # Alliance Auth (External Libs)
 from app_utils.urls import reverse_absolute
