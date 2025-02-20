@@ -54,36 +54,43 @@ class Welcome(commands.Cog):
                 authenticated = False
 
             if authenticated:
-                channel_id = getattr(
-                    settings, "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_AUTHENTICATED", None
+                excluded_roles = getattr(
+                    settings, "TNNT_DISCORDBOT_COGS_WELCOME_ROLES_EXCLUDED", ["Member"]
                 )
 
-                if isinstance(channel_id, int):
-                    channel = member.guild.get_channel(channel_id)
+                if not any(role.name in excluded_roles for role in member.roles):
+                    channel_id = getattr(
+                        settings,
+                        "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_AUTHENTICATED",
+                        None,
+                    )
 
-                try:
-                    message = (
-                        WelcomeMessage.objects.filter(
-                            Q(Q(guild_id=member.guild.id) | Q(guild_id=None)),
-                            authenticated=True,
+                    if isinstance(channel_id, int):
+                        channel = member.guild.get_channel(channel_id)
+
+                    try:
+                        message = (
+                            WelcomeMessage.objects.filter(
+                                Q(Q(guild_id=member.guild.id) | Q(guild_id=None)),
+                                authenticated=True,
+                            )
+                            .order_by("?")
+                            .first()
+                            .message
                         )
-                        .order_by("?")
-                        .first()
-                        .message
-                    )
-                    message_formatted = message.format(
-                        user_mention=member.mention,
-                        guild_name=member.guild.name,
-                        auth_url=get_site_url(),
-                    )
+                        message_formatted = message.format(
+                            user_mention=member.mention,
+                            guild_name=member.guild.name,
+                            auth_url=get_site_url(),
+                        )
 
-                    await channel.send(content=message_formatted)
-                except IndexError:
-                    logger.error(
-                        msg="No Welcome Message configured for Discordbot Welcome cog"
-                    )
-                except Exception as e:
-                    logger.error(msg=e)
+                        await channel.send(content=message_formatted)
+                    except IndexError:
+                        logger.error(
+                            msg="No Welcome Message configured for Discordbot Welcome cog"
+                        )
+                    except Exception as e:
+                        logger.error(msg=e)
             else:
                 try:
                     message = (
@@ -112,7 +119,7 @@ class Welcome(commands.Cog):
 
 def setup(bot):
     """
-    Set up the cog
+    Set up the Welcome cog
 
     :param bot: discord bot
     """
