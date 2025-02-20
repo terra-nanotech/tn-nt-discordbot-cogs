@@ -91,6 +91,18 @@ class RecruitMe(commands.Cog):
         :rtype: None
         """
 
+        if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
+            role.id for role in ctx.user.roles
+        ]:
+            return await ctx.respond(
+                (
+                    "You are not in the Applicants group. Please open the "
+                    "[groups page](https://auth.terra-nanotech.de/groups/) and join "
+                    "the `TN-NT Applicant` group first …"
+                ),
+                ephemeral=True,
+            )
+
         await self.open_ticket(ctx=ctx, member=ctx.user)
 
     @commands.message_command(
@@ -108,7 +120,26 @@ class RecruitMe(commands.Cog):
         :rtype: None
         """
 
-        await self.open_ticket(ctx=ctx, member=message.author)
+        if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
+            role.id for role in message.author.roles
+        ]:
+            return await ctx.respond(
+                f"{message.author.mention} is not in the Applicants group …",
+                ephemeral=True,
+            )
+
+        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_GROUP_ID in [
+            role.id for role in ctx.user.roles
+        ] or int(ctx.user.id) == int(message.author.id):
+            await self.open_ticket(ctx=ctx, member=message.author)
+        else:
+            return await ctx.respond(
+                (
+                    "You are not in the `TN-NT Recruiter` group "
+                    "and cannot use this command on this user …"
+                ),
+                ephemeral=True,
+            )
 
     @commands.user_command(
         name="Recruit Member", guild_ids=app_settings.get_all_servers()
@@ -125,7 +156,26 @@ class RecruitMe(commands.Cog):
         :rtype: None
         """
 
-        await self.open_ticket(ctx=ctx, member=user)
+        if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
+            role.id for role in user.roles
+        ]:
+            return await ctx.respond(
+                f"{user.mention} is not in the Applicants group …",
+                ephemeral=True,
+            )
+
+        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_GROUP_ID in [
+            role.id for role in ctx.user.roles
+        ] or int(ctx.user.id) == int(user.id):
+            await self.open_ticket(ctx=ctx, member=user)
+        else:
+            return await ctx.respond(
+                (
+                    "You are not in the `TN-NT Recruiter` group "
+                    "and cannot use this command on this user …"
+                ),
+                ephemeral=True,
+            )
 
 
 def setup(bot):
