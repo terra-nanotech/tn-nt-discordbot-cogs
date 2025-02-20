@@ -14,6 +14,7 @@ from aadiscordbot.utils.auth import is_user_authenticated
 from discord.ext import commands
 
 # Django
+from django.conf import settings
 from django.db.models import Q
 
 logger = logging.getLogger(__name__)
@@ -41,6 +42,8 @@ class Welcome(commands.Cog):
         logger.info(msg=f"{member} joined {member.guild.name}")
         channel = member.guild.system_channel
 
+        logger.debug(f"Channel: {channel}")
+
         if channel is not None:
             try:
                 # Give AA a chance to save the UID for a joiner.
@@ -51,6 +54,13 @@ class Welcome(commands.Cog):
                 authenticated = False
 
             if authenticated:
+                channel_id = getattr(
+                    settings, "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_AUTHENTICATED", None
+                )
+
+                if isinstance(channel_id, int):
+                    channel = member.guild.get_channel(channel_id)
+
                 try:
                     message = (
                         WelcomeMessage.objects.filter(
