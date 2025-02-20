@@ -51,7 +51,7 @@ class RecruitMe(commands.Cog):
         auth_user = auth.get_auth_user(user=member, guild=ctx.guild)
         main_character = auth_user.profile.main_character
 
-        ch = ctx.guild.get_channel(settings.TNNT_DISCORDBOT_COGS_RECRUIT_CHANNEL)
+        ch = ctx.guild.get_channel(settings.TNNT_DISCORDBOT_COGS_RECRUITING_CHANNEL)
         th = await ch.create_thread(
             name=f"{main_character} | Recruitment | {timezone.now().strftime('%Y-%m-%d %H:%M')}",
             auto_archive_duration=10080,
@@ -59,8 +59,8 @@ class RecruitMe(commands.Cog):
             reason=None,
         )
         msg = (
-            f"Dragging in: <@&{settings.TNNT_DISCORDBOT_COGS_LEADERSHIP_GROUP_ID}> "
-            f"and <@&{settings.TNNT_DISCORDBOT_COGS_RECRUITER_GROUP_ID}> …\n\n"
+            f"Dragging in: <@&{settings.TNNT_DISCORDBOT_COGS_LEADERSHIP_ROLE_ID}> "
+            f"and <@&{settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID}> …\n\n"
             f"Hello <@{member.id}>! :wave:\n\n"
             "Someone from the recruitment team will get in touch with you soon!"
         )
@@ -128,7 +128,7 @@ class RecruitMe(commands.Cog):
                 ephemeral=True,
             )
 
-        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_GROUP_ID in [
+        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID in [
             role.id for role in ctx.user.roles
         ] or int(ctx.user.id) == int(message.author.id):
             await self.open_ticket(ctx=ctx, member=message.author)
@@ -164,7 +164,7 @@ class RecruitMe(commands.Cog):
                 ephemeral=True,
             )
 
-        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_GROUP_ID in [
+        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID in [
             role.id for role in ctx.user.roles
         ] or int(ctx.user.id) == int(user.id):
             await self.open_ticket(ctx=ctx, member=user)
