@@ -3,7 +3,6 @@ import logging
 
 # Third Party
 import pendulum
-from aadiscordbot import app_settings
 from discord import (
     AutocompleteContext,
     CategoryChannel,
@@ -26,6 +25,10 @@ from allianceauth.eveonline.models import EveCharacter
 from allianceauth.eveonline.tasks import update_character
 from allianceauth.services.modules.discord.models import DiscordUser
 from allianceauth.services.modules.discord.tasks import update_groups, update_nickname
+
+# Alliance Auth Discord Bot
+from aadiscordbot import app_settings
+from aadiscordbot.utils import auth
 
 logger = logging.getLogger(__name__)
 
@@ -549,11 +552,12 @@ class Admin(commands.Cog):
                 "You do not have permission to use this command", ephemeral=True
             )
 
-        auth_user = DiscordUser.objects.get(uid=user.id)
-        update_groups.delay(auth_user.user_id)
+        auth_user = auth.get_auth_user(user=user, guild=ctx.guild)
+        main_character = auth_user.profile.main_character
+        update_groups.delay(auth_user.pk)
 
         await ctx.respond(
-            f"Requested Group Sync for {auth_user.user.profile.main_character}",
+            f"Requested Group Sync for {main_character}",
             ephemeral=True,
         )
 
@@ -577,9 +581,9 @@ class Admin(commands.Cog):
                 "You do not have permission to use this command", ephemeral=True
             )
 
-        auth_user = DiscordUser.objects.get(uid=user.id)
-        main_character = auth_user.user.profile.main_character
-        update_nickname.delay(auth_user.user_id)
+        auth_user = auth.get_auth_user(user=user, guild=ctx.guild)
+        main_character = auth_user.profile.main_character
+        update_nickname.delay(auth_user.pk)
 
         await ctx.respond(
             f"Requested Nickname Sync for {main_character}",
@@ -597,4 +601,5 @@ def setup(bot):
     :rtype:
     """
 
-    bot.add_cog(Admin(bot))
+    if bot.get_cog("Admin") is None:
+        bot.add_cog(Admin(bot))

@@ -9,10 +9,12 @@ from collections.abc import Coroutine
 
 # Third Party
 import requests
-from aadiscordbot import app_settings
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
+
+# Alliance Auth Discord Bot
+from aadiscordbot import app_settings
 
 # Alliance Auth (External Libs)
 from eveuniverse.models import EveEntity

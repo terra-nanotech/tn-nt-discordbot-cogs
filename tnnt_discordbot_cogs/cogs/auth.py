@@ -6,8 +6,6 @@
 import logging
 
 # Third Party
-from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -21,6 +19,10 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
     corporation_logo_url,
 )
 from allianceauth.services.modules.discord.models import DiscordUser
+
+# Alliance Auth Discord Bot
+from aadiscordbot.app_settings import get_site_url
+from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
 logger = logging.getLogger(__name__)
 
