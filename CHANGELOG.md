@@ -43,6 +43,7 @@ Section Order:
 
 ### Changed
 
+- `/admin commands` output formatted
 - Embed creation for a market moved to its own function
 - Switch to slash commands for price checks
 

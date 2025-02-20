@@ -396,21 +396,28 @@ class Admin(commands.Cog):
         await ctx.defer(ephemeral=True)
 
         helptext = Paginator()
+        helptext.add_line(
+            "Parent          Command                        "
+            "Module                                   "
+            "Type"
+        )
+        helptext.add_line("-" * 110)
+
+        coms = set()
 
         for command in self.bot.walk_application_commands():
             if isinstance(command, SlashCommandGroup):
                 continue
 
-            _parent = (
-                f"{command.full_parent_name}{' ' if command.full_parent_name else ''}"
-            )
-            _msg = f"{_parent}{command.name} ({command.module} - {command.__class__.__name__})"
+            _parent = f"{command.full_parent_name.ljust(15)}{' ' if command.full_parent_name.rjust else ''}"
+            _msg = f"{_parent}{command.name.ljust(30)} {command.module.ljust(40)} {command.__class__.__name__}"
 
-            try:
+            if _msg not in coms:
+                coms.add(_msg)
                 helptext.add_line(_msg)
-            except RuntimeError:
-                helptext.close_page()
-                helptext.add_line(_msg)
+            else:
+                pass
+
         for _str in helptext.pages:
             await ctx.send(_str)
 
