@@ -38,6 +38,7 @@ Section Order:
 ### Added
 
 - Admin cog
+- Recruitment cog
 - Welcome cog
 
 ### Changed
