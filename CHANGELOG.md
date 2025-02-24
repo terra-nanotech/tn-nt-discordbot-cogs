@@ -37,6 +37,7 @@ Section Order:
 
 ### Changed
 
+- Improvements to the `welcome` cog
 - Better permission checks for the `recruit_me` cog
 
 ## [0.6.0] - 2025-02-20

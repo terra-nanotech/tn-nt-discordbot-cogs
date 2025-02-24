@@ -42,63 +42,40 @@ class Welcome(commands.Cog):
         """
 
         logger.info(msg=f"{member} joined {member.guild.name}")
+
+        # Default to the system channel if no channel is configured.
         channel = member.guild.system_channel
 
-        logger.debug(f"Channel: {channel}")
+        try:
+            # Give AA a chance to save the UID for a joiner.
+            await asyncio.sleep(3)
 
-        if channel is not None:
-            try:
-                # Give AA a chance to save the UID for a joiner.
-                await asyncio.sleep(3)
+            authenticated = is_user_authenticated(user=member, guild=member.guild)
+        except Exception:
+            authenticated = False
 
-                authenticated = is_user_authenticated(user=member, guild=member.guild)
-            except Exception:
-                authenticated = False
+        # If the user is authenticated, send a welcome message to the authenticated channel.
+        if authenticated:
+            excluded_roles = getattr(
+                settings, "TNNT_DISCORDBOT_COGS_WELCOME_ROLES_EXCLUDED", ["Member"]
+            )
 
-            if authenticated:
-                excluded_roles = getattr(
-                    settings, "TNNT_DISCORDBOT_COGS_WELCOME_ROLES_EXCLUDED", ["Member"]
+            if not any(role.name in excluded_roles for role in member.roles):
+                channel_id = getattr(
+                    settings,
+                    "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_AUTHENTICATED",
+                    None,
                 )
 
-                if not any(role.name in excluded_roles for role in member.roles):
-                    channel_id = getattr(
-                        settings,
-                        "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_AUTHENTICATED",
-                        None,
-                    )
+                # If the channel_id is an integer, get the channel object.
+                if isinstance(channel_id, int):
+                    channel = member.guild.get_channel(channel_id)
 
-                    if isinstance(channel_id, int):
-                        channel = member.guild.get_channel(channel_id)
-
-                    try:
-                        message = (
-                            WelcomeMessage.objects.filter(
-                                Q(Q(guild_id=member.guild.id) | Q(guild_id=None)),
-                                authenticated=True,
-                            )
-                            .order_by("?")
-                            .first()
-                            .message
-                        )
-                        message_formatted = message.format(
-                            user_mention=member.mention,
-                            guild_name=member.guild.name,
-                            auth_url=get_site_url(),
-                        )
-
-                        await channel.send(content=message_formatted)
-                    except IndexError:
-                        logger.error(
-                            msg="No Welcome Message configured for Discordbot Welcome cog"
-                        )
-                    except Exception as e:
-                        logger.error(msg=e)
-            else:
                 try:
                     message = (
                         WelcomeMessage.objects.filter(
                             Q(Q(guild_id=member.guild.id) | Q(guild_id=None)),
-                            unauthenticated=True,
+                            authenticated=True,
                         )
                         .order_by("?")
                         .first()
@@ -110,13 +87,48 @@ class Welcome(commands.Cog):
                         auth_url=get_site_url(),
                     )
 
-                    await channel.send(message_formatted)
+                    await channel.send(content=message_formatted)
                 except IndexError:
                     logger.error(
                         msg="No Welcome Message configured for Discordbot Welcome cog"
                     )
                 except Exception as e:
                     logger.error(msg=e)
+        # If the user is not authenticated, send a welcome message to the unauthenticated channel.
+        else:
+            channel_id = getattr(
+                settings,
+                "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_UNAUTHENTICATED",
+                None,
+            )
+
+            # If the channel_id is an integer, get the channel object.
+            if isinstance(channel_id, int):
+                channel = member.guild.get_channel(channel_id)
+
+            try:
+                message = (
+                    WelcomeMessage.objects.filter(
+                        Q(Q(guild_id=member.guild.id) | Q(guild_id=None)),
+                        unauthenticated=True,
+                    )
+                    .order_by("?")
+                    .first()
+                    .message
+                )
+                message_formatted = message.format(
+                    user_mention=member.mention,
+                    guild_name=member.guild.name,
+                    auth_url=get_site_url(),
+                )
+
+                await channel.send(message_formatted)
+            except IndexError:
+                logger.error(
+                    msg="No Welcome Message configured for Discordbot Welcome cog"
+                )
+            except Exception as e:
+                logger.error(msg=e)
 
 
 def setup(bot):
