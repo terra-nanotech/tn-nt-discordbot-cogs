@@ -35,6 +35,10 @@ Section Order:
 ### Security
 -->
 
+### Changed
+
+- Better permission checks for the `recruit_me` cog
+
 ## [0.6.0] - 2025-02-20
 
 ### Added

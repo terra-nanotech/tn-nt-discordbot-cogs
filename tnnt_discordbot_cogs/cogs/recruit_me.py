@@ -120,6 +120,19 @@ class RecruitMe(commands.Cog):
         :rtype: None
         """
 
+        # Check if the user is a recruiter and if the user is different from the target user
+        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID not in [
+            role.id for role in ctx.user.roles
+        ] and int(ctx.user.id) != int(message.author.id):
+            return await ctx.respond(
+                (
+                    "You are not a recruiter for Terra Nanotech and "
+                    "cannot use this command on this user …"
+                ),
+                ephemeral=True,
+            )
+
+        # Check if the target user is in the Applicants group
         if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
             role.id for role in message.author.roles
         ]:
@@ -128,18 +141,7 @@ class RecruitMe(commands.Cog):
                 ephemeral=True,
             )
 
-        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID in [
-            role.id for role in ctx.user.roles
-        ] or int(ctx.user.id) == int(message.author.id):
-            await self.open_ticket(ctx=ctx, member=message.author)
-        else:
-            return await ctx.respond(
-                (
-                    "You are not in the `TN-NT Recruiter` group "
-                    "and cannot use this command on this user …"
-                ),
-                ephemeral=True,
-            )
+        await self.open_ticket(ctx=ctx, member=message.author)
 
     @commands.user_command(
         name="Recruit Member", guild_ids=app_settings.get_all_servers()
@@ -156,6 +158,19 @@ class RecruitMe(commands.Cog):
         :rtype: None
         """
 
+        # Check if the user is a recruiter and if the user is different from the target user
+        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID not in [
+            role.id for role in ctx.user.roles
+        ] and int(ctx.user.id) != int(user.id):
+            return await ctx.respond(
+                (
+                    "You are not a recruiter for Terra Nanotech and "
+                    "cannot use this command on this user …"
+                ),
+                ephemeral=True,
+            )
+
+        # Check if the target user is in the Applicants group
         if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
             role.id for role in user.roles
         ]:
@@ -164,18 +179,7 @@ class RecruitMe(commands.Cog):
                 ephemeral=True,
             )
 
-        if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID in [
-            role.id for role in ctx.user.roles
-        ] or int(ctx.user.id) == int(user.id):
-            await self.open_ticket(ctx=ctx, member=user)
-        else:
-            return await ctx.respond(
-                (
-                    "You are not in the `TN-NT Recruiter` group "
-                    "and cannot use this command on this user …"
-                ),
-                ephemeral=True,
-            )
+        await self.open_ticket(ctx=ctx, member=user)
 
 
 def setup(bot):
