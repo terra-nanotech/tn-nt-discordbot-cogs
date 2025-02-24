@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.6.1] - 2025-02-24
+
 ### Changed
 
 - Improvements to the `welcome` cog
