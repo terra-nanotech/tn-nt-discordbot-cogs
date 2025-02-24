@@ -20,7 +20,7 @@ ______________________________________________________________________
 ## Important Information<a name="important-information"></a>
 
 These Discord bot COGs are specially tailored for the corporation Terra Nanotech.
-They COGs of apps we use, so they fit our needs.
+They are COGs of apps we use, so they fit our needs.
 
 > **Note**
 >
