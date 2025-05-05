@@ -272,7 +272,7 @@ repos:
 #          - --py-version=3.10  # Minimum required Python version for AA. Update as needed.
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: a167de9d5f4e87e1cdb16cb560aa704b79b6f655  # frozen: 0.32.1
+    rev: 06e4cc849d03f3a59ca223a4046f4bb5bb2aba6d  # frozen: 0.33.0
     hooks:
       - id: check-github-actions
         name: Check GitHub Actions
