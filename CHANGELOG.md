@@ -35,6 +35,11 @@ Section Order:
 ### Security
 -->
 
+### Changed
+
+- Improvements to the `recruit_me` cog
+  - Use Enum in bot responses
+
 ## [0.6.1] - 2025-02-24
 
 ### Changed
