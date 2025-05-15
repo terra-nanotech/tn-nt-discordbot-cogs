@@ -58,7 +58,7 @@ class BotResponse(str, Enum):
         "This works with `@groups` as well to bulk add people to the channel. "
         "Use wisely, abuse will not be tolerated."
     )
-    RECRUITMENT_THREAT_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
+    RECRUITMENT_THREAD_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
     RECRUITMENT_THREAD_BODY = (
         "Dragging in: <@&{LEADERSHIP_ROLE_ID}> and <@&{RECRUITER_ROLE_ID}> …\n\n"
         "Hello <@{MEMBER_ID}>, and welcome! :wave:\n\n"
@@ -101,7 +101,7 @@ class RecruitMe(commands.Cog):
 
         ch = ctx.guild.get_channel(settings.TNNT_DISCORDBOT_COGS_RECRUITING_CHANNEL)
         th = await ch.create_thread(
-            name=BotResponse.RECRUITMENT_THREAT_TITLE.value.format(
+            name=BotResponse.RECRUITMENT_THREAD_TITLE.value.format(
                 MAIN_CHARACTER=main_character,
                 DATE=timezone.now().strftime("%Y-%m-%d %H:%M"),
             ),
