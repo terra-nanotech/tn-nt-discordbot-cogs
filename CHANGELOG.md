@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.6.2] - 2025-05-15
+
 ### Changed
 
 - Improvements to the `recruit_me` cog
