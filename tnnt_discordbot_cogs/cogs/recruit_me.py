@@ -4,6 +4,7 @@ RecruitMe Cog
 
 # Standard Library
 import logging
+from enum import Enum
 
 # Third Party
 import discord
@@ -18,7 +19,54 @@ from django.utils import timezone
 from aadiscordbot import app_settings
 from aadiscordbot.utils import auth
 
+# Alliance Auth (External Libs)
+from app_utils.urls import reverse_absolute
+
 logger = logging.getLogger(__name__)
+
+APPLICANT_ROLE_NAME = "TN-NT Applicant"
+AUDIT_SYSTEM_NAME = "Character Audit"
+AUDIT_SYSTEM_URL = reverse_absolute(viewname="corptools:react")
+AUDIT_SYSTEM = f"[{AUDIT_SYSTEM_NAME}]({AUDIT_SYSTEM_URL})"
+GROUPS_PAGE_URL = reverse_absolute(viewname="groupmanagement:groups")
+
+
+class BotResponse(str, Enum):
+    """
+    Bot responses for the RecruitMe cog
+    """
+
+    NOT_IN_APPLICATION_GROUP = (
+        f"**You are not in the `{APPLICANT_ROLE_NAME}` group.**\n\n"
+        f"Please open the [groups page]({GROUPS_PAGE_URL}) and "
+        f"join the `{APPLICANT_ROLE_NAME}` group first …"
+    )
+    MEMBER_NOT_IN_APPLICATION_GROUP = (
+        "**{MEMBER} is not in the "
+        f"`{APPLICANT_ROLE_NAME}` group.**\n\n"
+        "Please let them know to open the "
+        f"[groups page]({GROUPS_PAGE_URL}) and join the "
+        f"`{APPLICANT_ROLE_NAME}` group first …"
+    )
+    NOT_A_RECRUITER = (
+        "You are not a recruiter for Terra Nanotech and "
+        "cannot use this command on this user …"
+    )
+    PRIVATE_THREAD_GUIDE_TITLE = "Private Thread Guide"
+    PRIVATE_THREAD_GUIDE_BODY = (
+        "To add a person to this thread simply `@ping` them. "
+        "This works with `@groups` as well to bulk add people to the channel. "
+        "Use wisely, abuse will not be tolerated."
+    )
+    RECRUITMENT_THREAD_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
+    RECRUITMENT_THREAD_BODY = (
+        "Dragging in: <@&{LEADERSHIP_ROLE_ID}> and <@&{RECRUITER_ROLE_ID}> …\n\n"
+        "Hello <@{MEMBER_ID}>, and welcome! :wave:\n\n"
+        f"Feel free to ask questions and please ensure **all** your characters are added to {AUDIT_SYSTEM}.\n"
+        "And of course, tell us a bit about yourself!\n\n"
+        "Someone from the recruitment team will get in touch with you soon!"
+    )
+    RECRUITMENT_THREAD_CREATED = "Recruitment thread created!"
 
 
 class RecruitMe(commands.Cog):
@@ -53,31 +101,29 @@ class RecruitMe(commands.Cog):
 
         ch = ctx.guild.get_channel(settings.TNNT_DISCORDBOT_COGS_RECRUITING_CHANNEL)
         th = await ch.create_thread(
-            name=f"{main_character} | Recruitment | {timezone.now().strftime('%Y-%m-%d %H:%M')}",
+            name=BotResponse.RECRUITMENT_THREAD_TITLE.value.format(
+                MAIN_CHARACTER=main_character,
+                DATE=timezone.now().strftime("%Y-%m-%d %H:%M"),
+            ),
             auto_archive_duration=10080,
             type=discord.ChannelType.private_thread,
             reason=None,
         )
-        msg = (
-            f"Dragging in: <@&{settings.TNNT_DISCORDBOT_COGS_LEADERSHIP_ROLE_ID}> "
-            f"and <@&{settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID}> …\n\n"
-            f"Hello <@{member.id}>! :wave:\n\n"
-            "Someone from the recruitment team will get in touch with you soon!"
+        msg = BotResponse.RECRUITMENT_THREAD_BODY.value.format(
+            LEADERSHIP_ROLE_ID=settings.TNNT_DISCORDBOT_COGS_LEADERSHIP_ROLE_ID,
+            RECRUITER_ROLE_ID=settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID,
+            MEMBER_ID=member.id,
         )
         embd = Embed(
-            title="Private Thread Guide",
-            description=(
-                "To add a person to this thread simply `@ping` them. "
-                "This works with `@groups` as well to bulk add people to the channel. "
-                "Use wisely, abuse will not be tolerated.\n\n"
-                "This is a beta feature if you experience issues please "
-                "contact the admins. :heart:"
-            ),
+            title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
+            description=BotResponse.PRIVATE_THREAD_GUIDE_BODY.value,
         )
 
         await th.send(content=msg, embed=embd)
         await ctx.response.send_message(
-            content="Recruitment thread created!", view=None, ephemeral=True
+            content=BotResponse.RECRUITMENT_THREAD_CREATED.value,
+            view=None,
+            ephemeral=True,
         )
 
     @commands.slash_command(name="recruit_me", guild_ids=app_settings.get_all_servers())
@@ -95,12 +141,7 @@ class RecruitMe(commands.Cog):
             role.id for role in ctx.user.roles
         ]:
             return await ctx.respond(
-                (
-                    "You are not in the Applicants group. Please open the "
-                    "[groups page](https://auth.terra-nanotech.de/groups/) and join "
-                    "the `TN-NT Applicant` group first …"
-                ),
-                ephemeral=True,
+                BotResponse.NOT_IN_APPLICATION_GROUP.value, ephemeral=True
             )
 
         await self.open_ticket(ctx=ctx, member=ctx.user)
@@ -110,7 +151,7 @@ class RecruitMe(commands.Cog):
     )
     async def reverse_recruit_msg_context(self, ctx, message):
         """
-        Help a new guy get recruiter
+        Help a new guy get a recruiter
 
         :param ctx: The context of the command
         :type ctx: discord.Interaction
@@ -124,20 +165,16 @@ class RecruitMe(commands.Cog):
         if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID not in [
             role.id for role in ctx.user.roles
         ] and int(ctx.user.id) != int(message.author.id):
-            return await ctx.respond(
-                (
-                    "You are not a recruiter for Terra Nanotech and "
-                    "cannot use this command on this user …"
-                ),
-                ephemeral=True,
-            )
+            return await ctx.respond(BotResponse.NOT_A_RECRUITER.value, ephemeral=True)
 
         # Check if the target user is in the Applicants group
         if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
             role.id for role in message.author.roles
         ]:
             return await ctx.respond(
-                f"{message.author.mention} is not in the Applicants group …",
+                BotResponse.MEMBER_NOT_IN_APPLICATION_GROUP.value.format(
+                    MEMBER=message.author.mention,
+                ),
                 ephemeral=True,
             )
 
@@ -148,7 +185,7 @@ class RecruitMe(commands.Cog):
     )
     async def reverse_recruit_user_context(self, ctx, user):
         """
-        Help a new guy get recruiter
+        Help a new guy get a recruiter
 
         :param ctx: The context of the command
         :type ctx: discord.Interaction
@@ -162,20 +199,16 @@ class RecruitMe(commands.Cog):
         if settings.TNNT_DISCORDBOT_COGS_RECRUITER_ROLE_ID not in [
             role.id for role in ctx.user.roles
         ] and int(ctx.user.id) != int(user.id):
-            return await ctx.respond(
-                (
-                    "You are not a recruiter for Terra Nanotech and "
-                    "cannot use this command on this user …"
-                ),
-                ephemeral=True,
-            )
+            return await ctx.respond(BotResponse.NOT_A_RECRUITER.value, ephemeral=True)
 
         # Check if the target user is in the Applicants group
         if settings.TNNT_DISCORDBOT_COGS_APPLICANT_ROLE_ID not in [
             role.id for role in user.roles
         ]:
             return await ctx.respond(
-                f"{user.mention} is not in the Applicants group …",
+                BotResponse.MEMBER_NOT_IN_APPLICATION_GROUP.value.format(
+                    MEMBER=user.mention
+                ),
                 ephemeral=True,
             )
 
