@@ -19,9 +19,16 @@ from django.utils import timezone
 from aadiscordbot import app_settings
 from aadiscordbot.utils import auth
 
+# Alliance Auth (External Libs)
+from app_utils.urls import reverse_absolute
+
 logger = logging.getLogger(__name__)
 
 APPLICANT_ROLE_NAME = "TN-NT Applicant"
+AUDIT_SYSTEM_NAME = "Character Audit"
+AUDIT_SYSTEM_URL = reverse_absolute(viewname="corptools:react")
+AUDIT_SYSTEM = f"[{AUDIT_SYSTEM_NAME}]({AUDIT_SYSTEM_URL})"
+GROUPS_PAGE_URL = reverse_absolute(viewname="groupmanagement:groups")
 
 
 class BotResponse(str, Enum):
@@ -30,15 +37,16 @@ class BotResponse(str, Enum):
     """
 
     NOT_IN_APPLICATION_GROUP = (
-        "**You are not in the `{APPLICANT_ROLE_NAME}` group.**\n\n"
-        "Please open the [groups page](https://auth.terra-nanotech.de/groups/) and "
-        "join the `{APPLICANT_ROLE_NAME}` group first …"
+        f"**You are not in the `{APPLICANT_ROLE_NAME}` group.**\n\n"
+        f"Please open the [groups page]({GROUPS_PAGE_URL}) and "
+        f"join the `{APPLICANT_ROLE_NAME}` group first …"
     )
     MEMBER_NOT_IN_APPLICATION_GROUP = (
-        "**{MEMBER} is not in the `{APPLICANT_ROLE_NAME}` group.**\n\n"
+        "**{MEMBER} is not in the "
+        f"`{APPLICANT_ROLE_NAME}` group.**\n\n"
         "Please let them know to open the "
-        "[groups page](https://auth.terra-nanotech.de/groups/) and join the "
-        "`{APPLICANT_ROLE_NAME}` group first …"
+        f"[groups page]({GROUPS_PAGE_URL}) and join the "
+        f"`{APPLICANT_ROLE_NAME}` group first …"
     )
     NOT_A_RECRUITER = (
         "You are not a recruiter for Terra Nanotech and "
@@ -52,9 +60,10 @@ class BotResponse(str, Enum):
     )
     RECRUITMENT_THREAT_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
     RECRUITMENT_THREAD_BODY = (
-        "Dragging in: <@&{LEADERSHIP_ROLE_ID}> "
-        "and <@&{RECRUITER_ROLE_ID}> …\n\n"
+        "Dragging in: <@&{LEADERSHIP_ROLE_ID}> and <@&{RECRUITER_ROLE_ID}> …\n\n"
         "Hello <@{MEMBER_ID}>, and welcome! :wave:\n\n"
+        f"Feel free to ask questions and please ensure **all** your characters are added to {AUDIT_SYSTEM}.\n"
+        "And of course, tell us a bit about yourself!\n\n"
         "Someone from the recruitment team will get in touch with you soon!"
     )
     RECRUITMENT_THREAD_CREATED = "Recruitment thread created!"
@@ -132,10 +141,7 @@ class RecruitMe(commands.Cog):
             role.id for role in ctx.user.roles
         ]:
             return await ctx.respond(
-                BotResponse.NOT_IN_APPLICATION_GROUP.value.format(
-                    APPLICANT_ROLE_NAME=APPLICANT_ROLE_NAME
-                ),
-                ephemeral=True,
+                BotResponse.NOT_IN_APPLICATION_GROUP.value, ephemeral=True
             )
 
         await self.open_ticket(ctx=ctx, member=ctx.user)
@@ -167,7 +173,6 @@ class RecruitMe(commands.Cog):
         ]:
             return await ctx.respond(
                 BotResponse.MEMBER_NOT_IN_APPLICATION_GROUP.value.format(
-                    APPLICANT_ROLE_NAME=APPLICANT_ROLE_NAME,
                     MEMBER=message.author.mention,
                 ),
                 ephemeral=True,
@@ -202,7 +207,7 @@ class RecruitMe(commands.Cog):
         ]:
             return await ctx.respond(
                 BotResponse.MEMBER_NOT_IN_APPLICATION_GROUP.value.format(
-                    APPLICANT_ROLE_NAME=APPLICANT_ROLE_NAME, MEMBER=user.mention
+                    MEMBER=user.mention
                 ),
                 ephemeral=True,
             )

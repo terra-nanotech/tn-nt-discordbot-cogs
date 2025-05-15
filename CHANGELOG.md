@@ -39,6 +39,7 @@ Section Order:
 
 - Improvements to the `recruit_me` cog
   - Use Enum in bot responses
+  - Messages improved
 
 ## [0.6.1] - 2025-02-24
 
