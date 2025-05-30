@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.7.0] - 2025-05-30
+
 ### Added
 
 - Models cog
