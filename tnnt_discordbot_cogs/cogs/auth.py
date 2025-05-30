@@ -24,6 +24,9 @@ from allianceauth.services.modules.discord.models import DiscordUser
 from aadiscordbot.app_settings import get_site_url
 from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -153,4 +156,8 @@ def setup(bot):
     :rtype:
     """
 
+    # Unload the Auth cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="Auth")
+
+    # Add the Auth cog to the bot
     bot.add_cog(Auth(bot))

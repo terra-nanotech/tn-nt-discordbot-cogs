@@ -22,6 +22,9 @@ from aadiscordbot.utils import auth
 # Alliance Auth (External Libs)
 from app_utils.urls import reverse_absolute
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 APPLICANT_ROLE_NAME = "TN-NT Applicant"
@@ -224,6 +227,8 @@ def setup(bot):
     :return:
     :rtype:
     """
+    # Unload the RecruitMe cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="RecruitMe")
 
-    if bot.get_cog("RecruitMe") is None:
-        bot.add_cog(RecruitMe(bot))
+    # Add the RecruitMe cog to the bot
+    bot.add_cog(RecruitMe(bot))

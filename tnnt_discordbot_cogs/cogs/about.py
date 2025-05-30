@@ -26,6 +26,9 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
 from aadiscordbot.app_settings import get_site_url
 from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(name=__name__)
 
 
@@ -117,4 +120,8 @@ def setup(bot):
     :rtype:
     """
 
+    # Unload the About cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="About")
+
+    # Add the About cog to the bot
     bot.add_cog(About(bot))

@@ -26,6 +26,9 @@ from aadiscordbot.app_settings import (
 )
 from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_any_perm
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -285,4 +288,8 @@ def setup(bot):
     :rtype:
     """
 
+    # Unload the Members cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="Members")
+
+    # Add the Members cog to the bot
     bot.add_cog(Members(bot))

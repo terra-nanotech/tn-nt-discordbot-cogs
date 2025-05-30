@@ -25,6 +25,9 @@ from aadiscordbot.cogs.utils.decorators import message_in_channels
 # Alliance Auth (External Libs)
 from app_utils.urls import reverse_absolute
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -178,6 +181,10 @@ def setup(bot):
     """
 
     if structuretimers_active():
+        # Unload the Timers cog from `aadiscordbot`, so we can load our own.
+        unload_cog(bot=bot, cog_name="Timers")
+
+        # Add the Timers cog to the bot
         bot.add_cog(Timers(bot))
     else:
         logger.debug("Timerboard not installed")

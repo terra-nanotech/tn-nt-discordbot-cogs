@@ -39,6 +39,10 @@ Section Order:
 
 - Models cog
 
+### Changed
+
+- Unload cogs with the same name before loading our own cog
+
 ## [0.6.2] - 2025-05-15
 
 ### Changed

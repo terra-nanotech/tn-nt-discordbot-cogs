@@ -13,6 +13,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from aadiscordbot.models import Channels, Servers
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -212,8 +215,7 @@ def setup(bot):
     """
 
     # Unload the Models cog from `aadiscordbot`, so we can load our own.
-    if bot.get_cog("Models") is not None:
-        bot.remove_cog("Models")
+    unload_cog(bot=bot, cog_name="Models")
 
     # Add the Models cog to the bot
     bot.add_cog(Models(bot))

@@ -19,6 +19,9 @@ from aadiscordbot.app_settings import get_site_url
 from aadiscordbot.models import WelcomeMessage
 from aadiscordbot.utils.auth import is_user_authenticated
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -138,5 +141,8 @@ def setup(bot):
     :param bot: discord bot
     """
 
-    if bot.get_cog("Welcome") is None:
-        bot.add_cog(Welcome(bot))
+    # Unload the Welcome cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="Welcome")
+
+    # Add the Welcome cog to the bot
+    bot.add_cog(Welcome(bot))
