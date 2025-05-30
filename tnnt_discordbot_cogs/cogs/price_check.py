@@ -19,6 +19,9 @@ from aadiscordbot import app_settings
 # Alliance Auth (External Libs)
 from eveuniverse.models import EveEntity
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -318,4 +321,8 @@ def setup(bot) -> None:
     :rtype:
     """
 
+    # Unload the PriceCheck cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="PriceCheck")
+
+    # Add the PriceCheck cog to the bot
     bot.add_cog(PriceCheck(bot))

@@ -30,6 +30,9 @@ from allianceauth.services.modules.discord.tasks import update_groups, update_ni
 from aadiscordbot import app_settings
 from aadiscordbot.utils import auth
 
+# Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs.helper import unload_cog
+
 logger = logging.getLogger(__name__)
 
 
@@ -608,5 +611,8 @@ def setup(bot):
     :rtype:
     """
 
-    if bot.get_cog("Admin") is None:
-        bot.add_cog(Admin(bot))
+    # Unload the Admin cog from `aadiscordbot`, so we can load our own.
+    unload_cog(bot=bot, cog_name="Admin")
+
+    # Add the Admin cog to the bot
+    bot.add_cog(Admin(bot))
