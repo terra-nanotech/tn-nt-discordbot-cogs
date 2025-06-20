@@ -11,7 +11,6 @@ import discord
 from discord.ext import commands
 
 # Django
-from django.conf import settings
 from django.db.models import Q
 
 # Alliance Auth Discord Bot
@@ -21,8 +20,23 @@ from aadiscordbot.utils.auth import is_user_authenticated
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.models.setting import Setting
 
 logger = logging.getLogger(__name__)
+
+# Discord Bot Settings
+# Channel
+WELCOME_CHANNEL_AUTHENTICATED = Setting.get_setting(
+    Setting.Field.WELCOME_CHANNEL_AUTHENTICATED.value
+).channel
+WELCOME_CHANNEL_UNAUTHENTICATED = Setting.get_setting(
+    Setting.Field.WELCOME_CHANNEL_UNAUTHENTICATED.value
+).channel
+
+# Excluded Roles
+WELCOME_ROLES_EXCLUDED = Setting.get_setting(
+    Setting.Field.WELCOME_ROLES_EXCLUDED.value
+).split(",")
 
 
 class Welcome(commands.Cog):
@@ -59,20 +73,10 @@ class Welcome(commands.Cog):
 
         # If the user is authenticated, send a welcome message to the authenticated channel.
         if authenticated:
-            excluded_roles = getattr(
-                settings, "TNNT_DISCORDBOT_COGS_WELCOME_ROLES_EXCLUDED", ["Member"]
-            )
-
-            if not any(role.name in excluded_roles for role in member.roles):
-                channel_id = getattr(
-                    settings,
-                    "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_AUTHENTICATED",
-                    None,
-                )
-
+            if any(role.name in WELCOME_ROLES_EXCLUDED for role in member.roles):
                 # If the channel_id is an integer, get the channel object.
-                if isinstance(channel_id, int):
-                    channel = member.guild.get_channel(channel_id)
+                if isinstance(WELCOME_CHANNEL_AUTHENTICATED, int):
+                    channel = member.guild.get_channel(WELCOME_CHANNEL_AUTHENTICATED)
 
                 try:
                     message = (
@@ -99,15 +103,9 @@ class Welcome(commands.Cog):
                     logger.error(msg=e)
         # If the user is not authenticated, send a welcome message to the unauthenticated channel.
         else:
-            channel_id = getattr(
-                settings,
-                "TNNT_DISCORDBOT_COGS_WELCOME_CHANNEL_UNAUTHENTICATED",
-                None,
-            )
-
             # If the channel_id is an integer, get the channel object.
-            if isinstance(channel_id, int):
-                channel = member.guild.get_channel(channel_id)
+            if isinstance(WELCOME_CHANNEL_UNAUTHENTICATED, int):
+                channel = member.guild.get_channel(WELCOME_CHANNEL_UNAUTHENTICATED)
 
             try:
                 message = (
