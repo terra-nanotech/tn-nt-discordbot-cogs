@@ -35,6 +35,10 @@ Section Order:
 ### Security
 -->
 
+### Added
+
+- DB based cog settings
+
 ## [0.7.0] - 2025-05-30
 
 ### Added
