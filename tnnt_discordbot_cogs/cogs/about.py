@@ -8,7 +8,6 @@ Since we don't want to have it branded for "The Initiative" we have to build our
 import logging
 
 # Third Party
-import pendulum
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -24,7 +23,6 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
 
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
@@ -38,6 +36,13 @@ class About(commands.Cog):
     """
 
     def __init__(self, bot):
+        """
+        Initialize the About cog.
+
+        :param bot:
+        :type bot:
+        """
+
         self.bot = bot
 
     @commands.slash_command(
@@ -88,24 +93,6 @@ class About(commands.Cog):
         )
 
         return await ctx.respond(embed=embed)
-
-    @commands.command(hidden=True)
-    @sender_is_admin()
-    async def uptime(self, ctx):
-        """
-        Returns the uptime
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.send(
-            pendulum.now(tz="UTC").diff_for_humans(
-                self.bot.currentuptime, absolute=True
-            )
-        )
 
 
 def setup(bot):

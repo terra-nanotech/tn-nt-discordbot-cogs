@@ -49,6 +49,7 @@ Section Order:
 ### Removed
 
 - `!orphans` command from `auth` cog
+- `!uptime` command from `about` cog
 
 ## [0.7.1] - 2025-06-20
 
