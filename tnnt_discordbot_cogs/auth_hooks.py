@@ -22,6 +22,5 @@ def register_cogs():
         "tnnt_discordbot_cogs.cogs.models",
         "tnnt_discordbot_cogs.cogs.price_check",
         "tnnt_discordbot_cogs.cogs.recruit_me",
-        "tnnt_discordbot_cogs.cogs.timers",
         "tnnt_discordbot_cogs.cogs.welcome",
     ]

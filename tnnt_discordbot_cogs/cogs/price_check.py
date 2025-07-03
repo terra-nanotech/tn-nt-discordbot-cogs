@@ -5,7 +5,6 @@ Market Price Checks cog for discordbot - https://github.com/pvyParts/allianceaut
 # Standard Library
 import locale
 import logging
-from collections.abc import Coroutine
 
 # Third Party
 import requests
@@ -33,6 +32,13 @@ class PriceCheck(commands.Cog):
     imageserver_url = "https://images.evetech.net"
 
     def __init__(self, bot):
+        """
+        Initialize the PriceCheck cog
+
+        :param bot:
+        :type bot:
+        """
+
         self.bot = bot
 
     @classmethod
@@ -126,130 +132,11 @@ class PriceCheck(commands.Cog):
                 inline=False,
             )
 
-    # @commands.command(pass_context=True)
-    @commands.slash_command(name="price", guild_ids=app_settings.get_all_servers())
-    async def price(self, ctx, item_name: str):
-        """
-        Check an item price on all major market hubs
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.respond(
-            embed=self.price_check(
-                markets=[
-                    {"name": "Jita", "system_id": 30000142},
-                    {"name": "Amarr", "system_id": 30002187},
-                    {"name": "Rens", "system_id": 60004588},
-                    {"name": "Hek", "system_id": 60005686},
-                    {"name": "Dodixie", "system_id": 30002659},
-                ],
-                item_name=item_name,
-            ),
-            ephemeral=True,
-        )
-
-    @commands.slash_command(name="jita", guild_ids=app_settings.get_all_servers())
-    async def jita(self, ctx, item_name: str):
-        """
-        Check an item price on Jita market
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.respond(
-            embed=self.price_check(
-                markets=[{"name": "Jita", "system_id": 30000142}], item_name=item_name
-            ),
-            ephemeral=True,
-        )
-
-    @commands.slash_command(name="amarr", guild_ids=app_settings.get_all_servers())
-    async def amarr(self, ctx, item_name: str):
-        """
-        Check an item price on Amarr market
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.respond(
-            embed=self.price_check(
-                markets=[{"name": "Amarr", "system_id": 60008494}], item_name=item_name
-            ),
-            ephemeral=True,
-        )
-
-    @commands.slash_command(name="rens", guild_ids=app_settings.get_all_servers())
-    async def rens(self, ctx, item_name: str):
-        """
-        Check an item price on Rens market
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.respond(
-            embed=self.price_check(
-                markets=[{"name": "Rens", "system_id": 60004588}], item_name=item_name
-            ),
-            ephemeral=True,
-        )
-
-    @commands.slash_command(name="hek", guild_ids=app_settings.get_all_servers())
-    async def hek(self, ctx, item_name: str):
-        """
-        Check an item price on Hek market
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.respond(
-            embed=self.price_check(
-                markets=[{"name": "Hek", "system_id": 60005686}], item_name=item_name
-            ),
-            ephemeral=True,
-        )
-
-    @commands.slash_command(name="dodixie", guild_ids=app_settings.get_all_servers())
-    async def dodixie(self, ctx, item_name: str):
-        """
-        Check an item price on Dodixie market
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.respond(
-            embed=self.price_check(
-                markets=[{"name": "Dodixie", "system_id": 30002659}],
-                item_name=item_name,
-            ),
-            ephemeral=True,
-        )
-
     @classmethod
-    def price_check(cls, markets, item_name: str = None) -> Coroutine:
+    def _price_check(cls, markets, item_name: str = None) -> Embed:
         """
-        Do the price checks and post to Discord
+        Check the price of an item on the specified markets
 
-        :param ctx:
-        :type ctx:
         :param markets:
         :type markets:
         :param item_name:
@@ -309,6 +196,158 @@ class PriceCheck(commands.Cog):
             )
 
         return embed
+
+    @commands.slash_command(
+        name="price",
+        description="Check an item price on all major market hubs",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    async def price(self, ctx, item_name: str):
+        """
+        Check an item price on all major market hubs
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[
+                    {"name": "Jita", "system_id": 30000142},
+                    {"name": "Amarr", "system_id": 30002187},
+                    {"name": "Rens", "system_id": 60004588},
+                    {"name": "Hek", "system_id": 60005686},
+                    {"name": "Dodixie", "system_id": 30002659},
+                ],
+                item_name=item_name,
+            ),
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        name="jita",
+        description="Check an item price on Jita market",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    async def jita(self, ctx, item_name: str):
+        """
+        Check an item price on Jita market
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[{"name": "Jita", "system_id": 30000142}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        name="amarr",
+        description="Check an item price on Amarr market",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    async def amarr(self, ctx, item_name: str):
+        """
+        Check an item price on Amarr market
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[{"name": "Amarr", "system_id": 60008494}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        name="rens",
+        description="Check an item price on Rens market",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    async def rens(self, ctx, item_name: str):
+        """
+        Check an item price on Rens market
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[{"name": "Rens", "system_id": 60004588}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        name="hek",
+        description="Check an item price on Hek market",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    async def hek(self, ctx, item_name: str):
+        """
+        Check an item price on Hek market
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[{"name": "Hek", "system_id": 60005686}], item_name=item_name
+            ),
+            ephemeral=True,
+        )
+
+    @commands.slash_command(
+        name="dodixie",
+        description="Check an item price on Dodixie market",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    async def dodixie(self, ctx, item_name: str):
+        """
+        Check an item price on Dodixie market
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[{"name": "Dodixie", "system_id": 30002659}],
+                item_name=item_name,
+            ),
+            ephemeral=True,
+        )
 
 
 def setup(bot) -> None:

@@ -18,11 +18,12 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,
 )
-from allianceauth.services.modules.discord.models import DiscordUser
 
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.cogs.utils.decorators import sender_is_admin
+
+# Terra Nanotech Templates
+from tnnt_templates.app_settings import AppSettings
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
@@ -36,9 +37,20 @@ class Auth(commands.Cog):
     """
 
     def __init__(self, bot):
+        """
+        Initialize the Auth cog.
+
+        :param bot:
+        :type bot:
+        """
+
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.slash_command(
+        name="auth",
+        description="Returns a link to TN-NT Auth",
+        guild_ids=[int(settings.DISCORD_GUILD_ID)],
+    )
     async def auth(self, ctx):
         """
         Returns a link to TN-NT Auth
@@ -50,7 +62,7 @@ class Auth(commands.Cog):
         :rtype:
         """
 
-        await ctx.trigger_typing()
+        await ctx.defer()
 
         auth_url = get_site_url()
         embed = Embed(title="Terra Nanotech Auth")
@@ -58,20 +70,21 @@ class Auth(commands.Cog):
         try:
             if settings.TNNT_TEMPLATE_ENTITY_ID == 1:
                 aa_icon = f"{auth_url}/static/allianceauth/icons/allianceauth.png"
+
                 embed.set_thumbnail(url=aa_icon)
             else:
-                if settings.TNNT_TEMPLATE_ENTITY_TYPE == "alliance":
-                    embed.set_thumbnail(
-                        url=alliance_logo_url(
-                            alliance_id=settings.TNNT_TEMPLATE_ENTITY_ID, size=256
-                        )
-                    )
-                elif settings.TNNT_TEMPLATE_ENTITY_TYPE == "corporation":
-                    embed.set_thumbnail(
-                        url=corporation_logo_url(
-                            corporation_id=settings.TNNT_TEMPLATE_ENTITY_ID, size=256
-                        )
-                    )
+                entity_type = AppSettings.TNNT_TEMPLATE_ENTITY_TYPE
+                entity_id = AppSettings.TNNT_TEMPLATE_ENTITY_ID
+
+                logo_funcs = {
+                    "alliance": (alliance_logo_url, "alliance_id"),
+                    "corporation": (corporation_logo_url, "corporation_id"),
+                }
+
+                if entity_type in logo_funcs:
+                    func, arg_name = logo_funcs[entity_type]
+
+                    embed.set_thumbnail(url=func(**{arg_name: entity_id}, size=256))
         except AttributeError:
             pass
 
@@ -84,66 +97,7 @@ class Auth(commands.Cog):
 
         embed.add_field(name="Auth Link", value=auth_url, inline=False)
 
-        return await ctx.send(embed=embed)
-
-    @commands.command(pass_context=True)
-    @sender_is_admin()
-    async def orphans(self, ctx):
-        """
-        Returns a list of users on this server, who are unknown to TN-NT Auth
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        await ctx.trigger_typing()
-        await ctx.send("Searching for Orphaned Discord Users")
-        await ctx.trigger_typing()
-
-        payload = "The following Users cannot be located in Alliance Auth\n"
-
-        member_list = ctx.message.guild.members
-
-        for member in member_list:
-            discord_member_id = member.id
-            discord_member_is_bot = member.bot
-
-            try:
-                discord_member_exists = DiscordUser.objects.get(uid=discord_member_id)
-            except DiscordUser.DoesNotExist as exception:
-                logger.error(msg=exception)
-                discord_member_exists = False
-
-            if discord_member_exists is not False:
-                # Nothing to do, the user exists. Move on with ur life dude.
-                pass
-
-            elif discord_member_is_bot is True:
-                # Let's also ignore bots here
-                pass
-            else:
-                # Dump the payload if it gets too big
-                if len(payload) > 1000:
-                    try:
-                        await ctx.send(payload)
-
-                        payload = (
-                            "The following Users cannot be located in Alliance Auth\n"
-                        )
-                    except Exception as exc:
-                        logger.error(msg=exc)
-
-                # keep building the payload
-                payload = payload + member.mention + "\n"
-
-        try:
-            await ctx.send(payload)
-        except Exception as exc:
-            logger.error(msg=exc)
-            # await ctx.send(payload[0:1999])
-            # await ctx.send("Maximum Discord message length reached")
+        return await ctx.respond(embed=embed)
 
 
 def setup(bot):

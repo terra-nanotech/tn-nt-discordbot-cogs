@@ -57,11 +57,14 @@ class Models(commands.Cog):
 
         return channel_name
 
-    @model_commands.command(name="populate")
+    @model_commands.command(
+        name="populate",
+        description="Populate Django Models for all channels in the server",
+    )
     @sender_is_admin()
     async def populate_models(self, ctx):
         """
-        Populates Django Models for every Channel in the Guild.
+        Populates Django Models for every Channel in the Discord server.
 
         :param ctx: The context of the command, which includes the guild information.
         :type ctx: discord.Interaction

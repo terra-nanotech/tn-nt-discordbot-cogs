@@ -8,7 +8,6 @@ Since we don't want to have it branded for "The Initiative" we have to build our
 import logging
 
 # Third Party
-import pendulum
 from discord.colour import Color
 from discord.embeds import Embed
 from discord.ext import commands
@@ -24,7 +23,6 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
 
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
@@ -38,9 +36,20 @@ class About(commands.Cog):
     """
 
     def __init__(self, bot):
+        """
+        Initialize the About cog.
+
+        :param bot:
+        :type bot:
+        """
+
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.slash_command(
+        name="about",
+        description="All about the bot",
+        guild_ids=[int(settings.DISCORD_GUILD_ID)],
+    )
     async def about(self, ctx):
         """
         All about the bot
@@ -51,7 +60,7 @@ class About(commands.Cog):
         :rtype:
         """
 
-        await ctx.trigger_typing()
+        await ctx.defer()
 
         auth_url = get_site_url()
         embed = Embed(title="TN-NT Discord Services")
@@ -77,37 +86,13 @@ class About(commands.Cog):
             pass
 
         embed.colour = Color.green()
-
-        embed.description = (
-            "This is a multi-functional discord bot tailored "
-            "specifically for Terra Nanotech.\n\nType `!help` for more information. "
-        )
-
+        embed.description = "This is a multi-functional discord bot tailored specifically for Terra Nanotech."
         embed.add_field(name="Auth Link", value=auth_url, inline=False)
-
         embed.set_footer(
-            text="Developed by Aaron Kable, forked for Terra Nanotech by Rounon Dax"
+            text="Developed by Aaron Kable and Ariel Rin, forked for Terra Nanotech by Rounon Dax"
         )
 
-        return await ctx.send(embed=embed)
-
-    @commands.command(hidden=True)
-    @sender_is_admin()
-    async def uptime(self, ctx):
-        """
-        Returns the uptime
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        return await ctx.send(
-            pendulum.now(tz="UTC").diff_for_humans(
-                self.bot.currentuptime, absolute=True
-            )
-        )
+        return await ctx.respond(embed=embed)
 
 
 def setup(bot):
