@@ -5,7 +5,6 @@ Market Price Checks cog for discordbot - https://github.com/pvyParts/allianceaut
 # Standard Library
 import locale
 import logging
-from collections.abc import Coroutine
 
 # Third Party
 import requests
@@ -134,12 +133,10 @@ class PriceCheck(commands.Cog):
             )
 
     @classmethod
-    def _price_check(cls, markets, item_name: str = None) -> Coroutine:
+    def _price_check(cls, markets, item_name: str = None) -> Embed:
         """
-        Do the price checks and post to Discord
+        Check the price of an item on the specified markets
 
-        :param ctx:
-        :type ctx:
         :param markets:
         :type markets:
         :param item_name:
