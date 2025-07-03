@@ -44,10 +44,11 @@ Section Order:
 - `!auth` command to `/auth`
 - `!about` command to `/about`
 - Improvements to the `admin` cog
-- Move classmethods to the top of the class in cogs
+- Move class- and static methods to the top of the class in cogs
 
 ### Removed
 
+- `timers` cog
 - `!orphans` command from `auth` cog
 - `!uptime` command from `about` cog
 
