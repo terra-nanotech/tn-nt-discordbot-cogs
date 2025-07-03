@@ -28,6 +28,7 @@ from allianceauth.services.modules.discord.tasks import update_groups, update_ni
 
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
+from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from aadiscordbot.utils import auth
 
 # Terra Nanotech Discordbot Cogs
@@ -52,28 +53,16 @@ class Admin(commands.Cog):
             ).values_list("character_name", flat=True)[:10]
         )
 
-    @staticmethod
-    def author_is_admin(ctx):
-        """
-        Check if the author is an admin.
-        """
-
-        return ctx.author.id in app_settings.get_admins()
-
     admin_commands = SlashCommandGroup(
         "admin", "Server Admin Commands", guild_ids=app_settings.get_all_servers()
     )
 
     @admin_commands.command(name="add_role", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def add_role_slash(self, ctx, channel: TextChannel, role: Role):
         """
         Add a role as read/write to a channel …
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
         await channel.set_permissions(role, read_messages=True, send_messages=True)
@@ -85,15 +74,11 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="add_role_read", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def add_role_read_slash(self, ctx, channel: TextChannel, role: Role):
         """
         Add a role as read only to a channel …
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
         await channel.set_permissions(role, read_messages=True, send_messages=False)
@@ -103,15 +88,11 @@ class Admin(commands.Cog):
         )
 
     @admin_commands.command(name="rem_role", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def rem_role_slash(self, ctx, channel: TextChannel, role: Role):
         """
         Remove a role from a channel …
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
         await channel.set_permissions(role, read_messages=False, send_messages=False)
@@ -123,17 +104,13 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="new_channel", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def new_channel_slash(
         self, ctx, category: CategoryChannel, channel_name: str, first_role: Role
     ):
         """
         Create a new channel and add a role …
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
 
@@ -165,15 +142,11 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="promote_to_god", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def promote_role_to_god(self, ctx, role: Role):
         """
         set role as admin …
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
 
@@ -187,15 +160,11 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="demote_from_god", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def demote_role_from_god(self, ctx, role: Role):
         """
         Revoke role admin …
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
 
@@ -209,15 +178,11 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="empty_roles", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def empty_roles(self, ctx):
         """
         Dump all roles with no members.
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer()
 
@@ -245,15 +210,11 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="clear_empty_roles", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def clear_empty_roles(self, ctx):
         """
         Delete all roles with no members.
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer()
 
@@ -278,15 +239,11 @@ class Admin(commands.Cog):
         return None
 
     @admin_commands.command(name="orphans", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def orphans_slash(self, ctx):
         """
         Returns a list of users on this server, who are not known to AA.
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer()
 
@@ -324,15 +281,11 @@ class Admin(commands.Cog):
     @admin_commands.command(
         name="get_webhooks", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def get_webhooks(self, ctx):
         """
         Returns the webhooks for the channel
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
 
@@ -353,15 +306,12 @@ class Admin(commands.Cog):
             return await ctx.respond("\n".join(strs), ephemeral=True)
 
     @admin_commands.command(name="uptime", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def uptime(self, ctx):
         """
         Returns the uptime of the bot
         """
 
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
         try:
             return await ctx.respond(
                 pendulum.now(tz="UTC").diff_for_humans(
@@ -373,6 +323,7 @@ class Admin(commands.Cog):
             return await ctx.respond("Still Booting up!", ephemeral=True)
 
     @admin_commands.command(name="versions", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def versions(self, ctx):
         """
         Returns the uptime of the bot
@@ -380,10 +331,6 @@ class Admin(commands.Cog):
 
         await ctx.defer(ephemeral=True)
 
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
         try:
             output = {}
             # Standard Library
@@ -460,17 +407,13 @@ class Admin(commands.Cog):
         return await ctx.respond("Done", ephemeral=True)
 
     @admin_commands.command(name="stats", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def stats(self, ctx):
         """
         Returns the Task Stats of the bot.
         """
 
         await ctx.defer(ephemeral=True)
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         embed = Embed(title="Bot Task Stats!")
 
@@ -517,15 +460,11 @@ class Admin(commands.Cog):
         description="Search for a Character!",
         autocomplete=search_characters,
     )
+    @sender_is_admin()
     async def slash_sync(self, ctx, character: str):
         """
         Queue update tasks for the character and all alts.
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         try:
             char = EveCharacter.objects.get(character_name=character)
@@ -556,15 +495,11 @@ class Admin(commands.Cog):
         name="sync_commands", guild_ids=app_settings.get_all_servers()
     )
     @option(name="force", description="Force Sync Everything")
+    @sender_is_admin()
     async def sync_commands(self, ctx, force: bool):
         """
         Re-Sync the commands to discord.
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         await ctx.defer(ephemeral=True)
         await self.bot.sync_commands(force=force)
@@ -572,6 +507,7 @@ class Admin(commands.Cog):
         return await ctx.respond("Sync Complete!", ephemeral=True)
 
     @commands.user_command(name="Group Sync", guild_ids=app_settings.get_all_servers())
+    @sender_is_admin()
     async def group_sync_user_context(self, ctx, user):
         """
         Sync the groups for a user
@@ -583,11 +519,6 @@ class Admin(commands.Cog):
         :return:
         :rtype:
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         auth_user = auth.get_auth_user(user=user, guild=ctx.guild)
         main_character = auth_user.profile.main_character
@@ -601,6 +532,7 @@ class Admin(commands.Cog):
     @commands.user_command(
         name="Nickname Sync", guild_ids=app_settings.get_all_servers()
     )
+    @sender_is_admin()
     async def nick_sync_user_context(self, ctx, user):
         """
         Sync the nickname for a user
@@ -612,11 +544,6 @@ class Admin(commands.Cog):
         :return:
         :rtype:
         """
-
-        if not self.author_is_admin(ctx):
-            return await ctx.respond(
-                "You do not have permission to use this command", ephemeral=True
-            )
 
         auth_user = auth.get_auth_user(user=user, guild=ctx.guild)
         main_character = auth_user.profile.main_character
