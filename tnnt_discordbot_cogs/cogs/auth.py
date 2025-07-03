@@ -18,11 +18,9 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,
 )
-from allianceauth.services.modules.discord.models import DiscordUser
 
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
-from aadiscordbot.cogs.utils.decorators import sender_is_admin
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
@@ -85,65 +83,6 @@ class Auth(commands.Cog):
         embed.add_field(name="Auth Link", value=auth_url, inline=False)
 
         return await ctx.send(embed=embed)
-
-    @commands.command(pass_context=True)
-    @sender_is_admin()
-    async def orphans(self, ctx):
-        """
-        Returns a list of users on this server, who are unknown to TN-NT Auth
-
-        :param ctx:
-        :type ctx:
-        :return:
-        :rtype:
-        """
-
-        await ctx.trigger_typing()
-        await ctx.send("Searching for Orphaned Discord Users")
-        await ctx.trigger_typing()
-
-        payload = "The following Users cannot be located in Alliance Auth\n"
-
-        member_list = ctx.message.guild.members
-
-        for member in member_list:
-            discord_member_id = member.id
-            discord_member_is_bot = member.bot
-
-            try:
-                discord_member_exists = DiscordUser.objects.get(uid=discord_member_id)
-            except DiscordUser.DoesNotExist as exception:
-                logger.error(msg=exception)
-                discord_member_exists = False
-
-            if discord_member_exists is not False:
-                # Nothing to do, the user exists. Move on with ur life dude.
-                pass
-
-            elif discord_member_is_bot is True:
-                # Let's also ignore bots here
-                pass
-            else:
-                # Dump the payload if it gets too big
-                if len(payload) > 1000:
-                    try:
-                        await ctx.send(payload)
-
-                        payload = (
-                            "The following Users cannot be located in Alliance Auth\n"
-                        )
-                    except Exception as exc:
-                        logger.error(msg=exc)
-
-                # keep building the payload
-                payload = payload + member.mention + "\n"
-
-        try:
-            await ctx.send(payload)
-        except Exception as exc:
-            logger.error(msg=exc)
-            # await ctx.send(payload[0:1999])
-            # await ctx.send("Maximum Discord message length reached")
 
 
 def setup(bot):
