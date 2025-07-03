@@ -154,7 +154,11 @@ class RecruitMe(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(name="recruit_me", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="recruit_me",
+        description="Get hold of a recruiter",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def slash_recruit_me(self, ctx):
         """
         Get hold of a recruiter

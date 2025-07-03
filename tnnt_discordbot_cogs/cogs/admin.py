@@ -39,12 +39,24 @@ logger = logging.getLogger(__name__)
 
 class Admin(commands.Cog):
     def __init__(self, bot):
+        """
+        Initialize the Admin cog
+
+        :param bot:
+        :type bot:
+        """
+
         self.bot = bot
 
     @staticmethod
     def search_characters(ctx: AutocompleteContext):
         """
-        Returns a list of characters that begin with the characters entered so far.
+        Returns a list of characters that begin with the characters entered so far
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         return list(
@@ -57,11 +69,24 @@ class Admin(commands.Cog):
         "admin", "Server Admin Commands", guild_ids=app_settings.get_all_servers()
     )
 
-    @admin_commands.command(name="add_role", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="add_role",
+        description="Add a role as read/write to a channel",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @sender_is_admin()
     async def add_role_slash(self, ctx, channel: TextChannel, role: Role):
         """
         Add a role as read/write to a channel …
+
+        :param ctx:
+        :type ctx:
+        :param channel:
+        :type channel:
+        :param role:
+        :type role:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -72,12 +97,23 @@ class Admin(commands.Cog):
         )
 
     @admin_commands.command(
-        name="add_role_read", guild_ids=app_settings.get_all_servers()
+        name="add_role_read",
+        description="Add a role as read only to a channel",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def add_role_read_slash(self, ctx, channel: TextChannel, role: Role):
         """
         Add a role as read only to a channel …
+
+        :param ctx:
+        :type ctx:
+        :param channel:
+        :type channel:
+        :param role:
+        :type role:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -87,11 +123,24 @@ class Admin(commands.Cog):
             f"Set Readonly `{role.name}` in `{channel.name}`", ephemeral=True
         )
 
-    @admin_commands.command(name="rem_role", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="rem_role",
+        description="Remove a role from a channel",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @sender_is_admin()
     async def rem_role_slash(self, ctx, channel: TextChannel, role: Role):
         """
         Remove a role from a channel …
+
+        :param ctx:
+        :type ctx:
+        :param channel:
+        :type channel:
+        :param role:
+        :type role:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -102,14 +151,27 @@ class Admin(commands.Cog):
         )
 
     @admin_commands.command(
-        name="new_channel", guild_ids=app_settings.get_all_servers()
+        name="new_channel",
+        description="Create a new channel in the specified category and set permissions for the first role",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def new_channel_slash(
         self, ctx, category: CategoryChannel, channel_name: str, first_role: Role
     ):
         """
-        Create a new channel and add a role …
+        Create a new channel in the specified category and set permissions for the first role.
+
+        :param ctx:
+        :type ctx:
+        :param category:
+        :type category:
+        :param channel_name:
+        :type channel_name:
+        :param first_role:
+        :type first_role:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -140,12 +202,21 @@ class Admin(commands.Cog):
         )
 
     @admin_commands.command(
-        name="promote_to_god", guild_ids=app_settings.get_all_servers()
+        name="promote_to_god",
+        description="Set a role as admin",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def promote_role_to_god(self, ctx, role: Role):
         """
-        set role as admin …
+        Set a role as admin …
+
+        :param ctx:
+        :type ctx:
+        :param role:
+        :type role:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -158,12 +229,21 @@ class Admin(commands.Cog):
         return await ctx.respond(f"Set `{role.name}` as admin", ephemeral=True)
 
     @admin_commands.command(
-        name="demote_from_god", guild_ids=app_settings.get_all_servers()
+        name="demote_from_god",
+        description="Remove admin from a role",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def demote_role_from_god(self, ctx, role: Role):
         """
-        Revoke role admin …
+        Remove admin from a role.
+
+        :param ctx:
+        :type ctx:
+        :param role:
+        :type role:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -176,12 +256,19 @@ class Admin(commands.Cog):
         return await ctx.respond(f"Removed admin from `{role.name}`", ephemeral=True)
 
     @admin_commands.command(
-        name="empty_roles", guild_ids=app_settings.get_all_servers()
+        name="empty_roles",
+        description="Returns a list of all roles in the server",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def empty_roles(self, ctx):
         """
-        Dump all roles with no members.
+        Returns a list of all roles in the server, including those with no members and those without an auth group.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.defer()
@@ -208,12 +295,19 @@ class Admin(commands.Cog):
         return await ctx.respond(embed=embed)
 
     @admin_commands.command(
-        name="clear_empty_roles", guild_ids=app_settings.get_all_servers()
+        name="clear_empty_roles",
+        description="Deletes all roles in the server that have no members",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def clear_empty_roles(self, ctx):
         """
-        Delete all roles with no members.
+        Deletes all roles in the server that have no members.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.defer()
@@ -238,11 +332,20 @@ class Admin(commands.Cog):
 
         return None
 
-    @admin_commands.command(name="orphans", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="orphans",
+        description="Returns a list of all users in the server that do not have a corresponding DiscordUser in Auth",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @sender_is_admin()
     async def orphans_slash(self, ctx):
         """
-        Returns a list of users on this server, who are not known to AA.
+        Returns a list of all users in the server that do not have a corresponding DiscordUser in Alliance Auth.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.defer()
@@ -279,12 +382,20 @@ class Admin(commands.Cog):
             await ctx.respond(payload[0:1999])
 
     @admin_commands.command(
-        name="get_webhooks", guild_ids=app_settings.get_all_servers()
+        name="get_webhooks",
+        description="Returns a list of all webhooks in the channel",
+        guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
     async def get_webhooks(self, ctx):
         """
-        Returns the webhooks for the channel
+        Returns a list of all webhooks in the channel.
+        This command will list all webhooks in the current channel, including their names and URLs.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -305,11 +416,20 @@ class Admin(commands.Cog):
 
             return await ctx.respond("\n".join(strs), ephemeral=True)
 
-    @admin_commands.command(name="uptime", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="uptime",
+        description="Returns the uptime of the bot",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @sender_is_admin()
     async def uptime(self, ctx):
         """
-        Returns the uptime of the bot
+        Returns the uptime of the bot.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         try:
@@ -322,11 +442,20 @@ class Admin(commands.Cog):
         except AttributeError:
             return await ctx.respond("Still Booting up!", ephemeral=True)
 
-    @admin_commands.command(name="versions", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="versions",
+        description="Returns a list of all AA apps and their versions",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @sender_is_admin()
     async def versions(self, ctx):
         """
-        Returns the uptime of the bot
+        Returns a list of all AA apps and their versions.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -365,10 +494,14 @@ class Admin(commands.Cog):
         except Exception as e:
             return await ctx.respond(f"Something went wrong! {e}", ephemeral=True)
 
-    @admin_commands.command(name="commands", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="commands",
+        description="Returns a list of all commands available to the bot",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def command_list(self, ctx):
         """
-        Returns a list of commands
+        Returns a list of all commands available to the bot.
 
         :param ctx:
         :type ctx:
@@ -406,11 +539,20 @@ class Admin(commands.Cog):
 
         return await ctx.respond("Done", ephemeral=True)
 
-    @admin_commands.command(name="stats", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="stats",
+        description="Returns the bot's task statistics, including uptime, task stats, rate limits, and pending tasks",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @sender_is_admin()
     async def stats(self, ctx):
         """
-        Returns the Task Stats of the bot.
+        Returns the bot's task statistics, including uptime, task stats, rate limits, and pending tasks.
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)
@@ -454,7 +596,11 @@ class Admin(commands.Cog):
 
         return await ctx.respond("", embed=embed, ephemeral=True)
 
-    @admin_commands.command(name="force_sync", guild_ids=app_settings.get_all_servers())
+    @admin_commands.command(
+        name="force_sync",
+        description="Queue update tasks for a character and all their alts",
+        guild_ids=app_settings.get_all_servers(),
+    )
     @option(
         name="character",
         description="Search for a Character!",
@@ -464,6 +610,13 @@ class Admin(commands.Cog):
     async def slash_sync(self, ctx, character: str):
         """
         Queue update tasks for the character and all alts.
+
+        :param ctx:
+        :type ctx:
+        :param character:
+        :type character:
+        :return:
+        :rtype:
         """
 
         try:
@@ -492,13 +645,22 @@ class Admin(commands.Cog):
             )
 
     @admin_commands.command(
-        name="sync_commands", guild_ids=app_settings.get_all_servers()
+        name="sync_commands",
+        description="Sync the bot's commands with Discord",
+        guild_ids=app_settings.get_all_servers(),
     )
     @option(name="force", description="Force Sync Everything")
     @sender_is_admin()
     async def sync_commands(self, ctx, force: bool):
         """
-        Re-Sync the commands to discord.
+        Sync the bot's commands with Discord.
+
+        :param ctx:
+        :type ctx:
+        :param force:
+        :type force:
+        :return:
+        :rtype:
         """
 
         await ctx.defer(ephemeral=True)

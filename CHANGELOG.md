@@ -35,6 +35,19 @@ Section Order:
 ### Security
 -->
 
+### Added
+
+- Proper descriptions to slash commands
+
+### Changed
+
+- Improvements to the `admin` cog
+- Move classmethods to the top of the class in cogs
+
+### Removed
+
+- `!orphans` command from `auth` cog
+
 ## [0.7.1] - 2025-06-20
 
 ### Added

@@ -200,7 +200,11 @@ class PriceCheck(commands.Cog):
 
         return embed
 
-    @commands.slash_command(name="price", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="price",
+        description="Check an item price on all major market hubs",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def price(self, ctx, item_name: str):
         """
         Check an item price on all major market hubs
@@ -227,7 +231,11 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(name="jita", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="jita",
+        description="Check an item price on Jita market",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def jita(self, ctx, item_name: str):
         """
         Check an item price on Jita market
@@ -247,7 +255,11 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(name="amarr", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="amarr",
+        description="Check an item price on Amarr market",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def amarr(self, ctx, item_name: str):
         """
         Check an item price on Amarr market
@@ -267,7 +279,11 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(name="rens", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="rens",
+        description="Check an item price on Rens market",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def rens(self, ctx, item_name: str):
         """
         Check an item price on Rens market
@@ -287,7 +303,11 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(name="hek", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="hek",
+        description="Check an item price on Hek market",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def hek(self, ctx, item_name: str):
         """
         Check an item price on Hek market
@@ -307,7 +327,11 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(name="dodixie", guild_ids=app_settings.get_all_servers())
+    @commands.slash_command(
+        name="dodixie",
+        description="Check an item price on Dodixie market",
+        guild_ids=app_settings.get_all_servers(),
+    )
     async def dodixie(self, ctx, item_name: str):
         """
         Check an item price on Dodixie market
