@@ -40,7 +40,11 @@ class About(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(pass_context=True)
+    @commands.slash_command(
+        name="about",
+        description="All about the bot",
+        guild_ids=[int(settings.DISCORD_GUILD_ID)],
+    )
     async def about(self, ctx):
         """
         All about the bot
@@ -51,7 +55,7 @@ class About(commands.Cog):
         :rtype:
         """
 
-        await ctx.trigger_typing()
+        await ctx.defer()
 
         auth_url = get_site_url()
         embed = Embed(title="TN-NT Discord Services")
@@ -77,19 +81,13 @@ class About(commands.Cog):
             pass
 
         embed.colour = Color.green()
-
-        embed.description = (
-            "This is a multi-functional discord bot tailored "
-            "specifically for Terra Nanotech.\n\nType `!help` for more information. "
-        )
-
+        embed.description = "This is a multi-functional discord bot tailored specifically for Terra Nanotech."
         embed.add_field(name="Auth Link", value=auth_url, inline=False)
-
         embed.set_footer(
-            text="Developed by Aaron Kable, forked for Terra Nanotech by Rounon Dax"
+            text="Developed by Aaron Kable and Ariel Rin, forked for Terra Nanotech by Rounon Dax"
         )
 
-        return await ctx.send(embed=embed)
+        return await ctx.respond(embed=embed)
 
     @commands.command(hidden=True)
     @sender_is_admin()
