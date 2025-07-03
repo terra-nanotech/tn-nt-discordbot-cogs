@@ -41,6 +41,7 @@ Section Order:
 
 ### Changed
 
+- `!auth` command to `/auth`
 - Improvements to the `admin` cog
 - Move classmethods to the top of the class in cogs
 
