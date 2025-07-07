@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.8.0] - 2025-07-07
+
 ### Added
 
 - Plex market to price lookups
