@@ -74,5 +74,6 @@ Run DB migrations and restart supervisor.
 |                                         | `price`  | `dodixie`           | Check an item price on Dodixie market                                                                      |
 |                                         | `price`  | `hek`               | Check an item price on Hek market                                                                          |
 |                                         | `price`  | `jita`              | Check an item price on Jita market                                                                         |
+|                                         | `price`  | `plex`              | Check the PLEX price on the global PLEX market                                                             |
 |                                         | `price`  | `rens`              | Check an item price on Rens market                                                                         |
 | `tnnt_discordbot_cogs.cogs.recruit_me`  |          | `recruit_me`        | Get hold of a recruiter                                                                                    |

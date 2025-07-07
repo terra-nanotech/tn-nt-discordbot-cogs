@@ -37,6 +37,7 @@ Section Order:
 
 ### Added
 
+- Plex market to price lookups
 - Proper descriptions to slash commands
 
 ### Changed

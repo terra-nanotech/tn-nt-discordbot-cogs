@@ -20,6 +20,7 @@ from aadiscordbot import app_settings
 from eveuniverse.models import EveEntity
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __user_agent__
 from tnnt_discordbot_cogs.helper import unload_cog
 
 logger = logging.getLogger(__name__)
@@ -46,6 +47,58 @@ class PriceCheck(commands.Cog):
 
         self.bot = bot
 
+    @staticmethod
+    def _get_plex_market():
+        """
+        Get the PLEX market data
+
+        :return:
+        :rtype:
+        """
+
+        return [{"name": "PLEX", "region_id": 19000001}]
+
+    @staticmethod
+    def _get_market_data(market: dict, eve_type_id: str) -> dict | None:
+        """
+        Get the market data for a specific system and item type
+        This method fetches market data from the Fuzzwork API.
+        The Fuzzwork API provides aggregated market data for EVE Online.
+        https://market.fuzzwork.co.uk/aggregates/
+
+        :param market: The market dictionary containing system ID and name
+        :type market: dict
+        :param eve_type_id: The EVE type ID of the item to fetch data for
+        :type eve_type_id: str
+        :return: Market data as a json or None if the request fails
+        :rtype: Optional[dict]
+        """
+
+        market_system_id = market.get("system_id", None)
+        market_region_id = market.get("region_id", None)
+
+        url = "https://market.fuzzwork.co.uk/aggregates/"
+
+        url_params = {
+            "region" if market_region_id else "system": market_region_id
+            or market_system_id,
+            "types": eve_type_id,
+        }
+
+        request_headers = {"User-Agent": __user_agent__}
+
+        try:
+            response = requests.get(
+                url=url, params=url_params, headers=request_headers, timeout=5.00
+            )
+            response.raise_for_status()
+
+            return response.json()
+        except requests.RequestException as e:
+            logger.error(f"Failed to fetch market data: {e}")
+
+            return None
+
     @classmethod
     def _build_market_price_embed(
         cls, embed: Embed, market: dict, item_name: str, eve_type_id: str
@@ -66,24 +119,19 @@ class PriceCheck(commands.Cog):
         """
 
         market_system_name = market["name"]
-        market_system_id = market["system_id"]
-        url = "https://market.fuzzwork.co.uk/aggregates/"
-        url_params = {"system": market_system_id, "types": eve_type_id}
-        market_data = requests.get(url=url, params=url_params, timeout=5.00)
+        market_data = cls._get_market_data(market=market, eve_type_id=eve_type_id)
 
         embed.add_field(
-            name=market_system_name,
-            value=f"Prices for {item_name} on the {market_system_name} Market.",
+            name=f"{market_system_name} Market",
+            value=f"Prices for {item_name} on the {market_system_name} market.",
             inline=False,
         )
 
-        if market_data.status_code == 200:
-            market_json = market_data.json()
-
-            sell_min = market_json[eve_type_id]["sell"]["min"]
-            sell_order_count = int(market_json[eve_type_id]["sell"]["orderCount"])
-            buy_max = market_json[eve_type_id]["buy"]["max"]
-            buy_order_count = int(market_json[eve_type_id]["buy"]["orderCount"])
+        if market_data:
+            sell_min = market_data[eve_type_id]["sell"]["min"]
+            sell_order_count = int(market_data[eve_type_id]["sell"]["orderCount"])
+            buy_max = market_data[eve_type_id]["buy"]["max"]
+            buy_order_count = int(market_data[eve_type_id]["buy"]["orderCount"])
             thumbnail_url = f"{cls.imageserver_url}/types/{eve_type_id}/icon?size=64"
 
             # Set the Embed thumbnail
@@ -150,7 +198,11 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        if item_name != "":
+        if item_name:
+            # Special case: PLEX market
+            if item_name.lower() == "plex":
+                markets = cls._get_plex_market()
+
             try:
                 eve_type = (
                     EveEntity.objects.fetch_by_names_esi([item_name])
@@ -175,7 +227,7 @@ class PriceCheck(commands.Cog):
                 )
             else:
                 embed = Embed(
-                    title=f"Price Lookup for {item_name}",
+                    title=f"Price Lookup: {item_name}",
                     color=Color.green(),
                 )
 
@@ -344,6 +396,30 @@ class PriceCheck(commands.Cog):
             embed=self._price_check(
                 markets=[{"name": "Dodixie", "system_id": 30002659}],
                 item_name=item_name,
+            ),
+            ephemeral=True,
+        )
+
+    @price_commands.command(
+        name="plex",
+        description="Check the PLEX price on the global PLEX market",
+    )
+    async def plex(self, ctx):
+        """
+        Check the PLEX price on the global PLEX market
+
+        :param ctx:
+        :type ctx:
+        :param item_name:
+        :type item_name:
+        :return:
+        :rtype:
+        """
+
+        return await ctx.respond(
+            embed=self._price_check(
+                markets=[],  # PLEX market is a special case, so keep it empty, it will be set later in the method
+                item_name="PLEX",
             ),
             ephemeral=True,
         )
