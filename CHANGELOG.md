@@ -41,6 +41,7 @@ Section Order:
 
 ### Changed
 
+- Updated `members` cog and renamed to `lookup`
 - `!auth` command to `/auth`
 - `!about` command to `/about`
 - Improvements to the `admin` cog
