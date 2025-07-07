@@ -41,6 +41,7 @@ Section Order:
 
 ### Changed
 
+- `price` command group for price checks
 - Updated `members` cog and renamed to `lookup`
 - `!auth` command to `/auth`
 - `!about` command to `/about`

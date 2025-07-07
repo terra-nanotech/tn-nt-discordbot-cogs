@@ -9,6 +9,7 @@ import logging
 # Third Party
 import requests
 from discord.colour import Color
+from discord.commands import SlashCommandGroup
 from discord.embeds import Embed
 from discord.ext import commands
 
@@ -30,6 +31,10 @@ class PriceCheck(commands.Cog):
     """
 
     imageserver_url = "https://images.evetech.net"
+
+    price_commands = SlashCommandGroup(
+        "price", "Server Admin Commands", guild_ids=app_settings.get_all_servers()
+    )
 
     def __init__(self, bot):
         """
@@ -197,10 +202,9 @@ class PriceCheck(commands.Cog):
 
         return embed
 
-    @commands.slash_command(
-        name="price",
+    @price_commands.command(
+        name="all_markets",
         description="Check an item price on all major market hubs",
-        guild_ids=app_settings.get_all_servers(),
     )
     async def price(self, ctx, item_name: str):
         """
@@ -228,10 +232,9 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(
+    @price_commands.command(
         name="jita",
         description="Check an item price on Jita market",
-        guild_ids=app_settings.get_all_servers(),
     )
     async def jita(self, ctx, item_name: str):
         """
@@ -252,10 +255,9 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(
+    @price_commands.command(
         name="amarr",
         description="Check an item price on Amarr market",
-        guild_ids=app_settings.get_all_servers(),
     )
     async def amarr(self, ctx, item_name: str):
         """
@@ -276,10 +278,9 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(
+    @price_commands.command(
         name="rens",
         description="Check an item price on Rens market",
-        guild_ids=app_settings.get_all_servers(),
     )
     async def rens(self, ctx, item_name: str):
         """
@@ -300,10 +301,9 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(
+    @price_commands.command(
         name="hek",
         description="Check an item price on Hek market",
-        guild_ids=app_settings.get_all_servers(),
     )
     async def hek(self, ctx, item_name: str):
         """
@@ -324,10 +324,9 @@ class PriceCheck(commands.Cog):
             ephemeral=True,
         )
 
-    @commands.slash_command(
+    @price_commands.command(
         name="dodixie",
         description="Check an item price on Dodixie market",
-        guild_ids=app_settings.get_all_servers(),
     )
     async def dodixie(self, ctx, item_name: str):
         """
