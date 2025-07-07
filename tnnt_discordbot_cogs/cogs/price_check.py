@@ -56,7 +56,7 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        return [{"name": "PLEX", "region_id": 19000001}]
+        return [{"name": "Global PLEX Market", "region_id": 19000001}]
 
     @staticmethod
     def _get_market_data(market: dict, eve_type_id: str) -> dict | None:
@@ -118,12 +118,12 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        market_system_name = market["name"]
+        market_name = market["name"]
         market_data = cls._get_market_data(market=market, eve_type_id=eve_type_id)
 
         embed.add_field(
-            name=f"{market_system_name} Market",
-            value=f"Prices for {item_name} on the {market_system_name} market.",
+            name=f"{market_name}",
+            value=f"Prices for {item_name} on the {market_name}.",
             inline=False,
         )
 
@@ -179,9 +179,7 @@ class PriceCheck(commands.Cog):
         else:
             embed.add_field(
                 name="API Error",
-                value=(
-                    f"Could not not fetch the price for the {market_system_name} market."
-                ),
+                value=(f"Could not not fetch the price for the {market_name} market."),
                 inline=False,
             )
 
@@ -201,6 +199,7 @@ class PriceCheck(commands.Cog):
         if item_name:
             # Special case: PLEX market
             if item_name.lower() == "plex":
+                item_name = "PLEX"
                 markets = cls._get_plex_market()
 
             try:
@@ -273,11 +272,11 @@ class PriceCheck(commands.Cog):
         return await ctx.respond(
             embed=self._price_check(
                 markets=[
-                    {"name": "Jita", "system_id": 30000142},
-                    {"name": "Amarr", "system_id": 30002187},
-                    {"name": "Rens", "system_id": 60004588},
-                    {"name": "Hek", "system_id": 60005686},
-                    {"name": "Dodixie", "system_id": 30002659},
+                    {"name": "Jita Market", "system_id": 30000142},
+                    {"name": "Amarr Market", "system_id": 30002187},
+                    {"name": "Rens Market", "system_id": 60004588},
+                    {"name": "Hek Market", "system_id": 60005686},
+                    {"name": "Dodixie Market", "system_id": 30002659},
                 ],
                 item_name=item_name,
             ),
@@ -302,7 +301,8 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Jita", "system_id": 30000142}], item_name=item_name
+                markets=[{"name": "Jita Market", "system_id": 30000142}],
+                item_name=item_name,
             ),
             ephemeral=True,
         )
@@ -325,7 +325,8 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Amarr", "system_id": 60008494}], item_name=item_name
+                markets=[{"name": "Amarr Market", "system_id": 60008494}],
+                item_name=item_name,
             ),
             ephemeral=True,
         )
@@ -348,7 +349,8 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Rens", "system_id": 60004588}], item_name=item_name
+                markets=[{"name": "Rens Market", "system_id": 60004588}],
+                item_name=item_name,
             ),
             ephemeral=True,
         )
@@ -371,7 +373,8 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Hek", "system_id": 60005686}], item_name=item_name
+                markets=[{"name": "Hek Market", "system_id": 60005686}],
+                item_name=item_name,
             ),
             ephemeral=True,
         )
@@ -394,7 +397,7 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Dodixie", "system_id": 30002659}],
+                markets=[{"name": "Dodixie Market", "system_id": 30002659}],
                 item_name=item_name,
             ),
             ephemeral=True,
