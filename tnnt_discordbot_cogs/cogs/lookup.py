@@ -38,6 +38,7 @@ from aadiscordbot.cogs.utils.decorators import (
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.models.setting import Setting
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +61,23 @@ class Lookup(commands.Cog):
     lookup_commands = SlashCommandGroup(
         "lookup", "Server Admin Commands", guild_ids=app_settings.get_all_servers()
     )
+
+    @staticmethod
+    def _get_lookup_channels() -> list:
+        """
+        Get the lookup channels from the settings.
+
+        :return: List of lookup channels or an empty list if none are set.
+        :rtype: dict
+        """
+
+        lookup_channels = Setting.get_setting(Setting.Field.LOOKUP_CHANNELS.value).all()
+
+        return (
+            [channel.channel for channel in lookup_channels if channel is not None]
+            if lookup_channels
+            else []
+        )
 
     @staticmethod
     def get_csv(input_name):
@@ -339,7 +357,8 @@ class Lookup(commands.Cog):
             "aadiscordbot.member_command_access",
         ]
     )
-    @message_in_channels(settings.ADMIN_DISCORD_BOT_CHANNELS)
+    # @message_in_channels(settings.ADMIN_DISCORD_BOT_CHANNELS)
+    @message_in_channels(channels=_get_lookup_channels())
     @option(
         "character",
         description="Search for a character",
@@ -378,7 +397,8 @@ class Lookup(commands.Cog):
     )
     @is_guild_managed()
     @sender_has_any_perm(["aadiscordbot.member_command_access"])
-    @message_in_channels(settings.ADMIN_DISCORD_BOT_CHANNELS)
+    # @message_in_channels(settings.ADMIN_DISCORD_BOT_CHANNELS)
+    @message_in_channels(channels=_get_lookup_channels())
     @option(
         "corporation",
         description="Search for a corporation",

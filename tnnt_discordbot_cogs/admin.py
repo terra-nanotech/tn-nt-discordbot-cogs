@@ -21,6 +21,10 @@ class SettingAdmin(SingletonModelAdmin):
 
     fieldsets = (
         (
+            _("Lookup Cog Settings"),
+            {"fields": ["lookup_channels"]},
+        ),
+        (
             _("Recruitment Cog Settings"),
             {
                 "fields": [
@@ -43,3 +47,5 @@ class SettingAdmin(SingletonModelAdmin):
             },
         ),
     )
+
+    filter_horizontal = ["lookup_channels"]
