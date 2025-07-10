@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.9.0] - 2025-07-10
+
 ### Added
 
 - Lookup channels to cog settings
