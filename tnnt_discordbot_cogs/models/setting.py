@@ -39,6 +39,7 @@ class Setting(SingletonModel):
             "Welcome Channel (Unauthenticated User)"
         )
         WELCOME_ROLES_EXCLUDED = "welcome_roles_excluded", _("Roles Excluded")
+        LOOKUP_CHANNELS = "lookup_channels", _("Lookup Channels")
 
     # Recruitment Cog Settings
     applicant_role_name = models.CharField(
@@ -108,6 +109,14 @@ class Setting(SingletonModel):
         help_text=_(
             "Comma-separated list of Discord roles that are excluded from the welcome message."
         ),
+    )
+
+    lookup_channels = models.ManyToManyField(
+        to=Channels,
+        related_name="lookup_channels",
+        blank=True,
+        verbose_name=Field.LOOKUP_CHANNELS.label,  # pylint: disable=no-member
+        help_text=_("Channels in which the `/lookup` command can be used."),
     )
 
     class Meta:
