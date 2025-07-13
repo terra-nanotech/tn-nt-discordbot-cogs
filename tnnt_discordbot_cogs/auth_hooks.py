@@ -18,6 +18,7 @@ def register_cogs():
         "tnnt_discordbot_cogs.cogs.about",
         "tnnt_discordbot_cogs.cogs.admin",
         "tnnt_discordbot_cogs.cogs.auth",
+        "tnnt_discordbot_cogs.cogs.locate",
         "tnnt_discordbot_cogs.cogs.lookup",
         "tnnt_discordbot_cogs.cogs.models",
         "tnnt_discordbot_cogs.cogs.price_check",

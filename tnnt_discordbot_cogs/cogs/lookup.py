@@ -394,7 +394,6 @@ class Lookup(commands.Cog):
     )
     @is_guild_managed()
     @sender_has_any_perm(["aadiscordbot.member_command_access"])
-    # @message_in_channels(settings.ADMIN_DISCORD_BOT_CHANNELS)
     @message_in_channels(channels=_get_lookup_channels())
     @option(
         "corporation",
