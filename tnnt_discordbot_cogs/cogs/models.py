@@ -2,7 +2,7 @@
 import logging
 
 # Third Party
-from discord.commands import SlashCommandGroup
+from discord import SlashCommandGroup
 from discord.ext import commands
 from discord.utils import get as du_get
 

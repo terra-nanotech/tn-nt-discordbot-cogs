@@ -6,8 +6,7 @@
 import logging
 
 # Third Party
-from discord.colour import Color
-from discord.embeds import Embed
+from discord import Color, Embed
 from discord.ext import commands
 
 # Django

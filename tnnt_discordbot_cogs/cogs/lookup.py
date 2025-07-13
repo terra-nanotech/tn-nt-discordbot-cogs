@@ -8,10 +8,7 @@ import io
 import logging
 
 # Third Party
-from discord import File
-from discord.colour import Color
-from discord.commands import SlashCommandGroup, option
-from discord.embeds import Embed
+from discord import Color, Embed, File, SlashCommandGroup, option
 from discord.ext import commands
 
 # Django

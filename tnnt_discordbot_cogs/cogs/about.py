@@ -8,8 +8,7 @@ Since we don't want to have it branded for "The Initiative" we have to build our
 import logging
 
 # Third Party
-from discord.colour import Color
-from discord.embeds import Embed
+from discord import Color, Embed
 from discord.ext import commands
 
 # Django

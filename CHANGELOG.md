@@ -35,6 +35,10 @@ Section Order:
 ### Security
 -->
 
+### Changed
+
+- `discord` imports simplified
+
 ## [0.9.0] - 2025-07-10
 
 ### Added
