@@ -66,6 +66,7 @@ Run DB migrations and restart supervisor.
 |                                         | `admin`  | `uptime`            | Returns the uptime of the bot                                                                              |
 |                                         | `admin`  | `versions`          | Returns a list of all AA apps and their versions                                                           |
 | `tnnt_discordbot_cogs.cogs.auth`        |          | `auth`              | Returns a link to the TN-NT Auth System                                                                    |
+| `tnnt_discordbot_cogs.cogs.locate`      |          | `locate`            | Locate a character and all its alts                                                                        |
 | `tnnt_discordbot_cogs.cogs.lookup`      | `lookup` | `character`         | Looks up a character in the Auth system and returns information about them                                 |
 |                                         | `lookup` | `corporation`       | Looks up a corporation and returns information about its members                                           |
 | `tnnt_discordbot_cogs.cogs.models`      | `models` | `populate`          | Populate Django Models for all channels in the server                                                      |
