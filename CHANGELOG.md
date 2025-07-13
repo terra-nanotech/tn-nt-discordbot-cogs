@@ -35,6 +35,10 @@ Section Order:
 ### Security
 -->
 
+### Added
+
+- Command permissions
+
 ## [0.10.0] - 2025-07-13
 
 ### Added
