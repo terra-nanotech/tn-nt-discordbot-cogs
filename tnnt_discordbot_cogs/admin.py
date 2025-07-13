@@ -21,6 +21,10 @@ class SettingAdmin(SingletonModelAdmin):
 
     fieldsets = (
         (
+            _("Locator Cog Settings"),
+            {"fields": ["locate_channels"]},
+        ),
+        (
             _("Lookup Cog Settings"),
             {"fields": ["lookup_channels"]},
         ),
@@ -48,4 +52,4 @@ class SettingAdmin(SingletonModelAdmin):
         ),
     )
 
-    filter_horizontal = ["lookup_channels"]
+    filter_horizontal = ["lookup_channels", "locate_channels"]

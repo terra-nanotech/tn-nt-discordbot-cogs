@@ -40,6 +40,7 @@ class Setting(SingletonModel):
         )
         WELCOME_ROLES_EXCLUDED = "welcome_roles_excluded", _("Roles Excluded")
         LOOKUP_CHANNELS = "lookup_channels", _("Lookup Channels")
+        LOCATE_CHANNELS = "locate_channels", _("Locate Channels")
 
     # Recruitment Cog Settings
     applicant_role_name = models.CharField(
@@ -117,6 +118,14 @@ class Setting(SingletonModel):
         blank=True,
         verbose_name=Field.LOOKUP_CHANNELS.label,  # pylint: disable=no-member
         help_text=_("Channels in which the `/lookup` command can be used."),
+    )
+
+    locate_channels = models.ManyToManyField(
+        to=Channels,
+        related_name="locate_channels",
+        blank=True,
+        verbose_name=Field.LOCATE_CHANNELS.label,  # pylint: disable=no-member
+        help_text=_("Channels in which the `/locate` command can be used."),
     )
 
     class Meta:

@@ -35,6 +35,10 @@ Section Order:
 ### Security
 -->
 
+### Added
+
+- `locate` cog
+
 ### Changed
 
 - `discord` imports simplified
