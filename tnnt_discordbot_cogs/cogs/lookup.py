@@ -30,7 +30,7 @@ from aadiscordbot.cogs.utils.autocompletes import (
 from aadiscordbot.cogs.utils.decorators import (
     is_guild_managed,
     message_in_channels,
-    sender_has_any_perm,
+    sender_has_perm,
 )
 
 # Terra Nanotech Discordbot Cogs
@@ -347,17 +347,10 @@ class Lookup(commands.Cog):
         guild_ids=app_settings.get_all_servers(),
     )
     @is_guild_managed()
-    @sender_has_any_perm(
-        [
-            "corputils.view_alliance_corpstats",
-            "corpstats.view_alliance_corpstats",
-            "aadiscordbot.member_command_access",
-        ]
-    )
-    # @message_in_channels(settings.ADMIN_DISCORD_BOT_CHANNELS)
+    @sender_has_perm("tnnt_discordbot_cogs.lookup")
     @message_in_channels(channels=_get_lookup_channels())
     @option(
-        "character",
+        name="character",
         description="Search for a character",
         autocomplete=search_characters,
     )
@@ -393,10 +386,10 @@ class Lookup(commands.Cog):
         guild_ids=app_settings.get_all_servers(),
     )
     @is_guild_managed()
-    @sender_has_any_perm(["aadiscordbot.member_command_access"])
+    @sender_has_perm("tnnt_discordbot_cogs.lookup")
     @message_in_channels(channels=_get_lookup_channels())
     @option(
-        "corporation",
+        name="corporation",
         description="Search for a corporation",
         autocomplete=search_corporations_on_characters,
     )

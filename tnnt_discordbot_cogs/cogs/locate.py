@@ -23,7 +23,7 @@ from esi.models import Token
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_all_servers
 from aadiscordbot.cogs.utils.autocompletes import search_characters
-from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_any_perm
+from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_perm
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
@@ -219,12 +219,10 @@ class Locator(commands.Cog):
         return out_embeds
 
     @message_in_channels(channels=_get_locate_channels())
-    @sender_has_any_perm(
-        ["corputils.view_alliance_corpstats", "corpstats.view_alliance_corpstats"]
-    )
+    @sender_has_perm("tnnt_discordbot_cogs.locate")
     @commands.slash_command(name="locate", guild_ids=get_all_servers())
     @option(
-        "character",
+        name="character",
         description="Search for a Character!",
         autocomplete=search_characters,
     )
