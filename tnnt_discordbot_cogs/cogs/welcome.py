@@ -7,7 +7,7 @@ import asyncio
 import logging
 
 # Third Party
-import discord
+from discord import Member
 from discord.ext import commands
 
 # Django
@@ -48,7 +48,7 @@ class Welcome(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener("on_member_join")
-    async def on_member_join(self, member: discord.Member):
+    async def on_member_join(self, member: Member):
         """
         Responds to on_member_join events from discord
 

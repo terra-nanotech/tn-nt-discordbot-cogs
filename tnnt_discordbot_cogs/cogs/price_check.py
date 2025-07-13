@@ -8,9 +8,7 @@ import logging
 
 # Third Party
 import requests
-from discord.colour import Color
-from discord.commands import SlashCommandGroup
-from discord.embeds import Embed
+from discord import Color, Embed, SlashCommandGroup
 from discord.ext import commands
 
 # Alliance Auth Discord Bot

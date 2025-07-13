@@ -7,8 +7,7 @@ import logging
 from enum import Enum
 
 # Third Party
-import discord
-from discord.embeds import Embed
+from discord import ChannelType, Embed, Interaction, Member
 from discord.ext import commands
 
 # Django
@@ -112,7 +111,7 @@ class RecruitMe(commands.Cog):
 
         self.bot = bot
 
-    async def open_ticket(self, ctx: discord.Interaction, member: discord.Member):
+    async def open_ticket(self, ctx: Interaction, member: Member):
         """
         Open a recruitment ticket
 
@@ -134,7 +133,7 @@ class RecruitMe(commands.Cog):
                 DATE=timezone.now().strftime("%Y-%m-%d %H:%M"),
             ),
             auto_archive_duration=10080,
-            type=discord.ChannelType.private_thread,
+            type=ChannelType.private_thread,
             reason=None,
         )
         msg = BotResponse.RECRUITMENT_THREAD_BODY.value.format(
