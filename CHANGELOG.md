@@ -35,6 +35,8 @@ Section Order:
 ### Security
 -->
 
+## [0.10.0] - 2025-07-13
+
 ### Added
 
 - `locate` cog
