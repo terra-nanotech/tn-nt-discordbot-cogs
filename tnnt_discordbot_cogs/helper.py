@@ -2,8 +2,11 @@
 Helper functions for the TNNT Discord bot.
 """
 
+# Third Party
+from discord.ext import commands
 
-def unload_cog(bot, cog_name: str) -> None:
+
+def unload_cog(bot: commands.Bot, cog_name: str) -> None:
     """
     Unloads a cog from the bot.
 
@@ -14,7 +17,8 @@ def unload_cog(bot, cog_name: str) -> None:
     """
 
     try:
-        bot.remove_cog(cog_name)
+        bot.remove_cog(name=cog_name)
+
         print(f"Unloaded {cog_name} successfully.")
     except Exception as e:
         print(f"Failed to unload {cog_name}: {e}")
