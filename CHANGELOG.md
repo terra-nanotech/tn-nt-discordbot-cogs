@@ -39,6 +39,13 @@ Section Order:
 
 - Command permissions
 
+### Changed
+
+- Improvements to the `lookup` cog
+  - zKillboard statistics improved
+  - Output of the `/lookup` command is now ephemeral
+  - Several code improvements
+
 ## [0.10.0] - 2025-07-13
 
 ### Added
@@ -202,7 +209,7 @@ Section Order:
 
 ### Changed
 
-- Optimized time cogg to reduce the number of SQL queries and use Django's own
+- Optimized time cog to reduce the number of SQL queries and use Django's own
   method to determine the URL to the timezones module
 
 ## [0.0.3] - 2021-07-20

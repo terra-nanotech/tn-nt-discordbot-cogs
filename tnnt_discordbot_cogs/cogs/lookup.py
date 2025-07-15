@@ -6,15 +6,26 @@
 import csv
 import io
 import logging
+from collections.abc import Coroutine
+from typing import Any
 
 # Third Party
-from discord import Color, Embed, File, SlashCommandGroup, option
+from discord import (
+    Color,
+    Embed,
+    File,
+    Interaction,
+    SlashCommandGroup,
+    WebhookMessage,
+    option,
+)
 from discord.ext import commands
 
 # Django
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.text import slugify
 
 # Alliance Auth
 from allianceauth.eveonline.evelinks import evewho
@@ -45,18 +56,20 @@ class Lookup(commands.Cog):
     All about users!
     """
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         """
         Initialize the Lookup cog.
 
-        :param bot:
-        :type bot:
+        :param bot: The bot instance to which this cog is attached.
+        :type bot: commands.Bot
         """
 
         self.bot = bot
 
     lookup_commands = SlashCommandGroup(
-        "lookup", "Server Admin Commands", guild_ids=app_settings.get_all_servers()
+        name="lookup",
+        description="Server Admin Commands",
+        guild_ids=app_settings.get_all_servers(),
     )
 
     @staticmethod
@@ -65,10 +78,12 @@ class Lookup(commands.Cog):
         Get the lookup channels from the settings.
 
         :return: List of lookup channels or an empty list if none are set.
-        :rtype: dict
+        :rtype: list
         """
 
-        lookup_channels = Setting.get_setting(Setting.Field.LOOKUP_CHANNELS.value).all()
+        lookup_channels = Setting.get_setting(
+            setting_key=Setting.Field.LOOKUP_CHANNELS.value
+        ).all()
 
         return (
             [channel.channel for channel in lookup_channels if channel is not None]
@@ -77,17 +92,18 @@ class Lookup(commands.Cog):
         )
 
     @staticmethod
-    def get_csv(input_name):
+    def get_csv(character_name: str) -> File:
         """
         Generates a CSV file of all known alts for a given character name.
 
-        :param input_name:
-        :type input_name:
-        :return:
-        :rtype:
+        :param character_name: The name of the character to look up.
+        :type character_name: str
+        :return: A CSV file containing the character's alts.
+        :rtype: File
         """
 
-        char = EveCharacter.objects.get(character_name=input_name)
+        csv_file_basename = slugify(f"{character_name} known alts")
+        char = EveCharacter.objects.get(character_name=character_name)
         alts = char.character_ownership.user.character_ownerships.all().select_related(
             "character"
         )
@@ -117,23 +133,23 @@ class Lookup(commands.Cog):
 
         buffer.seek(0)
 
-        return File(buffer, f"{input_name}_known_alts.csv")
+        return File(fp=buffer, filename=f"{csv_file_basename}.csv")
 
     @staticmethod
-    def get_lookup_embed(input_name):
+    def get_lookup_embed(character_name: str) -> Embed:
         """
         Generates an embed with information about a character.
 
-        :param input_name:
-        :type input_name:
-        :return:
-        :rtype:
+        :param character_name: The name of the character to look up.
+        :type character_name: str
+        :return: An embed containing the character's information, including linked characters, groups, and statistics.
+        :rtype: Embed
         """
 
-        embed = Embed(title=f"Character Lookup: {input_name}")
+        embed = Embed(title=f"Character Lookup: {character_name}")
 
         try:
-            char = EveCharacter.objects.get(character_name=input_name)
+            char = EveCharacter.objects.get(character_name=character_name)
 
             try:
                 main = char.character_ownership.user.profile.main_character
@@ -160,10 +176,18 @@ class Lookup(commands.Cog):
                             "character__corporation_id",
                             "character__character_stats__zk_12m",
                             "character__character_stats__zk_3m",
+                            "character__character_stats__ships_destroyed",
+                            "character__character_stats__ships_lost",
+                            "character__character_stats__isk_destroyed",
+                            "character__character_stats__isk_lost",
                         )
                     )
                     zk12 = 0
                     zk3 = 0
+                    zk_ships_destroyed = 0
+                    zk_ships_lost = 0
+                    zk_isk_destroyed = 0
+                    zk_isk_lost = 0
                 else:
                     alts = (
                         char.character_ownership.user.character_ownerships.all()
@@ -177,12 +201,22 @@ class Lookup(commands.Cog):
                     )
                     zk12 = "Not Installed"
                     zk3 = "Not Installed"
+                    zk_ships_destroyed = "Not Installed"
+                    zk_ships_lost = "Not Installed"
+                    zk_isk_destroyed = "Not Installed"
+                    zk_isk_lost = "Not Installed"
 
                 if aastatistics_active():
                     for alt in alts:
                         if alt[4]:
                             zk12 += alt[4]
                             zk3 += alt[5]
+
+                        if alt[6]:
+                            zk_ships_destroyed += alt[6]
+                            zk_ships_lost += alt[7]
+                            zk_isk_destroyed += alt[8]
+                            zk_isk_lost += alt[9]
 
                 embed.colour = Color.blue()
                 embed.description = f"**{char}** is linked to **{main} [{main.corporation_ticker}]** (State: {state})"
@@ -203,7 +237,7 @@ class Lookup(commands.Cog):
                         )
                     else:
                         embed.add_field(
-                            name=f"Linked Characters {idx} **(Discord Limited There are More)**",
+                            name=f"Linked Characters {idx} **(Discord Limited. There are More)**",
                             value="\n".join(names),
                             inline=False,
                         )
@@ -215,8 +249,45 @@ class Lookup(commands.Cog):
                     )
 
                 if aastatistics_active():
-                    embed.add_field(name="12m Kills", value=zk12, inline=True)
-                    embed.add_field(name="3m Kills", value=zk3, inline=True)
+                    embed.add_field(
+                        name="Recent zKillboard Statistics", value="", inline=False
+                    )
+                    embed.add_field(
+                        name="Kills (last 12 months)",
+                        value=f"{zk12:,}",
+                        inline=True,
+                    )
+                    embed.add_field(
+                        name="Kills (last 3 months)",
+                        value=f"{zk3:,}",
+                        inline=True,
+                    )
+
+                    embed.add_field(
+                        name="Total Ship Destroyed/Lost", value="", inline=False
+                    )
+                    embed.add_field(
+                        name="Ships Destroyed",
+                        value=f"{zk_ships_destroyed:,}",
+                        inline=True,
+                    )
+                    embed.add_field(
+                        name="Ships Lost",
+                        value=f"{zk_ships_lost:,}",
+                        inline=True,
+                    )
+
+                    embed.add_field(
+                        name="Total ISK Destroyed/Lost", value="", inline=False
+                    )
+                    embed.add_field(
+                        name="ISK Destroyed",
+                        value=f"{zk_isk_destroyed:,}",
+                        inline=True,
+                    )
+                    embed.add_field(
+                        name="ISK Lost", value=f"{zk_isk_lost:,}", inline=True
+                    )
 
                 embed.add_field(name="Discord Link", value=discord_string, inline=False)
 
@@ -241,7 +312,10 @@ class Lookup(commands.Cog):
                 embed.add_field(name="Old Users", value=user_names, inline=False)
 
                 alt_list = [
-                    f"[{a.character_name}]({evewho.character_url(a.character_id)}) *[[{a.corporation_ticker}]({evewho.corporation_url(a.corporation_id)})]*"
+                    (
+                        f"[{a.character_name}]({evewho.character_url(a.character_id)}) "
+                        f"*[[{a.corporation_ticker}]({evewho.corporation_url(a.corporation_id)})]*"
+                    )
                     for a in characters
                 ]
 
@@ -256,26 +330,34 @@ class Lookup(commands.Cog):
                         )
                     else:
                         embed.add_field(
-                            name=f"Found Characters {idx} **( Discord Limited There are More )**",
+                            name=f"Found Characters {idx} **(Discord Limited. There are More)**",
                             value=", ".join(names),
                             inline=False,
                         )
                         break
 
                 return embed
-
         except EveCharacter.DoesNotExist:
             embed.colour = Color.red()
 
             embed.description = (
-                f"Character **{input_name}** does not exist in our Auth system"
+                f"Character **{character_name}** does not exist in our Auth system"
             )
 
             return embed
 
     @staticmethod
-    def build_altcorp_embeds(input_name):
-        chars = EveCharacter.objects.filter(corporation_name=input_name)
+    def build_corporation_embeds(corporation_name: str) -> list[Any] | None:
+        """
+        Builds embeds for a corporation based on the input name, showing all known alts in that corporation.
+
+        :param corporation_name: The name of the corporation to look up.
+        :type corporation_name: str
+        :return: A list of embeds containing information about the corporation and its members, or None if no members are found.
+        :rtype: list[Any] | None
+        """
+
+        chars = EveCharacter.objects.filter(corporation_name=corporation_name)
 
         if chars.count():
             corp_id = 0
@@ -329,17 +411,19 @@ class Lookup(commands.Cog):
                 f"-Unknowns          : {corp_info.members - knowns}```"
             )
 
-            _header = Embed(title=input_name, description=msg)
+            _header = Embed(title=corporation_name, description=msg)
 
             embeds.append(_header)
 
             for strings in [output[i : i + 10] for i in range(0, len(output), 10)]:
-                embed = Embed(title=input_name)
+                embed = Embed(title=corporation_name)
                 embed.colour = Color.blue()
                 embed.description = "\n".join(strings)
                 embeds.append(embed)
 
             return embeds
+
+        return None
 
     @lookup_commands.command(
         name="character",
@@ -347,38 +431,42 @@ class Lookup(commands.Cog):
         guild_ids=app_settings.get_all_servers(),
     )
     @is_guild_managed()
-    @sender_has_perm("tnnt_discordbot_cogs.lookup")
+    @sender_has_perm(perm="tnnt_discordbot_cogs.lookup")
     @message_in_channels(channels=_get_lookup_channels())
     @option(
         name="character",
         description="Search for a character",
         autocomplete=search_characters,
     )
-    @option("gib_csv", description="Output a CSV of all characters")
-    async def slash_lookup(self, ctx, character: str, gib_csv: bool = False):
+    @option(name="gib_csv", description="Output a CSV of all characters")
+    async def slash_lookup_character(
+        self, ctx, character: str, gib_csv: bool = False
+    ) -> Coroutine[Any, Any, Interaction | WebhookMessage]:
         """
         Looks up a character in the Auth system and returns information about them.
         Input: a Eve Character Name
         Example: `/lookup character: John Doe gib_csv: True`
 
-        :param ctx:
+        :param ctx: Discord context for the command.
         :type ctx:
-        :param character:
-        :type character:
-        :param gib_csv:
-        :type gib_csv:
-        :return:
-        :rtype:
+        :param character: The name of the character to look up.
+        :type character: str
+        :param gib_csv: Whether to output a CSV of all characters linked to the character.
+        :type gib_csv: bool
+        :return: An interaction response with the character's information or a CSV file if requested.
+        :rtype: Coroutine[Any, Any, Interaction | WebhookMessage]
         """
 
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
         if gib_csv:
             file = self.get_csv(character)
 
-            return await ctx.respond(embed=self.get_lookup_embed(character), file=file)
+            return await ctx.respond(
+                embed=self.get_lookup_embed(character), file=file, ephemeral=True
+            )
 
-        return await ctx.respond(embed=self.get_lookup_embed(character))
+        return await ctx.respond(embed=self.get_lookup_embed(character), ephemeral=True)
 
     @lookup_commands.command(
         name="corporation",
@@ -386,48 +474,52 @@ class Lookup(commands.Cog):
         guild_ids=app_settings.get_all_servers(),
     )
     @is_guild_managed()
-    @sender_has_perm("tnnt_discordbot_cogs.lookup")
+    @sender_has_perm(perm="tnnt_discordbot_cogs.lookup")
     @message_in_channels(channels=_get_lookup_channels())
     @option(
         name="corporation",
         description="Search for a corporation",
         autocomplete=search_corporations_on_characters,
     )
-    async def slash_altcorp(self, ctx, corporation: str):
+    async def slash_lookup_corporation(
+        self, ctx, corporation: str
+    ) -> Coroutine[Any, Any, Interaction | WebhookMessage] or None:
         """
-        Gets Auth data about an altcorp
+        Gets Auth data about a given corporation.
 
-        :param ctx:
+        :param ctx: Discord context for the command.
         :type ctx:
-        :param corporation:
-        :type corporation:
-        :return:
-        :rtype:
+        :param corporation: The name of the corporation to look up.
+        :type corporation: str
+        :return: An interaction response with the corporation's information or a message indicating no members found.
+        :rtype: Coroutine[Any, Any, Interaction | WebhookMessage] or None
         """
 
-        await ctx.defer()
+        await ctx.defer(ephemeral=True)
 
-        embeds = self.build_altcorp_embeds(corporation)
+        embeds = self.build_corporation_embeds(corporation_name=corporation)
 
         if len(embeds):
             e = embeds.pop(0)
 
-            await ctx.respond(embed=e)
+            await ctx.respond(embed=e, ephemeral=True)
 
             for e in embeds:
-                await ctx.send(embed=e)
+                await ctx.respond(embed=e, ephemeral=True)
+
+            return None
         else:
-            await ctx.respond("No Members Found!")
+            return await ctx.respond("No Members Found!", ephemeral=True)
 
 
-def setup(bot):
+def setup(bot: commands.Bot) -> None:
     """
-    Set up the cog
+    Setup function for the Lookup cog.
 
-    :param bot:
-    :type bot:
-    :return:
-    :rtype:
+    :param bot: The bot instance to which this cog is attached.
+    :type bot: commands.Bot
+    :return: None
+    :rtype: None
     """
 
     # Unload any other Lookup cog
