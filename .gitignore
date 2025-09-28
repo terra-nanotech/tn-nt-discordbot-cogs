@@ -3,3 +3,6 @@
 /*.egg-info/
 __pycache__
 .idea/
+
+.esi-compatibility-date
+.make/myauth-path
