@@ -42,6 +42,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Translations
+
 ## [0.11.0] - 2025-07-15
 
 ### Added
