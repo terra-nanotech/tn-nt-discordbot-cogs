@@ -32,7 +32,7 @@ They are COGs of apps we use, so they fit our needs.
 ## Install<a name="install"></a>
 
 ```shell
-pip install tnnt-discordbot-cogs
+pip install tnnt-discordbot-cogs==0.11.0
 ```
 
 In `local.py` right after `INSTALLED_APPS`:
