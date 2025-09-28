@@ -2,8 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog] and this project adheres to [Semantic Versioning].
 
 <!--
 GitHub MD Syntax:
@@ -15,11 +14,17 @@ https://docs.github.com/assets/cb-41128/mw-1440/images/help/writing/alerts-rende
 > [!NOTE]
 > Highlights information that users should take into account, even when skimming.
 
+> [!TIP]
+> Optional information to help a user be more successful.
+
 > [!IMPORTANT]
 > Crucial information necessary for users to succeed.
 
 > [!WARNING]
-> Critical content demanding immediate user attention due to potential risks.
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advised about risks or negative outcomes of certain actions.
 -->
 
 ## [In Development] - Unreleased
@@ -34,6 +39,8 @@ Section Order:
 ### Removed
 ### Security
 -->
+
+<!-- Your changes go here -->
 
 ## [0.11.0] - 2025-07-15
 
@@ -231,3 +238,30 @@ Section Order:
 ### Added
 
 - Initial Version
+
+<!-- Links to be updated upon release -->
+
+[0.0.1]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/commits/v0.0.1 "v0.0.1"
+[0.0.2]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.0.1...v0.0.2 "v0.0.2"
+[0.0.3]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.0.2...v0.0.3 "v0.0.3"
+[0.0.4]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.0.3...v0.0.4 "v0.0.4"
+[0.1.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.0.4...v0.1.0 "v0.1.0"
+[0.10.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.9.0...v0.10.0 "v0.10.0"
+[0.11.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.10.0...v0.11.0 "v0.11.0"
+[0.2.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.1.0...v0.2.0 "v0.2.0"
+[0.2.1]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.2.0...v0.2.1 "v0.2.1"
+[0.2.2]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.2.1...v0.2.2 "v0.2.2"
+[0.3.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.2.2...v0.3.0 "v0.3.0"
+[0.3.1]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.3.0...v0.3.1 "v0.3.1"
+[0.4.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.3.1...v0.4.0 "v0.4.0"
+[0.5.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.4.0...v0.5.0 "v0.5.0"
+[0.6.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.5.0...v0.6.0 "v0.6.0"
+[0.6.1]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.6.0...v0.6.1 "v0.6.1"
+[0.6.2]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.6.1...v0.6.2 "v0.6.2"
+[0.7.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.6.2...v0.7.0 "v0.7.0"
+[0.7.1]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.7.0...v0.7.1 "v0.7.1"
+[0.8.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.7.1...v0.8.0 "v0.8.0"
+[0.9.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.8.0...v0.9.0 "v0.9.0"
+[in development]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.11.0...HEAD "In Development"
+[keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
+[semantic versioning]: http://semver.org/ "Semantic Versioning"
