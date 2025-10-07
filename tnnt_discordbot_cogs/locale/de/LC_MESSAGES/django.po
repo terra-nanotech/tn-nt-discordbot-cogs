@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TN-NT Discordbot Cogs 0.11.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ppfeufer/tn-nt-discordbot-cogs/issues\n"
-"POT-Creation-Date: 2025-09-28 14:03+0200\n"
+"POT-Creation-Date: 2025-10-07 16:30+0200\n"
 "PO-Revision-Date: 2025-09-28 12:33+0000\n"
 "Last-Translator: Peter Pfeufer <info@ppfeufer.de>\n"
 "Language-Team: German <https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/de/>\n"
@@ -106,21 +106,15 @@ msgid "The ID of the role for leadership in the Discord server."
 msgstr "Die ID der Rolle für die Führung im Discord-Server."
 
 #: tnnt_discordbot_cogs/models/setting.py:91
-msgid ""
-"The channel to send welcome messages for authenticated users in the Discord "
-"server."
+msgid "The channel to send welcome messages for authenticated users in the Discord server."
 msgstr "Der Kanal zum Senden von Willkommensnachrichten für authentifizierte Benutzer auf dem Discord-Server."
 
 #: tnnt_discordbot_cogs/models/setting.py:102
-msgid ""
-"The channel to send welcome messages for unauthenticated users in the "
-"Discord server."
+msgid "The channel to send welcome messages for unauthenticated users in the Discord server."
 msgstr "Der Kanal zum Senden von Willkommensnachrichten für nicht authentifizierte Benutzer auf dem Discord-Server."
 
 #: tnnt_discordbot_cogs/models/setting.py:111
-msgid ""
-"Comma-separated list of Discord roles that are excluded from the welcome "
-"message."
+msgid "Comma-separated list of Discord roles that are excluded from the welcome message."
 msgstr "Durch Kommas getrennte Liste der Discord-Rollen, die von der Willkommensnachricht ausgeschlossen sind."
 
 #: tnnt_discordbot_cogs/models/setting.py:120
