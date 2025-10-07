@@ -4,5 +4,6 @@
 __pycache__
 .idea/
 
+/tnnt_discordbot_cogs/locale/en/
 .esi-compatibility-date
 .make/myauth-path
