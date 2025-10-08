@@ -42,6 +42,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Changed
+
+- Switch to PyPI trusted publishing
+
 ## [1.0.0] - 2025-10-07
 
 ### Added
