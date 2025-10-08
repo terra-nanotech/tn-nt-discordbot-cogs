@@ -42,6 +42,12 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [1.0.1-alpha.1] - 2025-10-08
+
+### Changed
+
+- Switch to PyPI trusted publishing
+
 ## [1.0.0] - 2025-10-07
 
 ### Added
@@ -269,6 +275,7 @@ Section Order:
 [0.8.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.7.1...v0.8.0 "v0.8.0"
 [0.9.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.8.0...v0.9.0 "v0.9.0"
 [1.0.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v0.11.0...v1.0.0 "v1.0.0"
+[1.0.1-alpha.1]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.0.0...v1.0.1-alpha.1 "v1.0.1-alpha.1"
 [in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.0.0...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
