@@ -41,13 +41,10 @@ jobs:
           python -m pip install --upgrade build
           python -m pip install --upgrade setuptools wheel
 
-      # Package and Upload to PyPI
+      # Build Package
       - name: Package
         run: |
           python -m build
-
-      - name: Upload to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
 
       # Add Assets to Release on GitHub
       - name: Add Assets to Release on GitHub
@@ -57,3 +54,7 @@ jobs:
           # The name of the file(s) to upload
           files: |
             dist/*
+
+      # Publish to PyPI using Trusted Publishing
+      - name: Upload to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
