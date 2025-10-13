@@ -3,6 +3,11 @@
 /*.egg-info/
 __pycache__
 .idea/
+/htmlcov/
+node_modules/
+/.coverage
+/.tox/
+/coverage.xml
 
 /tnnt_discordbot_cogs/locale/en/
 .esi-compatibility-date
