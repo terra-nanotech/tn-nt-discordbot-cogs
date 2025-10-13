@@ -45,7 +45,7 @@ from aadiscordbot.cogs.utils.decorators import (
 )
 
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.helper import get_discord_id, unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
 
 logger = logging.getLogger(__name__)
@@ -82,7 +82,7 @@ class Lookup(commands.Cog):
         """
 
         lookup_channels = Setting.get_setting(
-            setting_key=Setting.Field.LOOKUP_CHANNELS.value
+            setting_key=Setting.Field.LOOKUP_CHANNELS.value  # pylint: disable=no-member
         ).all()
 
         return (
@@ -136,7 +136,9 @@ class Lookup(commands.Cog):
         return File(fp=buffer, filename=f"{csv_file_basename}.csv")
 
     @staticmethod
-    def get_lookup_embed(character_name: str) -> Embed:
+    def get_lookup_embed(  # pylint: disable=too-many-locals, too-many-statements, too-many-branches
+        character_name: str,
+    ) -> Embed:
         """
         Generates an embed with information about a character.
 
@@ -158,12 +160,8 @@ class Lookup(commands.Cog):
                     "name", flat=True
                 )
 
-                try:
-                    discord_string = f"<@{char.character_ownership.user.discord.uid}>"
-                except Exception as e:
-                    logger.error(e)
-
-                    discord_string = "unknown"
+                discord_id = get_discord_id(character=char)
+                discord_string = f"<@{discord_id}>" if discord_id else "unknown"
 
                 if aastatistics_active():
                     alts = (
@@ -347,7 +345,9 @@ class Lookup(commands.Cog):
             return embed
 
     @staticmethod
-    def build_corporation_embeds(corporation_name: str) -> list[Any] | None:
+    def build_corporation_embeds(  # pylint: disable=too-many-locals
+        corporation_name: str,
+    ) -> list[Any] | None:
         """
         Builds embeds for a corporation based on the input name, showing all known alts in that corporation.
 
@@ -382,14 +382,14 @@ class Lookup(commands.Cog):
 
                     mains[main.character_id][1] += 1
                     knowns += 1
-                except Exception:
+                except Exception:  # pylint: disable=broad-except
                     # logger.error(e)
                     pass
 
             output = []
             base_string = "[{}]({}) [[{}]({})] has {} character{}"
 
-            for k, m in mains.items():
+            for k, m in mains.items():  # pylint: disable=unused-variable
                 output.append(
                     base_string.format(
                         m[0],
@@ -481,9 +481,7 @@ class Lookup(commands.Cog):
         description="Search for a corporation",
         autocomplete=search_corporations_on_characters,
     )
-    async def slash_lookup_corporation(
-        self, ctx, corporation: str
-    ) -> Coroutine[Any, Any, Interaction | WebhookMessage] or None:
+    async def slash_lookup_corporation(self, ctx, corporation: str) -> Coroutine | None:
         """
         Gets Auth data about a given corporation.
 
@@ -492,14 +490,14 @@ class Lookup(commands.Cog):
         :param corporation: The name of the corporation to look up.
         :type corporation: str
         :return: An interaction response with the corporation's information or a message indicating no members found.
-        :rtype: Coroutine[Any, Any, Interaction | WebhookMessage] or None
+        :rtype: Coroutine | None
         """
 
         await ctx.defer(ephemeral=True)
 
         embeds = self.build_corporation_embeds(corporation_name=corporation)
 
-        if len(embeds):
+        if embeds:
             e = embeds.pop(0)
 
             await ctx.respond(embed=e, ephemeral=True)
@@ -508,8 +506,8 @@ class Lookup(commands.Cog):
                 await ctx.respond(embed=e, ephemeral=True)
 
             return None
-        else:
-            return await ctx.respond("No Members Found!", ephemeral=True)
+
+        return await ctx.respond("No Members Found!", ephemeral=True)
 
 
 def setup(bot: commands.Bot) -> None:

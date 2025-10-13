@@ -282,14 +282,14 @@ repos:
         name: Validate pyproject.toml
         description: Validate the pyproject.toml file.
 
-#  - repo: https://github.com/pylint-dev/pylint
-#    rev: 4cab7ca4eae88b75960fcf2479b8ddd377dd4ce2  # frozen: v3.3.9
-#    hooks:
-#      - id: pylint
-#        name: Pylint
-#        description: Check for errors and code smells in Python code.
-#        args:
-#          - --py-version=3.10  # Minimum required Python version for AA. Update as needed.
+  - repo: https://github.com/pylint-dev/pylint
+    rev: 4cab7ca4eae88b75960fcf2479b8ddd377dd4ce2  # frozen: v3.3.9
+    hooks:
+      - id: pylint
+        name: Pylint
+        description: Check for errors and code smells in Python code.
+        args:
+          - --py-version=3.10  # Minimum required Python version for AA. Update as needed.
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 83987cd6ad8943c7f029b500b14aaf82c00a01fa  # frozen: 0.34.0

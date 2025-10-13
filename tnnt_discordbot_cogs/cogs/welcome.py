@@ -27,15 +27,15 @@ logger = logging.getLogger(__name__)
 # Discord Bot Settings
 # Channel
 WELCOME_CHANNEL_AUTHENTICATED = Setting.get_setting(
-    Setting.Field.WELCOME_CHANNEL_AUTHENTICATED.value
+    Setting.Field.WELCOME_CHANNEL_AUTHENTICATED.value  # pylint: disable=no-member
 ).channel
 WELCOME_CHANNEL_UNAUTHENTICATED = Setting.get_setting(
-    Setting.Field.WELCOME_CHANNEL_UNAUTHENTICATED.value
+    Setting.Field.WELCOME_CHANNEL_UNAUTHENTICATED.value  # pylint: disable=no-member
 ).channel
 
 # Excluded Roles
 WELCOME_ROLES_EXCLUDED = Setting.get_setting(
-    Setting.Field.WELCOME_ROLES_EXCLUDED.value
+    Setting.Field.WELCOME_ROLES_EXCLUDED.value  # pylint: disable=no-member
 ).split(",")
 
 
@@ -68,7 +68,7 @@ class Welcome(commands.Cog):
             await asyncio.sleep(3)
 
             authenticated = is_user_authenticated(user=member, guild=member.guild)
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             authenticated = False
 
         # If the user is authenticated, send a welcome message to the authenticated channel.
@@ -99,7 +99,7 @@ class Welcome(commands.Cog):
                     logger.error(
                         msg="No Welcome Message configured for Discordbot Welcome cog"
                     )
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-except
                     logger.error(msg=e)
         # If the user is not authenticated, send a welcome message to the unauthenticated channel.
         else:
@@ -128,7 +128,7 @@ class Welcome(commands.Cog):
                 logger.error(
                     msg="No Welcome Message configured for Discordbot Welcome cog"
                 )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 logger.error(msg=e)
 
 

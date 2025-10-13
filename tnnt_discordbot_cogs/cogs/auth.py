@@ -66,7 +66,7 @@ class Auth(commands.Cog):
         auth_url = get_site_url()
         embed = Embed(title="Terra Nanotech Auth")
 
-        try:
+        try:  # pylint: disable=duplicate-code
             if settings.TNNT_TEMPLATE_ENTITY_ID == 1:
                 aa_icon = f"{auth_url}/static/allianceauth/icons/allianceauth.png"
 

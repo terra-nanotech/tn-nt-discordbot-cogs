@@ -26,7 +26,7 @@ from aadiscordbot.cogs.utils.autocompletes import search_characters
 from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_perm
 
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.helper import get_discord_id, unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
 
 logger = logging.getLogger(__name__)
@@ -56,7 +56,9 @@ class Locator(commands.Cog):
         :rtype: dict
         """
 
-        locate_channels = Setting.get_setting(Setting.Field.LOCATE_CHANNELS.value).all()
+        locate_channels = Setting.get_setting(
+            Setting.Field.LOCATE_CHANNELS.value  # pylint: disable=no-member
+        ).all()
 
         return (
             [channel.channel for channel in locate_channels if channel is not None]
@@ -65,7 +67,9 @@ class Locator(commands.Cog):
         )
 
     @staticmethod
-    def _get_locate_embeds(char: EveCharacter) -> list[Embed]:
+    def _get_locate_embeds(  # pylint: disable=too-many-locals
+        char: EveCharacter,
+    ) -> list[Embed]:
         """
         Generates embeds for the character's alts' locations.
 
@@ -195,9 +199,11 @@ class Locator(commands.Cog):
                     else:
                         alt_offline.append(_alt)
 
-                except Exception as e:
+                except Exception as e:  # pylint: disable=broad-except
                     logger.error(
-                        f"Error fetching location data for character {alt.character.character_name}: {e}"
+                        "Error fetching location data for character %s: %s",
+                        alt.character.character_name,
+                        e,
                     )
                     alt_no_token.append(_alt)
             else:
@@ -253,11 +259,8 @@ class Locator(commands.Cog):
                 f"Character **{character}** Unlinked in auth", ephemeral=True
             )
 
-        try:
-            discord_string = f"<@{char.character_ownership.user.discord.uid}>"
-        except Exception as e:
-            logger.error(e)
-            discord_string = "unknown"
+        discord_id = get_discord_id(character=char)
+        discord_string = f"<@{discord_id}>" if discord_id else "unknown"
 
         await ctx.respond(
             (
@@ -274,6 +277,15 @@ class Locator(commands.Cog):
 
 
 def setup(bot):
+    """
+    Setup the Locator cog.
+
+    :param bot:
+    :type bot:
+    :return:
+    :rtype:
+    """
+
     # Unload the Members cog from `aadiscordbot`
     unload_cog(bot=bot, cog_name="Locator")
 

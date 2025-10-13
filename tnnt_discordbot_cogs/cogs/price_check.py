@@ -93,12 +93,12 @@ class PriceCheck(commands.Cog):
 
             return response.json()
         except requests.RequestException as e:
-            logger.error(f"Failed to fetch market data: {e}")
+            logger.error("Failed to fetch market data: %s", e)
 
             return None
 
     @classmethod
-    def _build_market_price_embed(
+    def _build_market_price_embed(  # pylint: disable=too-many-locals
         cls, embed: Embed, market: dict, item_name: str, eve_type_id: str
     ) -> None:
         """

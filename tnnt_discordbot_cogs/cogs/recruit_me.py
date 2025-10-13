@@ -36,13 +36,23 @@ AUDIT_SYSTEM_URL_MD = f"[{AUDIT_SYSTEM_NAME}]({AUDIT_SYSTEM_URL})"
 GROUPS_PAGE_URL = reverse_absolute(viewname="groupmanagement:groups")
 
 # Roles
-APPLICANT_ROLE_NAME = Setting.get_setting(Setting.Field.APPLICANT_ROLE_NAME.value)
-APPLICANT_ROLE_ID = Setting.get_setting(Setting.Field.APPLICANT_ROLE_ID.value)
-RECRUITER_ROLE_ID = Setting.get_setting(Setting.Field.RECRUITER_ROLE_ID.value)
-LEADERSHIP_ROLE_ID = Setting.get_setting(Setting.Field.LEADERSHIP_ROLE_ID.value)
+APPLICANT_ROLE_NAME = Setting.get_setting(
+    Setting.Field.APPLICANT_ROLE_NAME.value  # pylint: disable=no-member
+)
+APPLICANT_ROLE_ID = Setting.get_setting(
+    Setting.Field.APPLICANT_ROLE_ID.value  # pylint: disable=no-member
+)
+RECRUITER_ROLE_ID = Setting.get_setting(
+    Setting.Field.RECRUITER_ROLE_ID.value  # pylint: disable=no-member
+)
+LEADERSHIP_ROLE_ID = Setting.get_setting(
+    Setting.Field.LEADERSHIP_ROLE_ID.value  # pylint: disable=no-member
+)
 
 # Channels
-RECRUITING_CHANNEL = Setting.get_setting(Setting.Field.RECRUITING_CHANNEL.value).channel
+RECRUITING_CHANNEL = Setting.get_setting(
+    Setting.Field.RECRUITING_CHANNEL.value  # pylint: disable=no-member
+).channel
 
 
 class BotResponse(str, Enum):

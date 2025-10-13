@@ -67,6 +67,7 @@ class About(commands.Cog):
         try:
             if settings.TNNT_TEMPLATE_ENTITY_ID == 1:
                 aa_icon = f"{auth_url}/static/allianceauth/icons/allianceauth.png"
+
                 embed.set_thumbnail(url=aa_icon)
             else:
                 if settings.TNNT_TEMPLATE_ENTITY_TYPE == "alliance":

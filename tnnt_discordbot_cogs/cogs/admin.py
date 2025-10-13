@@ -1,5 +1,10 @@
+"""
+Admin Cog for Terra Nanotech Discord Bot Cogs.
+"""
+
 # Standard Library
 import logging
+from importlib.metadata import packages_distributions, version
 
 # Third Party
 import pendulum
@@ -38,6 +43,10 @@ logger = logging.getLogger(__name__)
 
 
 class Admin(commands.Cog):
+    """
+    Admin Cog for Terra Nanotech Discord Bot Cogs.
+    """
+
     def __init__(self, bot):
         """
         Initialize the Admin cog
@@ -320,7 +329,7 @@ class Admin(commands.Cog):
                 try:
                     await role_model.delete()
                     empties += 1
-                except Exception:
+                except Exception:  # pylint: disable=broad-except
                     fails.append(role_model.name)
 
         await ctx.respond(f"Deleted {empties} Roles.")
@@ -358,12 +367,12 @@ class Admin(commands.Cog):
 
             try:
                 discord_exists = DiscordUser.objects.get(uid=member_id)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 discord_exists = False
 
             try:
                 discord_is_bot = member.bot
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 discord_is_bot = False
 
             if discord_exists is not False:
@@ -378,7 +387,7 @@ class Admin(commands.Cog):
 
         try:
             await ctx.respond(payload)
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             await ctx.respond(payload[0:1999])
 
     @admin_commands.command(
@@ -408,13 +417,12 @@ class Admin(commands.Cog):
 
             return await ctx.respond("No webhooks for this channel.", ephemeral=True)
 
-        else:
-            strs = []
+        strs = []
 
-            for hook in hooks:
-                strs.append(f"{hook.name} - {hook.url}")
+        for hook in hooks:
+            strs.append(f"{hook.name} - {hook.url}")
 
-            return await ctx.respond("\n".join(strs), ephemeral=True)
+        return await ctx.respond("\n".join(strs), ephemeral=True)
 
     @admin_commands.command(
         name="uptime",
@@ -462,9 +470,6 @@ class Admin(commands.Cog):
 
         try:
             output = {}
-            # Standard Library
-            from importlib.metadata import packages_distributions, version
-
             packages = packages_distributions()
 
             for _ext, _d in self.bot.extensions.items():
@@ -491,7 +496,7 @@ class Admin(commands.Cog):
                 embed=Embed(title="Loaded Extensions", description="\n".join(msg)),
                 ephemeral=True,
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             return await ctx.respond(f"Something went wrong! {e}", ephemeral=True)
 
     @admin_commands.command(
@@ -565,22 +570,22 @@ class Admin(commands.Cog):
             )
 
             embed.description = f"Up time: {uptime}"
-        except Exception as e:
-            logger.debug(f"Up time Fail {e}", stack_info=True)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.debug("Up time Fail %s", e, stack_info=True)
         try:
             embed.add_field(
                 name="Task Stats", value=self.bot.statistics.to_string(), inline=False
             )
-        except Exception as e:
-            logger.debug(f"Stats Fail {e}", stack_info=True)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.debug("Stats Fail %s", e, stack_info=True)
 
         try:
             rate_limits = self.bot.rate_limits.get_rate_limits()
 
             if rate_limits:
                 embed.add_field(name="Rate Limits", value=rate_limits, inline=False)
-        except Exception as e:
-            logger.debug(f"Rates Fail {e}", stack_info=True)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.debug("Rates Fail %s", e, stack_info=True)
 
         try:
             queued_tasks = len(self.bot.tasks)
@@ -591,8 +596,8 @@ class Admin(commands.Cog):
                 value=f"```Queued:  {queued_tasks}\nDefered: {pending_tasks}```",
                 inline=False,
             )
-        except Exception as e:
-            logger.debug(f"Tasks Fail {e}", stack_info=True)
+        except Exception as e:  # pylint: disable=broad-except
+            logger.debug("Tasks Fail %s", e, stack_info=True)
 
         return await ctx.respond("", embed=embed, ephemeral=True)
 

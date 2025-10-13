@@ -1,3 +1,7 @@
+"""
+Cog for managing Django Models related to Discord channels and servers.
+"""
+
 # Standard Library
 import logging
 
@@ -81,7 +85,7 @@ class Models(commands.Cog):
             Servers.objects.update_or_create(
                 server=ctx.guild.id, defaults={"name": ctx.guild.name}
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             logger.error(e)
 
         server = Servers.objects.get(server=ctx.guild.id)
@@ -95,7 +99,7 @@ class Models(commands.Cog):
                         channel=channel.id,
                         defaults={"name": self.channel_name(channel), "server": server},
                     )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 logger.error(e)
 
         return await ctx.followup.send(
@@ -125,7 +129,7 @@ class Models(commands.Cog):
         except ObjectDoesNotExist:
             # this is fine
             pass
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             logger.error(e)
 
     @commands.Cog.listener("on_guild_channel_create")
@@ -145,11 +149,13 @@ class Models(commands.Cog):
                 name=self.channel_name(channel),
                 server=Servers.objects.get(server=channel.guild.id),
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             logger.error(e)
 
     @commands.Cog.listener("on_guild_channel_update")
-    async def on_guild_channel_update(self, before_channel, after_channel):
+    async def on_guild_channel_update(
+        self, before_channel, after_channel  # pylint: disable=unused-argument
+    ):
         """
         Updates the channel name in the database when a channel is updated in Discord.
 
@@ -180,7 +186,7 @@ class Models(commands.Cog):
                         defaults={"name": self.channel_name(subchannel)},
                     )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             logger.error(e)
 
     @commands.Cog.listener("on_guild_update")
@@ -203,7 +209,7 @@ class Models(commands.Cog):
                 Servers.objects.update_or_create(
                     server=after_guild.id, defaults={"name": after_guild.name}
                 )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 logger.error(e)
 
 
