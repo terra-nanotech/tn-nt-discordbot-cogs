@@ -45,9 +45,9 @@ dependencies = [
     "django-eveuniverse>=1.3",
 ]
 urls.Changelog = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/CHANGELOG.md"
+#urls.Codecov = "https://codecov.io/gh/terra-nanotech/tn-nt-discordbot-cogs"
 urls.Documentation = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/README.md"
 urls.Homepage = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs"
-urls.Source = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs.git"
 urls.Tracker = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/issues"
 
 [tool.hatch.build]
