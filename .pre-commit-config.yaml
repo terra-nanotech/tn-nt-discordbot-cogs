@@ -119,32 +119,6 @@ repos:
         name: End of file fixer
         description: Ensure that files end with a newline.
 
-#  - repo: https://github.com/eslint/eslint
-#    rev: 9f5e19d6fcc79e1181e6c3617d8f7173e0814435  # frozen: v9.37.0
-#    hooks:
-#      - id: eslint
-#        name: ESLint
-#        description: Check for problems in JavaScript files.
-#        language: node
-#        additional_dependencies:
-#          # eslint itself needs to be here when using additional_dependencies.
-#          - eslint@9.37.0 # https://github.com/eslint/eslint/releases/latest
-#          - globals@16.4.0  # https://github.com/sindresorhus/globals/releases/latest
-#
-#  - repo: https://github.com/thibaudcolas/pre-commit-stylelint
-#    rev: 9b7d7bf350be72b9ba00c5577475f721b4adfa58  # frozen: v16.25.0
-#    hooks:
-#      - id: stylelint
-#        name: Stylelint
-#        description: Check for problems in CSS files.
-#        language: node
-#        args:
-#          - --formatter=compact
-#        additional_dependencies:
-#          # stylelint itself needs to be here when using additional_dependencies.
-#          - stylelint@16.25.0  # https://github.com/stylelint/stylelint/releases/latest
-#          - stylelint-config-standard@39.0.1  # https://github.com/stylelint/stylelint-config-standard/releases/latest
-
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: 3a6eb0fadf60b3cccfd80bad9dbb6fae7e47b316  # frozen: v1.10.0
     hooks:
@@ -252,8 +226,8 @@ repos:
         name: Mdformat
         description: Format Markdown files.
         additional_dependencies:
-          - mdformat-gfm==0.4.1  # Mdformat plugin for GitHub Flavored Markdown compatibility » https://github.com/hukkin/mdformat-gfm/tags
-          - mdformat-toc==0.3.0  # Mdformat plugin to generate a table of contents » https://github.com/hukkin/mdformat-toc/tags
+          - mdformat-gfm==1.0.0  # Mdformat plugin for GitHub Flavored Markdown compatibility » https://github.com/hukkin/mdformat-gfm/tags
+          - mdformat-toc==0.5.0  # Mdformat plugin to generate a table of contents » https://github.com/hukkin/mdformat-toc/tags
           - mdformat-black==0.1.1  # Mdformat plugin to Blacken Python code blocks » https://github.com/hukkin/mdformat-black/tags
           - mdformat-shfmt==0.2.0  # Mdformat plugin to format shell code blocks » https://github.com/hukkin/mdformat-shfmt/tags
 
@@ -273,7 +247,7 @@ repos:
         args:
           - --indent=4
         additional_dependencies:
-          - tox==4.30.3  # https://github.com/tox-dev/tox/releases/latest
+          - tox==4.32.0  # https://github.com/tox-dev/tox/releases/latest
 
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: 78f5e0f104cfa803d0597eaa924b4de3becd3e3e  # frozen: v0.24.1
@@ -283,7 +257,7 @@ repos:
         description: Validate the pyproject.toml file.
 
 #  - repo: https://github.com/pylint-dev/pylint
-#    rev: 4cab7ca4eae88b75960fcf2479b8ddd377dd4ce2  # frozen: v3.3.9
+#    rev: 0eb92d25fd38ba5bad2f8d2ea7df63ad23e18ae3  # frozen: v4.0.2
 #    hooks:
 #      - id: pylint
 #        name: Pylint
