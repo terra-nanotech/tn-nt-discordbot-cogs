@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Peter Pfeufer <info@ppfeufer.de>, 2025.
+# s0k0l -_- <salarysalo@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: TN-NT Discordbot Cogs 0.11.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ppfeufer/tn-nt-discordbot-cogs/issues\n"
-"POT-Creation-Date: 2025-10-07 16:30+0200\n"
-"PO-Revision-Date: 2025-09-28 12:33+0000\n"
-"Last-Translator: Peter Pfeufer <info@ppfeufer.de>\n"
+"POT-Creation-Date: 2025-11-04 17:58+0100\n"
+"PO-Revision-Date: 2025-10-19 10:50+0000\n"
+"Last-Translator: s0k0l -_- <salarysalo@gmail.com>\n"
 "Language-Team: Ukrainian <https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -19,115 +20,115 @@ msgstr ""
 
 #: tnnt_discordbot_cogs/admin.py:24
 msgid "Locator Cog Settings"
-msgstr ""
+msgstr "Налаштування Локатора cog"
 
 #: tnnt_discordbot_cogs/admin.py:28
 msgid "Lookup Cog Settings"
-msgstr ""
+msgstr "Переглянути налаштування cog"
 
 #: tnnt_discordbot_cogs/admin.py:32
 msgid "Recruitment Cog Settings"
-msgstr ""
+msgstr "Налаштування cog рекрутінгу"
 
 #: tnnt_discordbot_cogs/admin.py:44
 msgid "Welcome Cog Settings"
-msgstr ""
+msgstr "Налаштування cog привітання"
 
 #: tnnt_discordbot_cogs/models/permission.py:23
 msgid "Can run the `/locate` command"
-msgstr ""
+msgstr "Можна виконати команду `/locate`"
 
 #: tnnt_discordbot_cogs/models/permission.py:24
 msgid "Can run the `/lookup` command"
-msgstr ""
+msgstr "Можна виконати команду `/lookup`"
 
 #: tnnt_discordbot_cogs/models/permission.py:26
 msgid "Command Permission"
-msgstr ""
+msgstr "Керування Дозволами"
 
 #: tnnt_discordbot_cogs/models/setting.py:30
 msgid "Applicant Role Name"
-msgstr ""
+msgstr "Назва ролі Претендента"
 
 #: tnnt_discordbot_cogs/models/setting.py:31
 msgid "Applicant Role ID"
-msgstr ""
+msgstr "Ідентифікатор ролі Претендента"
 
 #: tnnt_discordbot_cogs/models/setting.py:32
 msgid "Recruiting Channel"
-msgstr ""
+msgstr "Канал Рекрутингу"
 
 #: tnnt_discordbot_cogs/models/setting.py:33
 msgid "Recruiter Role ID"
-msgstr ""
+msgstr "Ідентифікатор ролі рекрутера"
 
 #: tnnt_discordbot_cogs/models/setting.py:34
 msgid "Leadership Role ID"
-msgstr ""
+msgstr "Ідентифікатор ролі Керівника"
 
 #: tnnt_discordbot_cogs/models/setting.py:36
 msgid "Welcome Channel (Authenticated User)"
-msgstr ""
+msgstr "Канал Welcome (авторизованого коистувача)"
 
 #: tnnt_discordbot_cogs/models/setting.py:39
 msgid "Welcome Channel (Unauthenticated User)"
-msgstr ""
+msgstr "Канал Welcome (неавторизованого коистувача)"
 
 #: tnnt_discordbot_cogs/models/setting.py:41
 msgid "Roles Excluded"
-msgstr ""
+msgstr "Виключені Ролі"
 
 #: tnnt_discordbot_cogs/models/setting.py:42
 msgid "Lookup Channels"
-msgstr ""
+msgstr "Переглянути Канали"
 
 #: tnnt_discordbot_cogs/models/setting.py:43
 msgid "Locate Channels"
-msgstr ""
+msgstr "Шукати Канали"
 
 #: tnnt_discordbot_cogs/models/setting.py:50
 msgid "The name of the role for applicants in the Discord server."
-msgstr ""
+msgstr "Назва ролі для рекрутів на сервері Діскорд."
 
 #: tnnt_discordbot_cogs/models/setting.py:57
 msgid "The ID of the role for applicants in the Discord server."
-msgstr ""
+msgstr "Ідентифікатор ролі для рекрутів на сервері Діскорді."
 
 #: tnnt_discordbot_cogs/models/setting.py:66
 msgid "The channel used for recruiting in the Discord server."
-msgstr ""
+msgstr "Канал, що використовується для рекрутінгу на сервері Діскорд."
 
 #: tnnt_discordbot_cogs/models/setting.py:73
 msgid "The ID of the role for recruiters in the Discord server."
-msgstr ""
+msgstr "Ідентифікатор ролі для рекрутерів на сервері Діскорд."
 
 #: tnnt_discordbot_cogs/models/setting.py:80
 msgid "The ID of the role for leadership in the Discord server."
-msgstr ""
+msgstr "Ідентифікатор ролі Керівників на сервері Дискорду."
 
 #: tnnt_discordbot_cogs/models/setting.py:91
 msgid "The channel to send welcome messages for authenticated users in the Discord server."
-msgstr ""
+msgstr "Канал для відправки вітальних повідомлень авторизованим у Дискорді."
 
 #: tnnt_discordbot_cogs/models/setting.py:102
 msgid "The channel to send welcome messages for unauthenticated users in the Discord server."
-msgstr ""
+msgstr "Канал для відправки повідомлень для не авторизованих користувачів Дискорду."
 
 #: tnnt_discordbot_cogs/models/setting.py:111
 msgid "Comma-separated list of Discord roles that are excluded from the welcome message."
-msgstr ""
+msgstr "Розділений комами перелік ролей Дискорду, які виключено з вітального повідомлення."
 
 #: tnnt_discordbot_cogs/models/setting.py:120
 msgid "Channels in which the `/lookup` command can be used."
-msgstr ""
+msgstr "Канали, де може бути виконана команда `/lookup`."
 
 #: tnnt_discordbot_cogs/models/setting.py:128
 msgid "Channels in which the `/locate` command can be used."
-msgstr ""
+msgstr "Канали, де може бути виконана команда `/locate`."
 
 #: tnnt_discordbot_cogs/models/setting.py:137
 msgid "Setting"
-msgstr "Налаштування"
+msgstr "Налаштуваннячко"
 
 #: tnnt_discordbot_cogs/models/setting.py:138
 #: tnnt_discordbot_cogs/models/setting.py:148
