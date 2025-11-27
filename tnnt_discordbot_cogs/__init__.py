@@ -10,7 +10,7 @@ __title__ = "TN-NT Discordbot Cogs"
 
 __package_name__ = "tn-nt-discordbot-cogs"
 __package_name_verbose__ = "Terra Nanotech Discordbot Cogs"
-__package_name_useragent__ = "Terra-Nanotech-Discordbot-Cogs"
+__package_name_useragent__ = "TerraNanotechDiscordbotCogs"
 __app_name__ = "tnnt_discordbot_cogs"
 __github_url__ = f"https://github.com/ppfeufer/{__package_name__}"
 __user_agent__ = (
