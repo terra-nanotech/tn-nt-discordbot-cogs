@@ -40,7 +40,6 @@ dynamic = [
 ]
 dependencies = [
     "allianceauth>=3,<5",
-    "allianceauth-app-utils>=1.14.1",
     "allianceauth-discordbot",
     "django-eveuniverse>=1.3",
 ]
