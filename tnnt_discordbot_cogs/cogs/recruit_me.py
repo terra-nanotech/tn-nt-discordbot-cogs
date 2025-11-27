@@ -5,13 +5,19 @@ RecruitMe Cog
 # Standard Library
 import logging
 from enum import Enum
+from typing import Any
 
 # Third Party
-from discord import ButtonStyle, ChannelType, Embed, Interaction, Member, ui
+from discord import ButtonStyle, ChannelType, Embed, Guild, Interaction, Member, ui
 from discord.ext import commands
 
 # Django
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+
+# Alliance Auth
+from allianceauth.eveonline.models import EveCharacter
 
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
@@ -79,24 +85,170 @@ class BotResponse(str, Enum):
 
     # Recruitment thread title and body
     RECRUITMENT_THREAD_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
-    RECRUITMENT_THREAD_BODY = (
+    RECRUITMENT_THREAD_WELCOME = (
         "Hello <@{MEMBER_ID}>, and welcome! :wave:\n\n"
         "We're excited that you're interested in joining Terra Nanotech!\n\n"
         f"Before we get started, please ensure **all** your characters are added to {AUDIT_SYSTEM_URL_MD}.\n"
-        "This includes your main character as well as all other characters you have.\n\n"
-        'Once that\'s done, please click the "**Continue**" button below to notify a recruiter.\n'
+        "This includes your main character as well as any other characters you have.\n\n"
+        'Once done, please click the "**Continue**" button below to notify a recruiter.\n'
         "If you are not certain yet and just want to ask some questions first to help "
         'you to decide, click the "**Omit This Step**" button.'
+    )
+    RECRUITMENT_THREAD_COMPLIANCE_REMINDER = (
+        "Before we can proceed with your recruitment, "
+        f"please ensure **all** your characters are added to {AUDIT_SYSTEM_URL_MD}.\n"
+        "This includes your main character as well as any other characters you have.\n\n"
+        # "The following characters are not compliant:\n"
+        # "{CHARACTERS_LIST}\n\n"
+        'Once done, please click the "**Continue**" button below to notify a recruiter.\n\n'
+        "Thank you for your understanding!"
+    )
+    RECRUITMENT_THREAD_RECRUITING_START = (
+        "Thank you for reaching out!\n\n"
+        f"A member of the <@&{RECRUITER_ROLE_ID}> will be with you shortly to "
+        "guide you through the next steps of the recruitment process, which "
+        "may include an interview for further assessments.\n"
+        "In the meantime, while we conduct the usual background checks, "
+        "feel free to ask any questions you may have about Terra Nanotech, "
+        "and of course, introduce yourself!.\n\n"
+        "Thank you for your patience!\n\n"
+        f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
+    )
+    RECRUITMENT_THREAD_QUESTIONS_ONLY_START = (
+        "Thank you for reaching out!\n\n"
+        f"A member of the <@&{RECRUITER_ROLE_ID}> will be with you shortly "
+        "to answer any questions you may have.\n\n"
+        "Thank you for your patience!\n\n"
+        f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
+    )
+    RECRUITMENT_THREAD_CLOSURE = (
+        "Your recruitment thread has been closed.\n\n"
+        "If you change your mind, feel free to use the `/recruit_me` command again!"
     )
 
     # Recruitment thread created message
     RECRUITMENT_THREAD_CREATED = "Recruitment thread created!"
 
 
+def _get_auth_user_and_main_character(
+    member: Member, guild: Guild
+) -> tuple[User, EveCharacter]:
+    """
+    Get the auth user and main character for a member
+
+    :param member:
+    :type member:
+    :param guild:
+    :type guild:
+    :return:
+    :rtype:
+    """
+
+    auth_user = auth.get_auth_user(user=member.id, guild=guild)
+    main_character = auth_user.profile.main_character
+
+    return auth_user, main_character
+
+
+def _check_compliance(auth_user: User) -> tuple[bool, Any]:
+    """
+    Check if all characters of the auth user are in the audit system
+
+    :param auth_user:
+    :type auth_user:
+    :return:
+    :rtype:
+    """
+
+    character_ownerships = auth_user.character_ownerships.all().select_related(
+        "character", "character__characteraudit"
+    )
+    characters = []
+
+    for character in character_ownerships:
+        # if character.user.id not in characters:
+        #     characters[character.user.id] = []
+
+        try:
+            if not character.character.characteraudit.is_active():
+                # characters[character.user.id].append(character.character.character_name)
+                characters.append(character.character.character_name)
+        except ObjectDoesNotExist:
+            characters.append(character.character.character_name)
+
+    return True if len(characters) == 0 else False, characters
+
+
+class ComplianceView(ui.View):
+    """
+    View for compliance check
+    """
+
+    def __init__(self, auth_user: User):
+        """
+        Initialize the ComplianceView
+        """
+
+        super().__init__()
+
+        self.auth_user = auth_user
+
+    @ui.button(label="Continue", row=0, style=ButtonStyle.success)
+    async def continue_button_callback(self, button, interaction):
+        self.disable_all_items()
+
+        await interaction.response.edit_message(view=self)
+
+        is_compliant, non_compliant_characters = _check_compliance(self.auth_user)
+
+        if not is_compliant:
+            characters_list = "\n".join(
+                f"- {char}" for char in non_compliant_characters
+            )
+
+            await interaction.channel.send(
+                content=BotResponse.RECRUITMENT_THREAD_COMPLIANCE_REMINDER.value.format(
+                    CHARACTERS_LIST=characters_list
+                ),
+                view=ComplianceView(self.auth_user),
+            )
+        else:
+            await interaction.channel.send(
+                content=BotResponse.RECRUITMENT_THREAD_RECRUITING_START.value.format(
+                    LEADERSHIP_ROLE_ID=LEADERSHIP_ROLE_ID,
+                    RECRUITER_ROLE_ID=RECRUITER_ROLE_ID,
+                ),
+                embed=self.embed,
+            )
+
+    @ui.button(label="Close Thread", row=0, style=ButtonStyle.danger)
+    async def close_thread_button_callback(self, button, interaction):
+        self.disable_all_items()
+
+        await interaction.response.edit_message(view=self)
+        await interaction.channel.send(
+            content=BotResponse.RECRUITMENT_THREAD_CLOSURE.value
+        )
+
+        return await interaction.channel.archive()
+
+
 class RecruitmentThreadIntroduction(ui.View):
     """
     View for the recruitment thread introduction
     """
+
+    def __init__(self, auth_user: User):
+        """
+        Initialize the RecruitmentThreadIntroduction view
+
+        :param auth_user:
+        :type auth_user:
+        """
+
+        super().__init__()
+
+        self.auth_user = auth_user
 
     embed = Embed(
         title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
@@ -107,37 +259,53 @@ class RecruitmentThreadIntroduction(ui.View):
     async def continue_button_callback(self, button, interaction):
         self.disable_all_items()
 
-        await interaction.channel.send(
-            content=(
-                "Thank you for reaching out!\n\n"
-                f"A member of the <@&{RECRUITER_ROLE_ID}> will be with you shortly to "
-                "guide you through the next steps of the recruitment process, which "
-                "may include an interview for further assessments.\n"
-                "In the meantime, while we conduct the usual background checks, "
-                "feel free to ask any questions you may have about Terra Nanotech, "
-                "and of course, introduce yourself!.\n\n"
-                "Thank you for your patience!\n\n"
-                f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
-            ),
-            embed=self.embed,
-        )
         await interaction.response.edit_message(view=self)
+
+        is_compliant, non_compliant_characters = _check_compliance(self.auth_user)
+
+        if not is_compliant:
+            characters_list = "\n".join(
+                f"- {char}" for char in non_compliant_characters
+            )
+
+            await interaction.channel.send(
+                content=BotResponse.RECRUITMENT_THREAD_COMPLIANCE_REMINDER.value.format(
+                    CHARACTERS_LIST=characters_list
+                ),
+                view=ComplianceView(self.auth_user),
+            )
+        else:
+            await interaction.channel.send(
+                content=BotResponse.RECRUITMENT_THREAD_RECRUITING_START.value.format(
+                    LEADERSHIP_ROLE_ID=LEADERSHIP_ROLE_ID,
+                    RECRUITER_ROLE_ID=RECRUITER_ROLE_ID,
+                ),
+                embed=self.embed,
+            )
 
     @ui.button(label="Omit This Step", row=0, style=ButtonStyle.secondary)
     async def omit_button_callback(self, button, interaction):
         self.disable_all_items()
 
+        await interaction.response.edit_message(view=self)
         await interaction.channel.send(
-            content=(
-                "Thank you for reaching out!\n\n"
-                f"A member of the <@&{RECRUITER_ROLE_ID}> will be with you shortly "
-                "to answer any questions you may have.\n\n"
-                "Thank you for your patience!\n\n"
-                f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
+            content=BotResponse.RECRUITMENT_THREAD_QUESTIONS_ONLY_START.value.format(
+                LEADERSHIP_ROLE_ID=LEADERSHIP_ROLE_ID,
+                RECRUITER_ROLE_ID=RECRUITER_ROLE_ID,
             ),
             embed=self.embed,
         )
+
+    @ui.button(label="Close Thread", row=0, style=ButtonStyle.danger)
+    async def close_thread_button_callback(self, button, interaction):
+        self.disable_all_items()
+
         await interaction.response.edit_message(view=self)
+        await interaction.channel.send(
+            content=BotResponse.RECRUITMENT_THREAD_CLOSURE.value
+        )
+
+        return await interaction.channel.archive()
 
 
 class RecruitMe(commands.Cog):
@@ -169,10 +337,15 @@ class RecruitMe(commands.Cog):
         :rtype: None
         """
 
-        auth_user = auth.get_auth_user(user=member, guild=ctx.guild)
-        main_character = auth_user.profile.main_character
+        # Get the auth user and main character
+        auth_user, main_character = _get_auth_user_and_main_character(
+            member=member, guild=ctx.guild
+        )
 
+        # Get the recruiting channel
         ch = ctx.guild.get_channel(RECRUITING_CHANNEL)
+
+        # Create the recruitment thread
         th = await ch.create_thread(
             name=BotResponse.RECRUITMENT_THREAD_TITLE.value.format(
                 MAIN_CHARACTER=main_character,
@@ -182,13 +355,18 @@ class RecruitMe(commands.Cog):
             type=ChannelType.private_thread,
             reason=None,
         )
-        msg = BotResponse.RECRUITMENT_THREAD_BODY.value.format(
+
+        # Prepare the welcome message
+        msg = BotResponse.RECRUITMENT_THREAD_WELCOME.value.format(
             LEADERSHIP_ROLE_ID=LEADERSHIP_ROLE_ID,
             RECRUITER_ROLE_ID=RECRUITER_ROLE_ID,
             MEMBER_ID=member.id,
         )
 
-        await th.send(content=msg, view=RecruitmentThreadIntroduction())
+        # Send the welcome message in the recruitment thread
+        await th.send(content=msg, view=RecruitmentThreadIntroduction(auth_user))
+
+        # Notify the user that their recruitment thread has been created
         await ctx.response.send_message(
             content=BotResponse.RECRUITMENT_THREAD_CREATED.value,
             view=None,
