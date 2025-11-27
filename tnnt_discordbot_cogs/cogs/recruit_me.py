@@ -17,11 +17,8 @@ from django.utils import timezone
 from aadiscordbot import app_settings
 from aadiscordbot.utils import auth
 
-# Alliance Auth (External Libs)
-from app_utils.urls import reverse_absolute
-
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.helper import reverse_absolute, unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
 
 logger = logging.getLogger(__name__)

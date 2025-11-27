@@ -46,6 +46,10 @@ Section Order:
 
 - Interaction buttons to the `recruit_me` cog
 
+### Removed
+
+- `allianceauth-app-utils` as dependency
+
 ## [1.0.1] - 2025-11-04
 
 ### Changed
