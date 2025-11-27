@@ -7,7 +7,7 @@ import logging
 from enum import Enum
 
 # Third Party
-from discord import ChannelType, Embed, Interaction, Member
+from discord import ButtonStyle, ChannelType, Embed, Interaction, Member, ui
 from discord.ext import commands
 
 # Django
@@ -83,15 +83,64 @@ class BotResponse(str, Enum):
     # Recruitment thread title and body
     RECRUITMENT_THREAD_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
     RECRUITMENT_THREAD_BODY = (
-        "Dragging in: <@&{LEADERSHIP_ROLE_ID}> and <@&{RECRUITER_ROLE_ID}> …\n\n"
         "Hello <@{MEMBER_ID}>, and welcome! :wave:\n\n"
-        f"Feel free to ask questions and please ensure **all** your characters are added to {AUDIT_SYSTEM_URL_MD}.\n"
-        "And of course, tell us a bit about yourself!\n\n"
-        "Someone from the recruitment team will get in touch with you soon!"
+        "We're excited that you're interested in joining Terra Nanotech!\n\n"
+        f"Before we get started, please ensure **all** your characters are added to {AUDIT_SYSTEM_URL_MD}.\n"
+        "This includes your main character as well as all other characters you have.\n\n"
+        'Once that\'s done, please click the "**Continue**" button below to notify a recruiter.\n'
+        "If you are not certain yet and just want to ask some questions first to help "
+        'you to decide, click the "**Omit This Step**" button.'
     )
 
     # Recruitment thread created message
     RECRUITMENT_THREAD_CREATED = "Recruitment thread created!"
+
+
+class RecruitmentThreadIntroduction(ui.View):
+    """
+    View for the recruitment thread introduction
+    """
+
+    embed = Embed(
+        title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
+        description=BotResponse.PRIVATE_THREAD_GUIDE_BODY.value,
+    )
+
+    @ui.button(label="Continue", row=0, style=ButtonStyle.success)
+    async def continue_button_callback(self, button, interaction):
+        self.disable_all_items()
+
+        await interaction.channel.send(
+            content=(
+                "Thank you for reaching out!\n\n"
+                f"A member of the <@&{RECRUITER_ROLE_ID}> will be with you shortly to "
+                "guide you through the next steps of the recruitment process, which "
+                "may include an interview for further assessments.\n"
+                "In the meantime, while we conduct the usual background checks, "
+                "feel free to ask any questions you may have about Terra Nanotech, "
+                "and of course, introduce yourself!.\n\n"
+                "Thank you for your patience!\n\n"
+                f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
+            ),
+            embed=self.embed,
+        )
+        await interaction.response.edit_message(view=self)
+
+    @ui.button(label="Omit This Step", row=0, style=ButtonStyle.secondary)
+    async def omit_button_callback(self, button, interaction):
+        self.disable_all_items()
+
+        await interaction.channel.send(
+            content=(
+                "Thank you for reaching out!\n\n"
+                f"A member of the <@&{RECRUITER_ROLE_ID}> will be with you shortly "
+                "to answer any questions you may have.\n\n"
+                "Thank you for your patience!\n\n"
+                f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
+            ),
+            embed=self.embed,
+        )
+        await interaction.response.edit_message(view=self)
 
 
 class RecruitMe(commands.Cog):
@@ -141,12 +190,8 @@ class RecruitMe(commands.Cog):
             RECRUITER_ROLE_ID=RECRUITER_ROLE_ID,
             MEMBER_ID=member.id,
         )
-        embd = Embed(
-            title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
-            description=BotResponse.PRIVATE_THREAD_GUIDE_BODY.value,
-        )
 
-        await th.send(content=msg, embed=embd)
+        await th.send(content=msg, view=RecruitmentThreadIntroduction())
         await ctx.response.send_message(
             content=BotResponse.RECRUITMENT_THREAD_CREATED.value,
             view=None,
