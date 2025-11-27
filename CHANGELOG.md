@@ -42,6 +42,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Interaction buttons to the `recruit_me` cog
+
 ## [1.0.1] - 2025-11-04
 
 ### Changed
