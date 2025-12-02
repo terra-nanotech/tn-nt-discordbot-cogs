@@ -42,9 +42,15 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [1.1.0] - 2025-12-02
+
 ### Added
 
 - Interaction buttons to the `recruit_me` cog
+
+### Changed
+
+- Translations updated
 
 ### Removed
 
@@ -288,6 +294,7 @@ Section Order:
 [0.9.0]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v0.8.0...v0.9.0 "v0.9.0"
 [1.0.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v0.11.0...v1.0.0 "v1.0.0"
 [1.0.1]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.0.0...v1.0.1 "v1.0.1"
-[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.0.1...HEAD "In Development"
+[1.1.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.0.1...v1.1.0 "v1.1.0"
+[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.1.0...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
