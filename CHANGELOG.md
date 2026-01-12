@@ -44,6 +44,7 @@ Section Order:
 
 ### Fixed
 
+- Method `open_ticket` may be static warning
 - Compliance check
   - It is enough to check if all characters have been added to the audit module. We
     don't need to check for `is_active()` here, as they will be at some point in the future.

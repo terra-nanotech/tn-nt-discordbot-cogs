@@ -332,7 +332,8 @@ class RecruitMe(commands.Cog):
 
         self.bot = bot
 
-    async def open_ticket(self, ctx: Interaction, member: Member):
+    @staticmethod
+    async def open_ticket(ctx: Interaction, member: Member):
         """
         Open a recruitment ticket
 
