@@ -48,6 +48,10 @@ Section Order:
   - It is enough to check if all characters have been added to the audit module. We
     don't need to check for `is_active()` here, as they will be at some point in the future.
 
+### Changed
+
+- Recruitment thread start text improved
+
 ## [1.1.1] - 2026-01-06
 
 ### Changed
