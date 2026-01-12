@@ -170,7 +170,8 @@ def _check_compliance(auth_user: User) -> tuple[bool, Any]:
         #     characters[character.user.id] = []
 
         try:
-            if not character.character.characteraudit.is_active():
+            # if not character.character.characteraudit.is_active():
+            if not character.character.characteraudit:
                 # characters[character.user.id].append(character.character.character_name)
                 characters.append(character.character.character_name)
         except ObjectDoesNotExist:
