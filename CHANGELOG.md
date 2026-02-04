@@ -42,6 +42,11 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Fixed
+
+- Interaction buttons in the `recruit_me` cog are not surviving bot restarts. Now using
+  persistent views to fix this.
+
 ## [1.1.2] - 2026-01-12
 
 ### Fixed

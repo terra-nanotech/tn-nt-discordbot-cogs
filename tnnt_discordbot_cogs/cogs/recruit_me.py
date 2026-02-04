@@ -137,20 +137,20 @@ class BotResponse(str, Enum):
 
 
 def _get_auth_user_and_main_character(
-    member: Member, guild: Guild
+    discord_user_id: int, guild: Guild
 ) -> tuple[User, EveCharacter]:
     """
     Get the auth user and main character for a member
 
-    :param member:
-    :type member:
+    :param discord_user_id:
+    :type discord_user_id:
     :param guild:
     :type guild:
     :return:
     :rtype:
     """
 
-    auth_user = auth.get_auth_user(user=member.id, guild=guild)
+    auth_user = auth.get_auth_user(user=discord_user_id, guild=guild)
     main_character = auth_user.profile.main_character
 
     return auth_user, main_character
@@ -191,22 +191,40 @@ class ComplianceView(ui.View):
     View for compliance check
     """
 
-    def __init__(self, auth_user: User):
+    def __init__(self):
         """
         Initialize the ComplianceView
         """
 
-        super().__init__()
+        super().__init__(timeout=None)  # No timeout
 
-        self.auth_user = auth_user
-
-    @ui.button(label="Continue", row=0, style=ButtonStyle.success)
+    @ui.button(
+        label="Continue",
+        row=0,
+        style=ButtonStyle.success,
+        custom_id="tnnt_cogs:recruitment:compliance_view:button:continue",
+    )
     async def continue_button_callback(self, button, interaction):
+        """
+        Continue button callback
+
+        :param button:
+        :type button:
+        :param interaction:
+        :type interaction:
+        :return:
+        :rtype:
+        """
+
         self.disable_all_items()
 
         await interaction.response.edit_message(view=self)
 
-        is_compliant, non_compliant_characters = _check_compliance(self.auth_user)
+        auth_user, main_character = _get_auth_user_and_main_character(
+            discord_user_id=interaction.user.id, guild=interaction.guild
+        )
+
+        is_compliant, non_compliant_characters = _check_compliance(auth_user)
 
         if not is_compliant:
             characters_list = "\n".join(
@@ -217,7 +235,7 @@ class ComplianceView(ui.View):
                 content=BotResponse.RECRUITMENT_THREAD_COMPLIANCE_REMINDER.value.format(
                     CHARACTERS_LIST=characters_list
                 ),
-                view=ComplianceView(self.auth_user),
+                view=ComplianceView(),
             )
         else:
             await interaction.channel.send(
@@ -228,8 +246,24 @@ class ComplianceView(ui.View):
                 embed=self.embed,
             )
 
-    @ui.button(label="Close Thread", row=0, style=ButtonStyle.danger)
+    @ui.button(
+        label="Close Thread",
+        row=0,
+        style=ButtonStyle.danger,
+        custom_id="tnnt_cogs:recruitment:compliance_view:button:close_thread",
+    )
     async def close_thread_button_callback(self, button, interaction):
+        """
+        Close thread button callback
+
+        :param button:
+        :type button:
+        :param interaction:
+        :type interaction:
+        :return:
+        :rtype:
+        """
+
         self.disable_all_items()
 
         await interaction.response.edit_message(view=self)
@@ -239,13 +273,48 @@ class ComplianceView(ui.View):
 
         return await interaction.channel.archive()
 
+    # @ui.button(
+    #     label="Identify Me!",
+    #     row=0,
+    #     style=ButtonStyle.danger,
+    #     custom_id="tnnt_cogs:recruitment:compliance_view:button:identify_me",
+    # )
+    # async def identify_me_button_callback(self, button, interaction):
+    #     """
+    #     Identify me button callback
+    #
+    #     :param button:
+    #     :type button:
+    #     :param interaction:
+    #     :type interaction:
+    #     :return:
+    #     :rtype:
+    #     """
+    #
+    #     await interaction.response.edit_message(view=self)
+    #     await interaction.channel.send(
+    #         content=f"Hello <@{interaction.user.id}>! You have identified yourself in this recruitment thread."
+    #     )
+    #     await interaction.channel.send(
+    #         content=('Channel Title: "' + interaction.channel.name + '"')
+    #     )
+    #
+    #     auth_user, main_character = _get_auth_user_and_main_character(
+    #         discord_user_id=interaction.user.id, guild=interaction.guild
+    #     )
+    #
+    #     await interaction.channel.send(
+    #         content=('Your main character is: "' + main_character.character_name + '"')
+    #     )
+
 
 class RecruitmentThreadIntroduction(ui.View):
     """
     View for the recruitment thread introduction
     """
 
-    def __init__(self, auth_user: User):
+    # def __init__(self, auth_user: User):
+    def __init__(self):
         """
         Initialize the RecruitmentThreadIntroduction view
 
@@ -253,22 +322,40 @@ class RecruitmentThreadIntroduction(ui.View):
         :type auth_user:
         """
 
-        super().__init__()
+        super().__init__(timeout=None)
 
-        self.auth_user = auth_user
+        self.embed = Embed(
+            title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
+            description=BotResponse.PRIVATE_THREAD_GUIDE_BODY.value,
+        )
 
-    embed = Embed(
-        title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
-        description=BotResponse.PRIVATE_THREAD_GUIDE_BODY.value,
+    @ui.button(
+        label="Continue",
+        row=0,
+        style=ButtonStyle.success,
+        custom_id="tnnt_cogs:recruitment:recruitment_threat_introduction_view:button:continue",
     )
-
-    @ui.button(label="Continue", row=0, style=ButtonStyle.success)
     async def continue_button_callback(self, button, interaction):
+        """
+        Continue button callback
+
+        :param button:
+        :type button:
+        :param interaction:
+        :type interaction:
+        :return:
+        :rtype:
+        """
+
         self.disable_all_items()
 
         await interaction.response.edit_message(view=self)
 
-        is_compliant, non_compliant_characters = _check_compliance(self.auth_user)
+        auth_user, main_character = _get_auth_user_and_main_character(
+            discord_user_id=interaction.user.id, guild=interaction.guild
+        )
+
+        is_compliant, non_compliant_characters = _check_compliance(auth_user)
 
         if not is_compliant:
             characters_list = "\n".join(
@@ -279,7 +366,7 @@ class RecruitmentThreadIntroduction(ui.View):
                 content=BotResponse.RECRUITMENT_THREAD_COMPLIANCE_REMINDER.value.format(
                     CHARACTERS_LIST=characters_list
                 ),
-                view=ComplianceView(self.auth_user),
+                view=ComplianceView(),
             )
         else:
             await interaction.channel.send(
@@ -290,8 +377,24 @@ class RecruitmentThreadIntroduction(ui.View):
                 embed=self.embed,
             )
 
-    @ui.button(label="Omit This Step", row=0, style=ButtonStyle.secondary)
+    @ui.button(
+        label="Omit This Step",
+        row=0,
+        style=ButtonStyle.secondary,
+        custom_id="tnnt_cogs:recruitment:recruitment_threat_introduction_view:button:omit_this_step",
+    )
     async def omit_button_callback(self, button, interaction):
+        """
+        Omit this step button callback
+
+        :param button:
+        :type button:
+        :param interaction:
+        :type interaction:
+        :return:
+        :rtype:
+        """
+
         self.disable_all_items()
 
         await interaction.response.edit_message(view=self)
@@ -303,8 +406,24 @@ class RecruitmentThreadIntroduction(ui.View):
             embed=self.embed,
         )
 
-    @ui.button(label="Close Thread", row=0, style=ButtonStyle.danger)
+    @ui.button(
+        label="Close Thread",
+        row=0,
+        style=ButtonStyle.danger,
+        custom_id="tnnt_cogs:recruitment:recruitment_threat_introduction_view:button:close_thread",
+    )
     async def close_thread_button_callback(self, button, interaction):
+        """
+        Close thread button callback
+
+        :param button:
+        :type button:
+        :param interaction:
+        :type interaction:
+        :return:
+        :rtype:
+        """
+
         self.disable_all_items()
 
         await interaction.response.edit_message(view=self)
@@ -313,6 +432,40 @@ class RecruitmentThreadIntroduction(ui.View):
         )
 
         return await interaction.channel.archive()
+
+    # @ui.button(
+    #     label="Identify Me!",
+    #     row=0,
+    #     style=ButtonStyle.danger,
+    #     custom_id="tnnt_cogs:recruitment:recruitment_threat_introduction_view:button:identify_me",
+    # )
+    # async def identify_me_button_callback(self, button, interaction):
+    #     """
+    #     Identify me button callback
+    #
+    #     :param button:
+    #     :type button:
+    #     :param interaction:
+    #     :type interaction:
+    #     :return:
+    #     :rtype:
+    #     """
+    #
+    #     await interaction.response.edit_message(view=self)
+    #     await interaction.channel.send(
+    #         content=f"Hello <@{interaction.user.id}>! You have identified yourself in this recruitment thread."
+    #     )
+    #     await interaction.channel.send(
+    #         content=('Channel Title: "' + interaction.channel.name + '"')
+    #     )
+    #
+    #     auth_user, main_character = _get_auth_user_and_main_character(
+    #         discord_user_id=interaction.user.id, guild=interaction.guild
+    #     )
+    #
+    #     await interaction.channel.send(
+    #         content=('Your main character is: "' + main_character.character_name + '"')
+    #     )
 
 
 class RecruitMe(commands.Cog):
@@ -331,6 +484,53 @@ class RecruitMe(commands.Cog):
         logger.info(msg="RecruitMe cog initialized")
 
         self.bot = bot
+        self._on_ready_done = False
+        self.recruiting_channel = (
+            None  # Optional: Resolved channel reference available after ready
+        )
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        # `on_ready` can fire multiple times; run initialization once
+        if self._on_ready_done:
+            return
+
+        # Ensure bot is ready (usually redundant inside on_ready)
+        if not self.bot.is_ready():
+            await self.bot.wait_until_ready()
+
+        logger.info("RecruitMe cog received on_ready")
+
+        # Resolve the recruiting channel id into a Channel object for later use
+        try:
+            self.recruiting_channel = self.bot.get_channel(RECRUITING_CHANNEL)
+
+            logger.info("Recruiting channel resolved: %s", self.recruiting_channel)
+        except Exception:
+            self.recruiting_channel = None
+
+            logger.exception("Failed to resolve recruiting channel")
+
+        # Register RecruitmentThreadIntroduction view
+        try:
+            self.bot.add_view(RecruitmentThreadIntroduction())
+
+            logger.info("RecruitmentThreadIntroduction view added successfully")
+        except Exception:
+            logger.exception("Failed to add RecruitmentThreadIntroduction view")
+
+        # Register ComplianceView view
+        try:
+            self.bot.add_view(ComplianceView())
+
+            logger.info("ComplianceView view added successfully")
+        except Exception:
+            logger.exception("Failed to add ComplianceView view")
+
+        # Mark initialization done so this runs only once
+        self._on_ready_done = True
+
+        logger.info("RecruitMe cog on_ready processing complete")
 
     @staticmethod
     async def open_ticket(ctx: Interaction, member: Member):
@@ -347,7 +547,7 @@ class RecruitMe(commands.Cog):
 
         # Get the auth user and main character
         auth_user, main_character = _get_auth_user_and_main_character(
-            member=member, guild=ctx.guild
+            discord_user_id=member.id, guild=ctx.guild
         )
 
         # Get the recruiting channel
@@ -372,7 +572,7 @@ class RecruitMe(commands.Cog):
         )
 
         # Send the welcome message in the recruitment thread
-        await th.send(content=msg, view=RecruitmentThreadIntroduction(auth_user))
+        await th.send(content=msg, view=RecruitmentThreadIntroduction())
 
         # Notify the user that their recruitment thread has been created
         await ctx.response.send_message(
@@ -483,6 +683,7 @@ def setup(bot):
     :return:
     :rtype:
     """
+
     # Unload the RecruitMe cog from `aadiscordbot`, so we can load our own.
     unload_cog(bot=bot, cog_name="RecruitMe")
 
