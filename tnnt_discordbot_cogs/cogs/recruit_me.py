@@ -198,6 +198,11 @@ class ComplianceView(ui.View):
 
         super().__init__(timeout=None)  # No timeout
 
+        self.embed = Embed(
+            title=BotResponse.PRIVATE_THREAD_GUIDE_TITLE.value,
+            description=BotResponse.PRIVATE_THREAD_GUIDE_BODY.value,
+        )
+
     @ui.button(
         label="Continue",
         row=0,
@@ -317,9 +322,6 @@ class RecruitmentThreadIntroduction(ui.View):
     def __init__(self):
         """
         Initialize the RecruitmentThreadIntroduction view
-
-        :param auth_user:
-        :type auth_user:
         """
 
         super().__init__(timeout=None)
