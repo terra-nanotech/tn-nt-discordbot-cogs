@@ -42,6 +42,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Fixed
+
+- AttributeError: 'ComplianceView' object has no attribute 'embed'
+
 ## [1.1.3] - 2026-02-04
 
 ### Fixed
