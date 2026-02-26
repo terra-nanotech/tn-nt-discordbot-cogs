@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Peter Pfeufer <info@ppfeufer.de>, 2025.
-# s0k0l -_- <salarysalo@gmail.com>, 2025.
+# s0k0l -_- <salarysalo@gmail.com>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: TN-NT Discordbot Cogs 0.11.0\n"
-"Report-Msgid-Bugs-To: https://github.com/ppfeufer/tn-nt-discordbot-cogs/issues\n"
-"POT-Creation-Date: 2026-02-05 00:17+0100\n"
-"PO-Revision-Date: 2025-10-19 10:50+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-26 02:11+0100\n"
+"PO-Revision-Date: 2026-02-22 19:23+0000\n"
 "Last-Translator: s0k0l -_- <salarysalo@gmail.com>\n"
 "Language-Team: Ukrainian <https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/uk/>\n"
 "Language: uk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : (n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.16\n"
 
 #: tnnt_discordbot_cogs/admin.py:24
 msgid "Locator Cog Settings"
@@ -128,7 +128,7 @@ msgstr "Канали, де може бути виконана команда `/l
 
 #: tnnt_discordbot_cogs/models/setting.py:137
 msgid "Setting"
-msgstr "Налаштуваннячко"
+msgstr "Опція"
 
 #: tnnt_discordbot_cogs/models/setting.py:138
 #: tnnt_discordbot_cogs/models/setting.py:148
