@@ -10,12 +10,10 @@ import logging
 import requests
 from discord import Color, Embed, SlashCommandGroup
 from discord.ext import commands
+from eve_sde.models import ItemType
 
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
-
-# Alliance Auth (External Libs)
-from eveuniverse.models import EveEntity
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs import __user_agent__
@@ -201,14 +199,12 @@ class PriceCheck(commands.Cog):
                 markets = cls._get_plex_market()
 
             try:
-                eve_type = (
-                    EveEntity.objects.fetch_by_names_esi([item_name])
-                    .filter(category=EveEntity.CATEGORY_INVENTORY_TYPE)
-                    .values_list("id", flat=True)
+                eve_type_id = str(
+                    ItemType.objects.filter(name__iexact=item_name).values_list(
+                        "id", flat=True
+                    )[0]
                 )
-
-                eve_type_id = str(eve_type[0])
-            except (EveEntity.DoesNotExist, IndexError):
+            except (ItemType.DoesNotExist, IndexError):
                 embed = Embed(
                     title=f"Price Lookup for {item_name}",
                     color=Color.orange(),
