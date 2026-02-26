@@ -35,14 +35,35 @@ They are COGs of apps we use, so they fit our needs.
 pip install tnnt-discordbot-cogs==1.1.4
 ```
 
-In `local.py` right after `INSTALLED_APPS`:
+In `local.py`:
 
 ```python
-# Terra Nanotech Discordbot Cogs
-INSTALLED_APPS += ["eveuniverse", "tnnt_discordbot_cogs"]
+INSTALLED_APPS = [
+    # ...
+    "eve_sde",  # Only if not already added for another app
+    "tnnt_discordbot_cogs",
+    # ...
+]
+
+# This line right below the `INSTALLED_APPS` list, and only if not already added for another app
+INSTALLED_APPS = ["modeltranslation"] + INSTALLED_APPS
+
+# Add the following scheduled task, if not already added for another app
+# https://github.com/Solar-Helix-Independent-Transport/django-eveonline-sde
+if "eve_sde" in INSTALLED_APPS:
+    # Run at 12:00 UTC each day
+    CELERYBEAT_SCHEDULE["EVE SDE :: Check for SDE Updates"] = {
+        "task": "eve_sde.tasks.check_for_sde_updates",
+        "schedule": crontab(minute="0", hour="12"),
+    }
 ```
 
 Run DB migrations and restart supervisor.
+Now, run the `esde_load_sde` command to populate the database with the SDE data:
+
+```shell
+python manage.py esde_load_sde
+```
 
 ## Commands<a name="commands"></a>
 

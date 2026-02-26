@@ -42,6 +42,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Changed
+
+- Dependencies changed from `django-eveuniverse` to `django-eveonline-sde`
+
 ## [1.1.4] - 2026-02-05
 
 ### Fixed
