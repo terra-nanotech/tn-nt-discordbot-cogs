@@ -38,7 +38,7 @@ pip install tnnt-discordbot-cogs==2.0.0
 In `local.py`:
 
 ```python
-INSTALLED_APPS = [
+INSTALLED_APPS += [
     # ...
     "eve_sde",  # Only if not already added for another app
     "tnnt_discordbot_cogs",
