@@ -44,15 +44,13 @@ dependencies = [
     "django-eveonline-sde>=0.0.1b1",
 ]
 urls.Changelog = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/CHANGELOG.md"
-#urls.Codecov = "https://codecov.io/gh/terra-nanotech/tn-nt-discordbot-cogs"
+# urls.Codecov = "https://codecov.io/gh/terra-nanotech/tn-nt-discordbot-cogs"
 urls.Documentation = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/README.md"
 urls.Homepage = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs"
 urls.Tracker = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/issues"
 
-[tool.hatch.build]
-include = [
+[tool.hatch]
+build.include = [
     "/tnnt_discordbot_cogs",
 ]
-
-[tool.hatch.version]
-path = "tnnt_discordbot_cogs/__init__.py"
+version.path = "tnnt_discordbot_cogs/__init__.py"
