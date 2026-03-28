@@ -39,9 +39,9 @@ dynamic = [
     "version",
 ]
 dependencies = [
-    "allianceauth>=3",
+    "allianceauth>=4",
     "allianceauth-discordbot",
-    "django-eveonline-sde>=0.0.1b1",
+    "django-eveonline-sde>=0.0.1b9",
 ]
 urls.Changelog = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/CHANGELOG.md"
 # urls.Codecov = "https://codecov.io/gh/terra-nanotech/tn-nt-discordbot-cogs"
