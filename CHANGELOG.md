@@ -48,6 +48,7 @@ Section Order:
 
 ### Changed
 
+- Use enums for market IDs
 - Use AA's evelinks API for images
 
 ## [2.0.0] - 2026-02-26

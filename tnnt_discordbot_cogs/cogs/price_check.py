@@ -5,6 +5,7 @@ Market Price Checks cog for discordbot - https://github.com/pvyParts/allianceaut
 # Standard Library
 import locale
 import logging
+from enum import Enum
 
 # Third Party
 import requests
@@ -23,6 +24,26 @@ from tnnt_discordbot_cogs import __user_agent__
 from tnnt_discordbot_cogs.helper import unload_cog
 
 logger = logging.getLogger(__name__)
+
+
+class MarketRegion(Enum):
+    """
+    Market Region Enum
+    """
+
+    PLEXMARKET = 19000001
+
+
+class MarketSystem(Enum):
+    """
+    Market System Enum
+    """
+
+    JITA = 30000142
+    AMARR = 60008494
+    RENS = 60004588
+    HEK = 60005686
+    DODIXIE = 30002659
 
 
 class PriceCheck(commands.Cog):
@@ -53,7 +74,9 @@ class PriceCheck(commands.Cog):
         :rtype:
         """
 
-        return [{"name": "Global PLEX Market", "region_id": 19000001}]
+        return [
+            {"name": "Global PLEX Market", "region_id": MarketRegion.PLEXMARKET.value}
+        ]
 
     @staticmethod
     def _get_market_data(market: dict, eve_type_id: str) -> dict | None:
@@ -294,11 +317,11 @@ class PriceCheck(commands.Cog):
         return await ctx.respond(
             embed=self._price_check(
                 markets=[
-                    {"name": "Jita Market", "system_id": 30000142},
-                    {"name": "Amarr Market", "system_id": 30002187},
-                    {"name": "Rens Market", "system_id": 60004588},
-                    {"name": "Hek Market", "system_id": 60005686},
-                    {"name": "Dodixie Market", "system_id": 30002659},
+                    {"name": "Jita Market", "system_id": MarketSystem.JITA.value},
+                    {"name": "Amarr Market", "system_id": MarketSystem.AMARR.value},
+                    {"name": "Rens Market", "system_id": MarketSystem.RENS.value},
+                    {"name": "Hek Market", "system_id": MarketSystem.HEK.value},
+                    {"name": "Dodixie Market", "system_id": MarketSystem.DODIXIE.value},
                 ],
                 item_name=item_name,
             ),
@@ -326,7 +349,7 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Jita Market", "system_id": 30000142}],
+                markets=[{"name": "Jita Market", "system_id": MarketSystem.JITA.value}],
                 item_name=item_name,
             ),
             ephemeral=True,
@@ -353,7 +376,9 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Amarr Market", "system_id": 60008494}],
+                markets=[
+                    {"name": "Amarr Market", "system_id": MarketSystem.AMARR.value}
+                ],
                 item_name=item_name,
             ),
             ephemeral=True,
@@ -380,7 +405,7 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Rens Market", "system_id": 60004588}],
+                markets=[{"name": "Rens Market", "system_id": MarketSystem.RENS.value}],
                 item_name=item_name,
             ),
             ephemeral=True,
@@ -407,7 +432,7 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Hek Market", "system_id": 60005686}],
+                markets=[{"name": "Hek Market", "system_id": MarketSystem.HEK.value}],
                 item_name=item_name,
             ),
             ephemeral=True,
@@ -434,7 +459,9 @@ class PriceCheck(commands.Cog):
 
         return await ctx.respond(
             embed=self._price_check(
-                markets=[{"name": "Dodixie Market", "system_id": 30002659}],
+                markets=[
+                    {"name": "Dodixie Market", "system_id": MarketSystem.DODIXIE.value}
+                ],
                 item_name=item_name,
             ),
             ephemeral=True,
