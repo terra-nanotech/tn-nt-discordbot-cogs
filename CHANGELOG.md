@@ -42,6 +42,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Autocomplete for items to price check commands
+
 ### Changed
 
 - Use AA's evelinks API for images

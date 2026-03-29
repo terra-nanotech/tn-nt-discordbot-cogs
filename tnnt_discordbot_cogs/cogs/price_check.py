@@ -8,7 +8,7 @@ import logging
 
 # Third Party
 import requests
-from discord import Color, Embed, SlashCommandGroup
+from discord import AutocompleteContext, Color, Embed, SlashCommandGroup, option
 from discord.ext import commands
 from eve_sde.models import ItemType
 
@@ -178,9 +178,31 @@ class PriceCheck(commands.Cog):
         else:
             embed.add_field(
                 name="API Error",
-                value=(f"Could not not fetch the price for the {market_name} market."),
+                value=f"Could not not fetch the price for the {market_name} market.",
                 inline=False,
             )
+
+    @staticmethod
+    async def _search_item(ctx: AutocompleteContext) -> list:
+        """
+        Autocomplete function for item name input
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
+        """
+
+        query = ctx.value.strip()
+
+        if not query:
+            return []
+
+        return list(
+            ItemType.objects.filter(
+                name__icontains=query, published=1, market_group__isnull=False
+            ).values_list("name", flat=True)[:10]
+        )
 
     @classmethod
     def _price_check(cls, markets, item_name: str = None) -> Embed:
@@ -254,6 +276,9 @@ class PriceCheck(commands.Cog):
         name="all_markets",
         description="Check an item price on all major market hubs",
     )
+    @option(
+        name="item_name", description="Search for an item…", autocomplete=_search_item
+    )
     async def all_markets(self, ctx, item_name: str):
         """
         Check an item price on all major market hubs
@@ -284,6 +309,9 @@ class PriceCheck(commands.Cog):
         name="jita",
         description="Check an item price on Jita market",
     )
+    @option(
+        name="item_name", description="Search for an item…", autocomplete=_search_item
+    )
     async def jita(self, ctx, item_name: str):
         """
         Check an item price on Jita market
@@ -307,6 +335,9 @@ class PriceCheck(commands.Cog):
     @price_commands.command(
         name="amarr",
         description="Check an item price on Amarr market",
+    )
+    @option(
+        name="item_name", description="Search for an item…", autocomplete=_search_item
     )
     async def amarr(self, ctx, item_name: str):
         """
@@ -332,6 +363,9 @@ class PriceCheck(commands.Cog):
         name="rens",
         description="Check an item price on Rens market",
     )
+    @option(
+        name="item_name", description="Search for an item…", autocomplete=_search_item
+    )
     async def rens(self, ctx, item_name: str):
         """
         Check an item price on Rens market
@@ -356,6 +390,9 @@ class PriceCheck(commands.Cog):
         name="hek",
         description="Check an item price on Hek market",
     )
+    @option(
+        name="item_name", description="Search for an item…", autocomplete=_search_item
+    )
     async def hek(self, ctx, item_name: str):
         """
         Check an item price on Hek market
@@ -379,6 +416,9 @@ class PriceCheck(commands.Cog):
     @price_commands.command(
         name="dodixie",
         description="Check an item price on Dodixie market",
+    )
+    @option(
+        name="item_name", description="Search for an item…", autocomplete=_search_item
     )
     async def dodixie(self, ctx, item_name: str):
         """
@@ -410,8 +450,6 @@ class PriceCheck(commands.Cog):
 
         :param ctx:
         :type ctx:
-        :param item_name:
-        :type item_name:
         :return:
         :rtype:
         """
