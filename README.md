@@ -1,6 +1,14 @@
 # Terra Nanotech Discordbot Cogs<a name="terra-nanotech-discordbot-cogs"></a>
 
+[![Version](https://img.shields.io/pypi/v/tnnt-discordbot-cogs?label=release)](https://pypi.org/project/tnnt-discordbot-cogs/)
+[![License](https://img.shields.io/badge/license-GPLv3-green)](https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/LICENSE)
+[![Python](https://img.shields.io/pypi/pyversions/tnnt-discordbot-cogs)](https://pypi.org/project/tnnt-discordbot-cogs/)
+[![Django](https://img.shields.io/pypi/djversions/tnnt-discordbot-cogs?label=django)](https://pypi.org/project/tnnt-discordbot-cogs/)
+![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/terra-nanotech/tn-nt-discordbot-cogs/master.svg)](https://results.pre-commit.ci/latest/github/terra-nanotech/tn-nt-discordbot-cogs/master)
+[![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](http://black.readthedocs.io/en/latest/)
+[![Translation status](https://weblate.ppfeufer.de/widget/alliance-auth-apps/terra-nanotech-discordbot-cogs/svg-badge.svg)](https://weblate.ppfeufer.de/engage/alliance-auth-apps/)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/CODE_OF_CONDUCT.md)
 [![Alliance Auth Compatibility](https://img.shields.io/badge/Alliance_Auth-v4_%7C_v5-brightgreen)](https://gitlab.com/allianceauth/allianceauth)
 
 A collection of cogs for
@@ -8,12 +16,11 @@ A collection of cogs for
 
 ______________________________________________________________________
 
-<!-- mdformat-toc start --slug=github --maxlevel=6 --minlevel=1 -->
+<!-- mdformat-toc start --slug=github --maxlevel=6 --minlevel=2 -->
 
-- [Terra Nanotech Discordbot Cogs](#terra-nanotech-discordbot-cogs)
-  - [Important Information](#important-information)
-  - [Install](#install)
-  - [Commands](#commands)
+- [Important Information](#important-information)
+- [Install](#install)
+- [Commands](#commands)
 
 <!-- mdformat-toc end -->
 
@@ -24,7 +31,7 @@ ______________________________________________________________________
 These Discord bot COGs are specially tailored for the corporation Terra Nanotech.
 They are COGs of apps we use, so they fit our needs.
 
-> **Note**
+> [!NOTE]
 >
 > If you install this app, you need to be aware that there will be
 > no support for any kind of issues you might encounter, and you have to figure it out
@@ -33,7 +40,7 @@ They are COGs of apps we use, so they fit our needs.
 ## Install<a name="install"></a>
 
 ```shell
-pip install tnnt-discordbot-cogs==2.0.0
+pip install tnnt-discordbot-cogs==2.1.0
 ```
 
 In `local.py`:
