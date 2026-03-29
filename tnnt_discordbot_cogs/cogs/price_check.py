@@ -12,6 +12,9 @@ from discord import Color, Embed, SlashCommandGroup
 from discord.ext import commands
 from eve_sde.models import ItemType
 
+# Alliance Auth
+from allianceauth.eveonline.evelinks import eveimageserver
+
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
 
@@ -27,10 +30,8 @@ class PriceCheck(commands.Cog):
     Price checks on Jita, Amarr, Rens, Hek and Dodixie markets
     """
 
-    imageserver_url = "https://images.evetech.net"
-
     price_commands = SlashCommandGroup(
-        "price", "Server Admin Commands", guild_ids=app_settings.get_all_servers()
+        "price", "Price Checks", guild_ids=app_settings.get_all_servers()
     )
 
     def __init__(self, bot):
@@ -128,7 +129,9 @@ class PriceCheck(commands.Cog):
             sell_order_count = int(market_data[eve_type_id]["sell"]["orderCount"])
             buy_max = market_data[eve_type_id]["buy"]["max"]
             buy_order_count = int(market_data[eve_type_id]["buy"]["orderCount"])
-            thumbnail_url = f"{cls.imageserver_url}/types/{eve_type_id}/icon?size=64"
+            thumbnail_url = eveimageserver.type_icon_url(
+                type_id=int(eve_type_id), size=64
+            )
 
             # Set the Embed thumbnail
             embed.set_thumbnail(url=thumbnail_url)
@@ -251,7 +254,7 @@ class PriceCheck(commands.Cog):
         name="all_markets",
         description="Check an item price on all major market hubs",
     )
-    async def price(self, ctx, item_name: str):
+    async def all_markets(self, ctx, item_name: str):
         """
         Check an item price on all major market hubs
 
