@@ -42,6 +42,8 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [2.1.1] - 2026-03-30
+
 ### Fixed
 
 - `locate` cog not working due to changes in ESI and SDE handling
@@ -358,6 +360,7 @@ Section Order:
 [1.1.4]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.1.3...v1.1.4 "v1.1.4"
 [2.0.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v1.1.4...v2.0.0 "v2.0.0"
 [2.1.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.0.0...v2.1.0 "v2.1.0"
-[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.1.0...HEAD "In Development"
+[2.1.1]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.1.0...v2.1.1 "v2.1.1"
+[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.1.1...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
