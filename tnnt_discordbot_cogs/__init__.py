@@ -8,6 +8,8 @@ import requests
 __version__ = "2.1.0"
 __title__ = "TN-NT Discordbot Cogs"
 
+__esi_compatibility_date__ = "2025-12-16"
+
 __package_name__ = "tn-nt-discordbot-cogs"
 __package_name_verbose__ = "Terra Nanotech Discordbot Cogs"
 __package_name_useragent__ = "TerraNanotechDiscordbotCogs"
