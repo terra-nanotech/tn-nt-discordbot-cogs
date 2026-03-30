@@ -3,7 +3,6 @@ RecruitMe Cog
 """
 
 # Standard Library
-import logging
 from enum import Enum
 from typing import Any
 
@@ -18,16 +17,19 @@ from django.utils import timezone
 
 # Alliance Auth
 from allianceauth.eveonline.models import EveCharacter
+from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
 from aadiscordbot.utils import auth
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import reverse_absolute, unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 # Discord Bot Settings
 # Audit System

@@ -2,9 +2,6 @@
 "Auth" cog for discordbot - https://github.com/pvyParts/allianceauth-discordbot
 """
 
-# Standard Library
-import logging
-
 # Third Party
 from discord import Color, Embed
 from discord.ext import commands
@@ -17,6 +14,7 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,
 )
+from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
@@ -25,9 +23,11 @@ from aadiscordbot.app_settings import get_site_url
 from tnnt_templates.app_settings import AppSettings
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class Auth(commands.Cog):

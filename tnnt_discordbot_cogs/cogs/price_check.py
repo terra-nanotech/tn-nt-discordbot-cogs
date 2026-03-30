@@ -4,7 +4,6 @@ Market Price Checks cog for discordbot - https://github.com/pvyParts/allianceaut
 
 # Standard Library
 import locale
-import logging
 from enum import Enum
 
 # Third Party
@@ -15,15 +14,17 @@ from eve_sde.models import ItemType
 
 # Alliance Auth
 from allianceauth.eveonline.evelinks import eveimageserver
+from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
 
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs import __user_agent__
+from tnnt_discordbot_cogs import __title__, __user_agent__
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class MarketRegion(Enum):

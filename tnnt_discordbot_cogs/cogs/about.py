@@ -4,9 +4,6 @@
 Since we don't want to have it branded for "The Initiative" we have to build our own
 """
 
-# Standard Library
-import logging
-
 # Third Party
 from discord import Color, Embed
 from discord.ext import commands
@@ -19,14 +16,17 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
     alliance_logo_url,
     corporation_logo_url,
 )
+from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(name=__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class About(commands.Cog):
