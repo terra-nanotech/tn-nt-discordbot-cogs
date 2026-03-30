@@ -1,15 +1,11 @@
 """
-"Locator" cog for discordbot - https://github.com/pvyParts/allianceauth-discordbot
+"Locator" cog for discordbot - https://github.com/Solar-Helix-Independent-Transport/allianceauth-discordbot
 """
 
-# Standard Library
-import logging
-
 # Third Party
-from corptools.models import EveItemType, MapSystem
-from corptools.providers import esi
 from discord import Colour, Embed, option
 from discord.ext import commands
+from eve_sde.models import ItemType, SolarSystem
 from pendulum.datetime import DateTime
 
 # Django
@@ -18,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 # Alliance Auth
 from allianceauth.eveonline.evelinks import dotlan, evewho
 from allianceauth.eveonline.models import EveCharacter
+from allianceauth.services.hooks import get_extension_logger
 from esi.models import Token
 
 # Alliance Auth Discord Bot
@@ -26,10 +23,12 @@ from aadiscordbot.cogs.utils.autocompletes import search_characters
 from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_perm
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
+from tnnt_discordbot_cogs.providers import AppLogger, ESIHandler
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class Locator(commands.Cog):
@@ -75,52 +74,6 @@ class Locator(commands.Cog):
         :rtype: list[discord.Embed]
         """
 
-        def _process_alt_list(
-            header: str, characters: list[dict], color: Colour = Colour.default()
-        ) -> list[Embed]:
-            """
-            Processes a list of alt characters and generates embeds for them.
-
-            :param header: The header for the embed.
-            :type header: str
-            :param characters: The list of characters to process.
-            :type characters: list[dict]
-            :param color: The color for the embed.
-            :type color: discord.Colour
-            :return: A list of Discord embeds containing the alt character information.
-            :rtype: list[discord.Embed]
-            """
-
-            embeds = []
-
-            # Process alts in chunks of 10
-            for alt_grp in [
-                characters[i : i + 10] for i in range(0, len(characters), 10)
-            ]:
-                altstr = []
-
-                for a in alt_grp:
-                    evewho_character = evewho.character_url(eve_id=a["cid"])
-                    evewho_corporation = evewho.corporation_url(eve_id=a["crpid"])
-
-                    character_line = f"[{a['cnm']}]({evewho_character}) [[{a['crpnm']}]({evewho_corporation})]"
-
-                    if a["lookup"]:
-                        dotlan_system = dotlan.solar_system_url(name=a["system_name"])
-                        altstr.append(
-                            f"### {character_line}\n"
-                            f"**Current Location:** [{a['system_name']}]({dotlan_system})\n"
-                            f"**Currently Flying:** {a['ship']}\n"
-                            f"**Last Online:** {a['last_online'].strftime('%Y-%m-%d %H:%M')}\n"
-                        )
-                    else:
-                        altstr.append(character_line + "\n")
-
-                embed = Embed(title=header, description="\n".join(altstr), colour=color)
-                embeds.append(embed)
-
-            return embeds
-
         alts = char.character_ownership.user.character_ownerships.all().select_related(
             "character"
         )
@@ -153,67 +106,108 @@ class Locator(commands.Cog):
             )
 
             if token:
+                online = ESIHandler.get_characters_character_id_online(
+                    character_id=alt.character.character_id, token=token, use_etag=False
+                )
+                location_esi = ESIHandler.get_characters_character_id_location(
+                    character_id=alt.character.character_id, token=token, use_etag=False
+                )
+                ship_esi = ESIHandler.get_characters_character_id_ship(
+                    character_id=alt.character.character_id, token=token, use_etag=False
+                )
+
+                logger.debug(f"Online Status from ESI: {online}")
+                logger.debug(f"Location from ESI: {location_esi}")
+                logger.debug(f"Ship from ESI: {ship_esi}")
+
                 try:
-                    # Get all location data in one go
-                    character_id = alt.character.character_id
-                    valid_token = token.valid_access_token()
+                    _alt["online"] = "**Online**" if online.online else "**Offline**"
+                except Exception:
+                    pass
 
-                    online = esi.client.Location.get_characters_character_id_online(
-                        character_id=character_id,
-                        token=valid_token,
-                    ).result()
+                try:
+                    _alt["last_online"] = online.last_logout
+                except Exception:
+                    pass
 
-                    location = esi.client.Location.get_characters_character_id_location(
-                        character_id=character_id,
-                        token=valid_token,
-                    ).result()
+                location_sde = SolarSystem.objects.get(id=location_esi.solar_system_id)
+                ship_sde = ItemType.objects.get(id=ship_esi.ship_type_id)
 
-                    ship = esi.client.Location.get_characters_character_id_ship(
-                        character_id=character_id,
-                        token=valid_token,
-                    ).result()
+                logger.debug(f"Location from SDE: {location_sde}")
+                logger.debug(f"Ship from SDE: {ship_sde}")
 
-                    # Update alt data
-                    _alt["online"] = (
-                        "**Online**" if online.get("online", False) else "**Offline**"
-                    )
-                    _alt["last_online"] = online.get("last_logout", DateTime.min)
+                _alt["system"] = location_sde.name
+                _alt["ship"] = ship_sde.name
+                _alt["lookup"] = True
 
-                    solar_system = MapSystem.objects.get(
-                        system_id=location["solar_system_id"]
-                    )
-                    _alt["system_name"] = solar_system.name
-
-                    current_ship, _ = EveItemType.objects.get_or_create_from_esi(
-                        ship["ship_type_id"]
-                    )
-                    _alt["ship"] = current_ship
-                    _alt["lookup"] = True
-
-                    if online.get("online", False):
-                        alt_online.append(_alt)
-                    else:
-                        alt_offline.append(_alt)
-
-                except Exception as e:
-                    logger.error(
-                        f"Error fetching location data for character {alt.character.character_name}: {e}"
-                    )
-                    alt_no_token.append(_alt)
+                if online.online:
+                    alt_online.append(_alt)
+                else:
+                    alt_offline.append(_alt)
             else:
                 alt_no_token.append(_alt)
 
         out_embeds = []
 
-        # Process each category if it has items
+        def _process_character_list(
+            embed_header: str,
+            character_list: list[dict],
+            embed_color: Colour = Colour.default(),
+        ):
+            """
+            Process list of alt characters and generate the Discord embeds for them.
+
+            :param embed_header: The header for the embed.
+            :type embed_header: str
+            :param character_list: The list of characters to process.
+            :type character_list: list[dict]
+            :param embed_color: The color for the embed.
+            :type embed_color: discord.Colour
+            :return: A list of Discord embeds containing the alt character information.
+            :rtype: list[discord.Embed]
+            """
+
+            embeds = []
+
+            for alt_grp in [
+                character_list[i : i + 10] for i in range(0, len(character_list), 10)
+            ]:
+                altstr = []
+
+                for a in alt_grp:
+                    evewho_character = evewho.character_url(eve_id=a["cid"])
+                    evewho_corporation = evewho.corporation_url(eve_id=a["crpid"])
+                    character_line = f"[{a['cnm']}]({evewho_character}) [[{a['crpnm']}]({evewho_corporation})]"
+
+                    if a["lookup"]:
+                        dotlan_system = dotlan.solar_system_url(name=a["system"])
+
+                        altstr.append(
+                            f"### {character_line}\n"
+                            f"**Current Location:** [{a['system']}]({dotlan_system}) ({a['online']})\n"
+                            f"**Currently Flying:** {a['ship']}\n"
+                            f"**Last Online:** {a['last_online'].strftime('%Y-%m-%d %H:%M')}\n"
+                        )
+                    else:
+                        altstr.append(character_line + "\n")
+
+                embed = Embed(
+                    title=embed_header,
+                    description="\n".join(altstr),
+                    colour=embed_color,
+                )
+                embeds.append(embed)
+
+            return embeds
+
         for header, alt_list, color in [
             ("Online Characters", alt_online, Colour.green()),
             ("Offline Characters", alt_offline, Colour.orange()),
             ("No Tokens", alt_no_token, Colour.red()),
         ]:
             if alt_list:
-                out_embeds += _process_alt_list(
-                    header=header, characters=alt_list, color=color
+                out_embeds += _process_character_list(
+                    embed_header=header, character_list=alt_list, embed_color=color
                 )
 
         return out_embeds
