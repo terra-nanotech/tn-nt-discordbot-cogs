@@ -84,10 +84,10 @@ class Locator(commands.Cog):
 
         for alt in alts:
             _alt = {
-                "cid": alt.character.character_id,
-                "cnm": alt.character.character_name,
-                "crpid": alt.character.corporation_id,
-                "crpnm": alt.character.corporation_name,
+                "character_id": alt.character.character_id,
+                "character_name": alt.character.character_name,
+                "corporation_id": alt.character.corporation_id,
+                "corporation_name": alt.character.corporation_name,
                 "last_online": DateTime.min,
                 "online": False,
                 "ship": "",
@@ -121,12 +121,13 @@ class Locator(commands.Cog):
                 logger.debug(f"Ship from ESI: {ship_esi}")
 
                 try:
-                    _alt["online"] = "**Online**" if online.online else "**Offline**"
+                    _alt["online_status"] = "Online" if online.online else "Offline"
                 except Exception:
                     pass
 
                 try:
-                    _alt["last_online"] = online.last_logout
+                    _alt["last_login"] = online.last_login
+                    _alt["last_logout"] = online.last_logout
                 except Exception:
                     pass
 
@@ -169,27 +170,48 @@ class Locator(commands.Cog):
 
             embeds = []
 
-            for alt_grp in [
+            for alt_character_group in [
                 character_list[i : i + 10] for i in range(0, len(character_list), 10)
             ]:
                 embed_fields = []
 
-                for a in alt_grp:
-                    evewho_character = evewho.character_url(eve_id=a["cid"])
-                    evewho_corporation = evewho.corporation_url(eve_id=a["crpid"])
-                    character_line = f"[{a['cnm']}]({evewho_character}) [[{a['crpnm']}]({evewho_corporation})]"
+                for alt_character in alt_character_group:
+                    logger.debug(f"Processing alt character {alt_character}")
 
-                    if a["lookup"]:
-                        dotlan_system = dotlan.solar_system_url(name=a["system"])
+                    evewho_character = evewho.character_url(
+                        eve_id=alt_character["character_id"]
+                    )
+                    evewho_corporation = evewho.corporation_url(
+                        eve_id=alt_character["corporation_id"]
+                    )
+                    character_line = (
+                        f"[{alt_character['character_name']}]({evewho_character}) "
+                        f"[[{alt_character['corporation_name']}]({evewho_corporation})]"
+                    )
+
+                    if alt_character["lookup"]:
+                        dotlan_system = dotlan.solar_system_url(
+                            name=alt_character["system"]
+                        )
+                        current_location_line = (
+                            f"[{alt_character['system']}]({dotlan_system}) "
+                            f"(**{alt_character['online_status']}**)"
+                        )
+
+                        login_time_line = (
+                            f"**Offline Since:** {alt_character['last_logout'].strftime('%Y-%m-%d %H:%M')}"
+                            if alt_character["online_status"] == "Offline"
+                            else f"**Online Since:** {alt_character['last_login'].strftime('%Y-%m-%d %H:%M')}"
+                        )
 
                         embed_fields.append(
                             EmbedField(
-                                name=f"### {a['cnm']} ###",
+                                name=f"### {alt_character['character_name']} ###",
                                 value=(
                                     f"**EVE Who:** {character_line}\n"
-                                    f"**Current Location:** [{a['system']}]({dotlan_system}) ({a['online']})\n"
-                                    f"**Currently Flying:** {a['ship']}\n"
-                                    f"**Last Online:** {a['last_online'].strftime('%Y-%m-%d %H:%M')}\n"
+                                    f"**Current Location:** {current_location_line}\n"
+                                    f"**Currently Flying:** {alt_character['ship']}\n"
+                                    f"{login_time_line} EVE Time"
                                 ),
                                 inline=False,
                             )
@@ -197,17 +219,14 @@ class Locator(commands.Cog):
                     else:
                         embed_fields.append(
                             EmbedField(
-                                name=f"### {a['cnm']} ###",
+                                name=f"### {alt_character['character_name']} ###",
                                 value=f"**EVEWho:** {character_line}",
                                 inline=False,
                             )
                         )
 
                 embed = Embed(
-                    title=embed_header,
-                    # description="Character Information",
-                    fields=embed_fields,
-                    colour=embed_color,
+                    title=embed_header, fields=embed_fields, colour=embed_color
                 )
                 embeds.append(embed)
 
