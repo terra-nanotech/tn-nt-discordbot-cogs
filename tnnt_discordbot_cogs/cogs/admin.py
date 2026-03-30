@@ -1,5 +1,6 @@
-# Standard Library
-import logging
+"""
+Admin Commands
+"""
 
 # Third Party
 import pendulum
@@ -23,6 +24,7 @@ from django.core.exceptions import ObjectDoesNotExist
 # Alliance Auth
 from allianceauth.eveonline.models import EveCharacter
 from allianceauth.eveonline.tasks import update_character
+from allianceauth.services.hooks import get_extension_logger
 from allianceauth.services.modules.discord.models import DiscordUser
 from allianceauth.services.modules.discord.tasks import update_groups, update_nickname
 
@@ -32,9 +34,11 @@ from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from aadiscordbot.utils import auth
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class Admin(commands.Cog):

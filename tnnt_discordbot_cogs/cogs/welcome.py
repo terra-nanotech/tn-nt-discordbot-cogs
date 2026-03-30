@@ -4,7 +4,6 @@
 
 # Standard Library
 import asyncio
-import logging
 
 # Third Party
 from discord import Member
@@ -13,16 +12,21 @@ from discord.ext import commands
 # Django
 from django.db.models import Q
 
+# Alliance Auth
+from allianceauth.services.hooks import get_extension_logger
+
 # Alliance Auth Discord Bot
 from aadiscordbot.app_settings import get_site_url
 from aadiscordbot.models import WelcomeMessage
 from aadiscordbot.utils.auth import is_user_authenticated
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 # Discord Bot Settings
 # Channel

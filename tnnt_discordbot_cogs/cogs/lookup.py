@@ -5,7 +5,6 @@
 # Standard Library
 import csv
 import io
-import logging
 from collections.abc import Coroutine
 from typing import Any
 
@@ -30,6 +29,7 @@ from django.utils.text import slugify
 # Alliance Auth
 from allianceauth.eveonline.evelinks import evewho
 from allianceauth.eveonline.models import EveCharacter, EveCorporationInfo
+from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
 from aadiscordbot import app_settings
@@ -45,10 +45,12 @@ from aadiscordbot.cogs.utils.decorators import (
 )
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class Lookup(commands.Cog):

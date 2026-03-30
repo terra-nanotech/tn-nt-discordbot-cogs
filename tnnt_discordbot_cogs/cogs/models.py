@@ -1,6 +1,3 @@
-# Standard Library
-import logging
-
 # Third Party
 from discord import SlashCommandGroup
 from discord.ext import commands
@@ -9,14 +6,19 @@ from discord.utils import get as du_get
 # Django
 from django.core.exceptions import ObjectDoesNotExist
 
+# Alliance Auth
+from allianceauth.services.hooks import get_extension_logger
+
 # Alliance Auth Discord Bot
 from aadiscordbot.cogs.utils.decorators import sender_is_admin
 from aadiscordbot.models import Channels, Servers
 
 # Terra Nanotech Discordbot Cogs
+from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.providers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
 
 
 class Models(commands.Cog):
