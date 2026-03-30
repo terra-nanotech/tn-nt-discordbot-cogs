@@ -3,7 +3,7 @@
 """
 
 # Third Party
-from discord import Colour, Embed, option
+from discord import Colour, Embed, EmbedField, option
 from discord.ext import commands
 from eve_sde.models import ItemType, SolarSystem
 from pendulum.datetime import DateTime
@@ -172,7 +172,7 @@ class Locator(commands.Cog):
             for alt_grp in [
                 character_list[i : i + 10] for i in range(0, len(character_list), 10)
             ]:
-                altstr = []
+                embed_fields = []
 
                 for a in alt_grp:
                     evewho_character = evewho.character_url(eve_id=a["cid"])
@@ -182,32 +182,45 @@ class Locator(commands.Cog):
                     if a["lookup"]:
                         dotlan_system = dotlan.solar_system_url(name=a["system"])
 
-                        altstr.append(
-                            f"### {character_line}\n"
-                            f"**Current Location:** [{a['system']}]({dotlan_system}) ({a['online']})\n"
-                            f"**Currently Flying:** {a['ship']}\n"
-                            f"**Last Online:** {a['last_online'].strftime('%Y-%m-%d %H:%M')}\n"
+                        embed_fields.append(
+                            EmbedField(
+                                name=f"### {a['cnm']} ###",
+                                value=(
+                                    f"**EVE Who:** {character_line}\n"
+                                    f"**Current Location:** [{a['system']}]({dotlan_system}) ({a['online']})\n"
+                                    f"**Currently Flying:** {a['ship']}\n"
+                                    f"**Last Online:** {a['last_online'].strftime('%Y-%m-%d %H:%M')}\n"
+                                ),
+                                inline=False,
+                            )
                         )
                     else:
-                        altstr.append(character_line + "\n")
+                        embed_fields.append(
+                            EmbedField(
+                                name=f"### {a['cnm']} ###",
+                                value=f"**EVEWho:** {character_line}",
+                                inline=False,
+                            )
+                        )
 
                 embed = Embed(
                     title=embed_header,
-                    description="\n".join(altstr),
+                    # description="Character Information",
+                    fields=embed_fields,
                     colour=embed_color,
                 )
                 embeds.append(embed)
 
             return embeds
 
-        for header, alt_list, color in [
+        for header, characters, color in [
             ("Online Characters", alt_online, Colour.green()),
             ("Offline Characters", alt_offline, Colour.orange()),
             ("No Tokens", alt_no_token, Colour.red()),
         ]:
-            if alt_list:
+            if characters:
                 out_embeds += _process_character_list(
-                    embed_header=header, character_list=alt_list, embed_color=color
+                    embed_header=header, character_list=characters, embed_color=color
                 )
 
         return out_embeds
