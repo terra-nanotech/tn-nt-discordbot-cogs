@@ -43,6 +43,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Fixed
+
+- Grammar - No space before ellipsis
+
 ## [2.1.1] - 2026-03-30
 
 ### Fixed

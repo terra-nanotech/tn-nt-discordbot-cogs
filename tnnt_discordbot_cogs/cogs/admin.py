@@ -81,7 +81,7 @@ class Admin(commands.Cog):
     @sender_is_admin()
     async def add_role_slash(self, ctx, channel: TextChannel, role: Role):
         """
-        Add a role as read/write to a channel …
+        Add a role as read/write to a channel…
 
         :param ctx:
         :type ctx:
@@ -108,7 +108,7 @@ class Admin(commands.Cog):
     @sender_is_admin()
     async def add_role_read_slash(self, ctx, channel: TextChannel, role: Role):
         """
-        Add a role as read only to a channel …
+        Add a role as read only to a channel…
 
         :param ctx:
         :type ctx:
@@ -135,7 +135,7 @@ class Admin(commands.Cog):
     @sender_is_admin()
     async def rem_role_slash(self, ctx, channel: TextChannel, role: Role):
         """
-        Remove a role from a channel …
+        Remove a role from a channel…
 
         :param ctx:
         :type ctx:
@@ -213,7 +213,7 @@ class Admin(commands.Cog):
     @sender_is_admin()
     async def promote_role_to_god(self, ctx, role: Role):
         """
-        Set a role as admin …
+        Set a role as admin…
 
         :param ctx:
         :type ctx:
