@@ -49,6 +49,7 @@ Section Order:
 
 ### Changed
 
+- Modular providers
 - Some minor text changes in the `recruit_me` cog
 
 ## [2.1.1] - 2026-03-30

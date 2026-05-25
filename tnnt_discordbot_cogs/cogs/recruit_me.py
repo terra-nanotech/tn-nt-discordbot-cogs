@@ -24,12 +24,11 @@ from aadiscordbot import app_settings
 from aadiscordbot.utils import auth
 
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import reverse_absolute, unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
-from tnnt_discordbot_cogs.providers import AppLogger
+from tnnt_discordbot_cogs.providers.applogger import AppLogger
 
-logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__))
 
 # Discord Bot Settings
 # Audit System
