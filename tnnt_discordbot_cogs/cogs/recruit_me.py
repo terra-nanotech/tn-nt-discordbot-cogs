@@ -59,7 +59,7 @@ class BotResponse(str, Enum):
     NOT_IN_APPLICATION_GROUP = (
         f"**You are not in the `{APPLICANT_ROLE_NAME}` group.**\n\n"
         f"Please open the [groups page]({GROUPS_PAGE_URL}) and "
-        f"join the `{APPLICANT_ROLE_NAME}` group first …"
+        f"join the `{APPLICANT_ROLE_NAME}` group first…"
     )
 
     # Member not in the application group
@@ -68,13 +68,13 @@ class BotResponse(str, Enum):
         f"`{APPLICANT_ROLE_NAME}` group.**\n\n"
         "Please let them know to open the "
         f"[groups page]({GROUPS_PAGE_URL}) and join the "
-        f"`{APPLICANT_ROLE_NAME}` group first …"
+        f"`{APPLICANT_ROLE_NAME}` group first…"
     )
 
     # Not a recruiter
     NOT_A_RECRUITER = (
         "You are not a recruiter for Terra Nanotech and "
-        "cannot use this command on this user …"
+        "cannot use this command on this user…"
     )
 
     # Private thread guide title and body
