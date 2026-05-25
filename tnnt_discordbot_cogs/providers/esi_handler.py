@@ -1,9 +1,8 @@
 """
-Providers
+ESI Handler Provider
 """
 
 # Standard Library
-import logging
 import typing
 from typing import Any
 
@@ -15,15 +14,14 @@ from httpx import Response
 from allianceauth.services.hooks import get_extension_logger
 from esi.exceptions import HTTPClientError, HTTPNotModified
 from esi.models import Token
-from esi.openapi_clients import ESIClientProvider, EsiOperation
+from esi.openapi_clients import EsiOperation
 
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs import (
-    __esi_compatibility_date__,
-    __github_url__,
-    __title__,
-    __version__,
-)
+from tnnt_discordbot_cogs.providers.applogger import AppLogger
+from tnnt_discordbot_cogs.providers.esi_client import esi
+
+logger = AppLogger(my_logger=get_extension_logger(__name__))
+
 
 if typing.TYPE_CHECKING:
     # Alliance Auth
@@ -32,22 +30,6 @@ if typing.TYPE_CHECKING:
         CharactersCharacterIdOnlineGet,
         CharactersCharacterIdShipGet,
     )
-
-# ESI client
-esi = ESIClientProvider(
-    # Use the latest compatibility date, see https://esi.evetech.net/meta/compatibility-dates
-    compatibility_date=__esi_compatibility_date__,
-    # User agent for the ESI client
-    ua_appname=__title__,
-    ua_version=__version__,
-    ua_url=__github_url__,
-    operations=[
-        # Location
-        "GetCharactersCharacterIdOnline",
-        "GetCharactersCharacterIdLocation",
-        "GetCharactersCharacterIdShip",
-    ],
-)
 
 
 class ESIHandler:
@@ -64,7 +46,7 @@ class ESIHandler:
         force_refresh: bool = False,
         use_cache: bool = True,
         **extra,
-    ) -> tuple[Any, Response] | Any:
+    ) -> Any | tuple[Any, Response] | None:
         """
         Retrieve the result of an ESI operation, handling HTTPNotModified exceptions.
 
@@ -80,20 +62,42 @@ class ESIHandler:
         :type use_cache: bool
         :param extra: Additional parameters to pass to the operation.
         :type extra: dict
-        :return: The result of the ESI operation, optionally with the response object.
-        :rtype: tuple[Any, Response] | Any
+        :return: The result of the ESI operation.
+        :rtype: Any | tuple[Any, Response] | None
         """
 
         logger.debug(f"Handling ESI operation: {operation.operation.operationId}")
+        logger.debug(
+            f"Operation parameters: use_etag={use_etag}, return_response={return_response}, force_refresh={force_refresh}, use_cache={use_cache}, extra={extra}"
+        )
+
+        response: Response | None = None
 
         try:
-            esi_result = operation.result(
-                use_etag=use_etag,
-                return_response=return_response,
-                force_refresh=force_refresh,
-                use_cache=use_cache,
-                **extra,
-            )
+            # Call operation.result differently depending on whether the caller
+            # requested the raw Response object. Some implementations return a
+            # single result when return_response is False and a (result, response)
+            # tuple when True, so only unpack when return_response is True.
+            if return_response:
+                esi_result, response = operation.result(
+                    use_etag=use_etag,
+                    return_response=return_response,
+                    force_refresh=force_refresh,
+                    use_cache=use_cache,
+                    **extra,
+                )
+
+                logger.debug(
+                    f"ESI Response for operation: {operation.operation.operationId}: {response}"
+                )
+            else:
+                esi_result = operation.result(
+                    use_etag=use_etag,
+                    return_response=return_response,
+                    force_refresh=force_refresh,
+                    use_cache=use_cache,
+                    **extra,
+                )
         except HTTPNotModified:
             logger.debug(
                 f"ESI returned 304 Not Modified for operation: {operation.operation.operationId} - Skipping update."
@@ -110,6 +114,10 @@ class ESIHandler:
             logger.error(msg=f"Error while fetching data from ESI: {str(exc)}")
 
             esi_result = None
+
+        # If caller requested the raw response, return a tuple (result, response)
+        if return_response:
+            return esi_result, response
 
         return esi_result
 
@@ -180,43 +188,3 @@ class ESIHandler:
             ),
             use_etag=use_etag,
         )
-
-
-class AppLogger(logging.LoggerAdapter):
-    """
-    Custom logger adapter that adds a prefix to log messages.
-
-    Taken from the `allianceauth-app-utils` package.
-    Credits to: Erik Kalkoken
-    """
-
-    def __init__(self, my_logger, prefix):
-        """
-        Initializes the AppLogger with a logger and a prefix.
-
-        :param my_logger: Logger instance
-        :type my_logger: logging.Logger
-        :param prefix: Prefix string to add to log messages
-        :type prefix: str
-        """
-
-        super().__init__(my_logger, {})
-
-        self.prefix = prefix
-
-    def process(self, msg, kwargs):
-        """
-        Prepares the log message by adding the prefix.
-
-        :param msg: Log message
-        :type msg: str
-        :param kwargs: Additional keyword arguments
-        :type kwargs: dict
-        :return: Prefixed log message and kwargs
-        :rtype: tuple
-        """
-
-        return f"[{self.prefix}] {msg}", kwargs
-
-
-logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)

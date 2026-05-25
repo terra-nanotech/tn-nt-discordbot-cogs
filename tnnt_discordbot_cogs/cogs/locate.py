@@ -23,12 +23,12 @@ from aadiscordbot.cogs.utils.autocompletes import search_characters
 from aadiscordbot.cogs.utils.decorators import message_in_channels, sender_has_perm
 
 # Terra Nanotech Discordbot Cogs
-from tnnt_discordbot_cogs import __title__
 from tnnt_discordbot_cogs.helper import unload_cog
 from tnnt_discordbot_cogs.models.setting import Setting
-from tnnt_discordbot_cogs.providers import AppLogger, ESIHandler
+from tnnt_discordbot_cogs.providers.applogger import AppLogger
+from tnnt_discordbot_cogs.providers.esi_handler import ESIHandler
 
-logger = AppLogger(my_logger=get_extension_logger(name=__name__), prefix=__title__)
+logger = AppLogger(my_logger=get_extension_logger(name=__name__))
 
 
 class Locator(commands.Cog):
