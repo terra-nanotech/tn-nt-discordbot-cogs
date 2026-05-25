@@ -88,7 +88,7 @@ class BotResponse(str, Enum):
     # Recruitment thread title and body
     RECRUITMENT_THREAD_TITLE = "{MAIN_CHARACTER} | Recruitment | {DATE}"
     RECRUITMENT_THREAD_WELCOME = (
-        "Hello <@{MEMBER_ID}>, and welcome! :wave:\n\n"
+        "Hello and welcome, <@{MEMBER_ID}>! :wave:\n\n"
         "We're excited that you're interested in joining Terra Nanotech!\n\n"
         f"Before we get started, please ensure **all** your characters are added to {AUDIT_SYSTEM_URL_MD}.\n"
         "This includes your main character as well as any other characters you have.\n\n"
@@ -118,7 +118,7 @@ class BotResponse(str, Enum):
         "- What would you bring to the table?\n"
         "- In which way the corp would benefit from you?\n"
         "- What do you expect?\n\n"
-        "And of cource, if you have any questions, feel free to ask!\n\n"
+        "And of course, if you have any questions, feel free to ask!\n\n"
         "Thank you for your patience!\n\n"
         f"(Adding <@&{LEADERSHIP_ROLE_ID}> to the thread for visibility.)"
     )
