@@ -51,7 +51,7 @@ urls.Homepage = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs"
 urls.Tracker = "https://github.com/terra-nanotech/tn-nt-discordbot-cogs/issues"
 
 [tool.hatch]
+version.path = "tnnt_discordbot_cogs/__init__.py"
 build.include = [
     "/tnnt_discordbot_cogs",
 ]
-version.path = "tnnt_discordbot_cogs/__init__.py"
