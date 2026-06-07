@@ -9,7 +9,7 @@
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](http://black.readthedocs.io/en/latest/)
 [![Translation status](https://weblate.ppfeufer.de/widget/alliance-auth-apps/terra-nanotech-discordbot-cogs/svg-badge.svg)](https://weblate.ppfeufer.de/engage/alliance-auth-apps/)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/terra-nanotech/tn-nt-discordbot-cogs/blob/master/CODE_OF_CONDUCT.md)
-[![Alliance Auth Compatibility](https://img.shields.io/badge/Alliance_Auth-v4_%7C_v5-brightgreen)](https://gitlab.com/allianceauth/allianceauth)
+[![Alliance Auth Compatibility](https://img.shields.io/badge/Alliance_Auth-v5-brightgreen)](https://gitlab.com/allianceauth/allianceauth)
 
 A collection of cogs for
 [AA-Discordbot](https://github.com/pvyParts/allianceauth-discordbot)
