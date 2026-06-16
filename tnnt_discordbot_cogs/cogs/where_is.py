@@ -108,6 +108,18 @@ class WhereIs(commands.Cog):
     @option("system", description="Search in this System!", autocomplete=search_systems)
     @option("item", description="Search for this Item!", autocomplete=search_items)
     async def slash_where_is(self, ctx, item: str, system: str = None):
+        """
+        Find where you missplaced your stuff
+
+        :param ctx:
+        :type ctx:
+        :param item:
+        :type item:
+        :param system:
+        :type system:
+        :return:
+        :rtype:
+        """
         await ctx.defer(ephemeral=True)
 
         try:
