@@ -43,6 +43,12 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- New Cogs
+  - `Routes` cog to find your way through New Eden
+  - `WhereIs` cog to find where you lost your stuff
+
 ## [3.0.0] - 2026-06-07
 
 > [!IMPORTANT]
