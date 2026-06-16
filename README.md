@@ -40,7 +40,7 @@ They are COGs of apps we use, so they fit our needs.
 ## Install<a name="install"></a>
 
 ```shell
-pip install tnnt-discordbot-cogs==3.0.0
+pip install tnnt-discordbot-cogs==3.1.0
 ```
 
 In `local.py`:
@@ -111,3 +111,6 @@ python manage.py esde_load_sde
 |                                         | `price`  | `plex`              | Check the PLEX price on the global PLEX market                                                             |
 |                                         | `price`  | `rens`              | Check an item price on Rens market                                                                         |
 | `tnnt_discordbot_cogs.cogs.recruit_me`  |          | `recruit_me`        | Get hold of a recruiter                                                                                    |
+| `tnnt_discordbot_cogs.cogs.routes`      |          | `route`             | Find a route in EVE (with Jumpbridges)                                                                     |
+|                                         |          | `jumpbridges`       | List all known Jumpbridges                                                                                 |
+| `tnnt_discordbot_cogs.cogs.where_is`    |          | `where_is`          | Find where you missplaced your stuff                                                                       |

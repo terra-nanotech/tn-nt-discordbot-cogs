@@ -5,7 +5,7 @@ Application init
 # Third Party
 import requests
 
-__version__ = "3.0.0"
+__version__ = "3.1.0"
 __title__ = "TN-NT Discordbot Cogs"
 
 __esi_compatibility_date__ = "2025-12-16"
