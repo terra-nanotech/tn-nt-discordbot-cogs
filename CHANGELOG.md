@@ -43,6 +43,11 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- New Cogs
+  - `WhereIs` cog to find where you lost your stuff
+
 ## [3.0.0] - 2026-06-07
 
 > [!IMPORTANT]
