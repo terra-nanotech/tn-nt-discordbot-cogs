@@ -247,7 +247,7 @@ repos:
         args:
           - --indent=4
         additional_dependencies:
-          - tox==4.55.0  # https://github.com/tox-dev/tox/releases/latest
+          - tox==4.56.1  # https://github.com/tox-dev/tox/releases/latest
 
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: 4b2e70d08cb2ccd26d1fba73588de41c7a5d50b7  # frozen: v0.25
@@ -257,7 +257,7 @@ repos:
         description: Validate the pyproject.toml file.
 
 #  - repo: https://github.com/pylint-dev/pylint
-#    rev: 88e1ab7545a4af4aea15c305a154c164a95ab842  # frozen: v4.0.5
+#    rev: 8a396357098337ba8be714fffdf2d00947a9778c  # frozen: v4.0.6
 #    hooks:
 #      - id: pylint
 #        name: Pylint
