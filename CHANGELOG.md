@@ -43,6 +43,16 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [3.1.1] - 2026-07-07
+
+### Added
+
+- Support for Python 3.14
+
+### Changed
+
+- Translations updated
+
 ## [3.1.0] - 2026-06-16
 
 ### Added
@@ -397,6 +407,7 @@ Section Order:
 [2.2.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.1.1...v2.2.0 "v2.2.0"
 [3.0.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.2.0...v3.0.0 "v3.0.0"
 [3.1.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.0.0...v3.1.0 "v3.1.0"
-[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.0...HEAD "In Development"
+[3.1.1]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.0...v3.1.1 "v3.1.1"
+[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.1...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
