@@ -21,6 +21,7 @@ ______________________________________________________________________
 - [Important Information](#important-information)
 - [Install](#install)
 - [Commands](#commands)
+- [Translation Status](#translation-status)
 
 <!-- mdformat-toc end -->
 
@@ -114,3 +115,14 @@ python manage.py esde_load_sde
 | `tnnt_discordbot_cogs.cogs.routes`      |          | `route`             | Find a route in EVE (with Jumpbridges)                                                                     |
 |                                         |          | `jumpbridges`       | List all known Jumpbridges                                                                                 |
 | `tnnt_discordbot_cogs.cogs.where_is`    |          | `where_is`          | Find where you missplaced your stuff                                                                       |
+
+## Translation Status<a name="translation-status"></a>
+
+[![Translation status](https://weblate.ppfeufer.de/widget/alliance-auth-apps/terra-nanotech-discordbot-cogs/matrix-auto.svg)](https://weblate.ppfeufer.de/engage/alliance-auth-apps/)
+
+Do you want to help translate this app into your language or improve the existing
+translation? - [Join our team of translators][weblate engage]!
+
+<!-- Inline Links -->
+
+[weblate engage]: https://weblate.ppfeufer.de/engage/alliance-auth-apps/ "Weblate Translations"

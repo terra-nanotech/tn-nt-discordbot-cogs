@@ -18,12 +18,12 @@ from discord.ext import commands
 from discord.ext.commands import Paginator
 
 # Django
-from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 
 # Alliance Auth
 from allianceauth.eveonline.models import EveCharacter
 from allianceauth.eveonline.tasks import update_character
+from allianceauth.groupmanagement.models import Group
 from allianceauth.services.hooks import get_extension_logger
 from allianceauth.services.modules.discord.models import DiscordUser
 from allianceauth.services.modules.discord.tasks import update_groups, update_nickname
