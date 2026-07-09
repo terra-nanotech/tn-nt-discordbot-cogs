@@ -43,6 +43,8 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [3.2.0] - 2026-07-09
+
 > [!IMPORTANT]
 >
 > **This version needs Alliance Auth v5.2.0 or newer!**
@@ -419,6 +421,7 @@ Section Order:
 [3.0.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v2.2.0...v3.0.0 "v3.0.0"
 [3.1.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.0.0...v3.1.0 "v3.1.0"
 [3.1.1]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.0...v3.1.1 "v3.1.1"
-[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.1...HEAD "In Development"
+[3.2.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.1...v3.2.0 "v3.2.0"
+[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.2.0...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
