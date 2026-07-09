@@ -11,11 +11,11 @@ from discord import ButtonStyle, ChannelType, Embed, Guild, Interaction, Member,
 from discord.ext import commands
 
 # Django
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
 # Alliance Auth
+from allianceauth.authentication.models import User
 from allianceauth.eveonline.models import EveCharacter
 from allianceauth.services.hooks import get_extension_logger
 

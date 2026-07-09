@@ -22,11 +22,11 @@ from discord.ext import commands
 
 # Django
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.text import slugify
 
 # Alliance Auth
+from allianceauth.authentication.models import User
 from allianceauth.eveonline.evelinks import evewho
 from allianceauth.eveonline.models import EveCharacter, EveCorporationInfo
 from allianceauth.services.hooks import get_extension_logger
