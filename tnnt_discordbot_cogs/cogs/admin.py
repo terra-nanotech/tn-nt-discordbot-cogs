@@ -35,6 +35,7 @@ from aadiscordbot.utils import auth
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
+from tnnt_discordbot_cogs.models.setting import Setting
 from tnnt_discordbot_cogs.providers.applogger import AppLogger
 
 logger = AppLogger(my_logger=get_extension_logger(name=__name__))
@@ -206,57 +207,103 @@ class Admin(commands.Cog):
 
     @admin_commands.command(
         name="promote_to_god",
-        description="Set a role as admin",
+        description="Promote yorself to god",
         guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
-    async def promote_role_to_god(self, ctx, role: Role):
+    async def promote_to_god(self, ctx):
         """
-        Set a role as admin…
+        Promote yorself to god
 
         :param ctx:
         :type ctx:
-        :param role:
-        :type role:
         :return:
         :rtype:
         """
 
         await ctx.defer(ephemeral=True)
 
-        perms = role.permissions
-        perms.administrator = True
+        god_group = Setting.get_setting(Setting.Field.ADMIN_GOD_GROUP.value)
+        eligible_users = Setting.get_setting(Setting.Field.ADMIN_GODS.value).all()
+        auth_user = auth.get_auth_user(user=ctx.user, guild=ctx.guild)
 
-        await role.edit(permissions=perms)
+        logger.debug(f"Eligible Users: {eligible_users}")
+        logger.debug(f"Auth User: {auth_user}")
 
-        return await ctx.respond(f"Set `{role.name}` as admin", ephemeral=True)
+        if god_group:
+            if auth_user in eligible_users:
+                logger.debug("I'LL ALLOW IT!")
+                auth_user.groups.add(god_group)
+
+                return await ctx.respond(
+                    f"You have been promoted to {god_group}!", ephemeral=True
+                )
+
+            return await ctx.respond(
+                "You are not permitted to use this command!", ephemeral=True
+            )
+        else:
+            return await ctx.respond("No god group has been configured", ephemeral=True)
 
     @admin_commands.command(
         name="demote_from_god",
-        description="Remove admin from a role",
+        description="Demote yourself from being a god",
         guild_ids=app_settings.get_all_servers(),
     )
     @sender_is_admin()
-    async def demote_role_from_god(self, ctx, role: Role):
+    async def demote_from_god(self, ctx):
         """
-        Remove admin from a role.
+        Demote yourself from being a god.
 
         :param ctx:
         :type ctx:
-        :param role:
-        :type role:
         :return:
         :rtype:
         """
 
         await ctx.defer(ephemeral=True)
 
-        perms = role.permissions
-        perms.administrator = False
+        god_group = Setting.get_setting(Setting.Field.ADMIN_GOD_GROUP.value)
+        auth_user = auth.get_auth_user(user=ctx.user, guild=ctx.guild)
 
-        await role.edit(permissions=perms)
+        if god_group:
+            if auth_user:
+                logger.debug("I'LL ALLOW IT!")
+                auth_user.groups.remove(god_group)
 
-        return await ctx.respond(f"Removed admin from `{role.name}`", ephemeral=True)
+                return await ctx.respond(
+                    f"You have been demoted and are no longer {god_group}!",
+                    ephemeral=True,
+                )
+        else:
+            return await ctx.respond("No god group has been configured", ephemeral=True)
+
+    @admin_commands.command(
+        name="demote_all_gods",
+        description="Demote all current gods",
+        guild_ids=app_settings.get_all_servers(),
+    )
+    @sender_is_admin()
+    async def demote_all_gods(self, ctx):
+        """
+        Demote all current gods
+
+        :param ctx:
+        :type ctx:
+        :return:
+        :rtype:
+        """
+
+        await ctx.defer(ephemeral=True)
+
+        god_group = Setting.get_setting(Setting.Field.ADMIN_GOD_GROUP.value)
+        current_gods = Group.objects.filter(name=god_group.name).first().user_set.all()
+
+        if current_gods:
+            for god in current_gods:
+                god.groups.remove(god_group)
+
+        return await ctx.respond("All current gods have been demoted!", ephemeral=True)
 
     @admin_commands.command(
         name="empty_roles",

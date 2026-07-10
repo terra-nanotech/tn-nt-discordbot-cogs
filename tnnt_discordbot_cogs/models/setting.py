@@ -12,6 +12,10 @@ from solo.models import SingletonModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+# Alliance Auth
+from allianceauth.authentication.models import User
+from allianceauth.groupmanagement.models import Group
+
 # Alliance Auth Discord Bot
 from aadiscordbot.models import Channels
 
@@ -41,6 +45,8 @@ class Setting(SingletonModel):
         WELCOME_ROLES_EXCLUDED = "welcome_roles_excluded", _("Roles Excluded")
         LOOKUP_CHANNELS = "lookup_channels", _("Lookup Channels")
         LOCATE_CHANNELS = "locate_channels", _("Locate Channels")
+        ADMIN_GOD_GROUP = "admin_god_group", _("Admin God Group")
+        ADMIN_GODS = "admin_gods", _("Admin Gods")
 
     # Recruitment Cog Settings
     applicant_role_name = models.CharField(
@@ -126,6 +132,31 @@ class Setting(SingletonModel):
         blank=True,
         verbose_name=Field.LOCATE_CHANNELS.label,  # pylint: disable=no-member
         help_text=_("Channels in which the `/locate` command can be used."),
+    )
+
+    admin_god_group = models.OneToOneField(
+        to=Group,
+        related_name="admin_god_group",
+        null=True,
+        blank=True,
+        verbose_name=Field.ADMIN_GOD_GROUP.label,  # pylint: disable=no-member
+        help_text=_(
+            "The group that has god mode access (Admin Mode) in all services. "
+            "Please ensure to give this group in all connected services the "
+            "appropriate privileges."
+        ),
+        on_delete=models.SET_NULL,
+    )
+    admin_gods = models.ManyToManyField(
+        to=User,
+        related_name="admin_god",
+        null=True,
+        blank=True,
+        verbose_name=Field.ADMIN_GODS.label,
+        help_text=_(
+            "These users are eligible to invoke the god commands of the Discordbot "
+            "to promote/demote themself to/from god."
+        ),
     )
 
     class Meta:
