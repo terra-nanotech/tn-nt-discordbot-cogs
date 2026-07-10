@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: TN-NT Discordbot Cogs 3.1.1\n"
+"Project-Id-Version: TN-NT Discordbot Cogs 3.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ppfeufer/tn-nt-discordbot-cogs/issues\n"
-"POT-Creation-Date: 2026-07-07 14:54+0200\n"
+"POT-Creation-Date: 2026-07-10 21:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,18 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: tnnt_discordbot_cogs/admin.py:24
-msgid "Locator Cog Settings"
+msgid "God Mode settings"
 msgstr ""
 
 #: tnnt_discordbot_cogs/admin.py:28
-msgid "Lookup Cog Settings"
+msgid "Locator Cog Settings"
 msgstr ""
 
 #: tnnt_discordbot_cogs/admin.py:32
+msgid "Lookup Cog Settings"
+msgstr ""
+
+#: tnnt_discordbot_cogs/admin.py:36
 msgid "Recruitment Cog Settings"
 msgstr ""
 
-#: tnnt_discordbot_cogs/admin.py:44
+#: tnnt_discordbot_cogs/admin.py:48
 msgid "Welcome Cog Settings"
 msgstr ""
 
@@ -45,97 +49,118 @@ msgstr ""
 msgid "Command Permission"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:30
+#: tnnt_discordbot_cogs/models/setting.py:34
 msgid "Applicant Role Name"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:31
+#: tnnt_discordbot_cogs/models/setting.py:35
 msgid "Applicant Role ID"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:32
+#: tnnt_discordbot_cogs/models/setting.py:36
 msgid "Recruiting Channel"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:33
+#: tnnt_discordbot_cogs/models/setting.py:37
 msgid "Recruiter Role ID"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:34
+#: tnnt_discordbot_cogs/models/setting.py:38
 msgid "Leadership Role ID"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:36
+#: tnnt_discordbot_cogs/models/setting.py:40
 msgid "Welcome Channel (Authenticated User)"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:39
+#: tnnt_discordbot_cogs/models/setting.py:43
 msgid "Welcome Channel (Unauthenticated User)"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:41
+#: tnnt_discordbot_cogs/models/setting.py:45
 msgid "Roles Excluded"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:42
+#: tnnt_discordbot_cogs/models/setting.py:46
 msgid "Lookup Channels"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:43
+#: tnnt_discordbot_cogs/models/setting.py:47
 msgid "Locate Channels"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:50
+#: tnnt_discordbot_cogs/models/setting.py:48
+msgid "Admin God Group"
+msgstr ""
+
+#: tnnt_discordbot_cogs/models/setting.py:49
+msgid "Admin Gods"
+msgstr ""
+
+#: tnnt_discordbot_cogs/models/setting.py:56
 msgid "The name of the role for applicants in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:57
+#: tnnt_discordbot_cogs/models/setting.py:63
 msgid "The ID of the role for applicants in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:66
+#: tnnt_discordbot_cogs/models/setting.py:72
 msgid "The channel used for recruiting in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:73
+#: tnnt_discordbot_cogs/models/setting.py:79
 msgid "The ID of the role for recruiters in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:80
+#: tnnt_discordbot_cogs/models/setting.py:86
 msgid "The ID of the role for leadership in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:91
+#: tnnt_discordbot_cogs/models/setting.py:97
 msgid ""
 "The channel to send welcome messages for authenticated users in the Discord "
 "server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:102
+#: tnnt_discordbot_cogs/models/setting.py:108
 msgid ""
 "The channel to send welcome messages for unauthenticated users in the "
 "Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:111
+#: tnnt_discordbot_cogs/models/setting.py:117
 msgid ""
 "Comma-separated list of Discord roles that are excluded from the welcome "
 "message."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:120
+#: tnnt_discordbot_cogs/models/setting.py:126
 msgid "Channels in which the `/lookup` command can be used."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:128
+#: tnnt_discordbot_cogs/models/setting.py:134
 msgid "Channels in which the `/locate` command can be used."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:137
+#: tnnt_discordbot_cogs/models/setting.py:144
+msgid ""
+"The group that has god mode access (Admin Mode) in all services. Please "
+"ensure to give this group in all connected services the appropriate "
+"privileges."
+msgstr ""
+
+#: tnnt_discordbot_cogs/models/setting.py:157
+msgid ""
+"These users are eligible to invoke the god commands of the Discordbot to "
+"promote/demote themself to/from god."
+msgstr ""
+
+#: tnnt_discordbot_cogs/models/setting.py:168
 msgid "Setting"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:138
-#: tnnt_discordbot_cogs/models/setting.py:148
+#: tnnt_discordbot_cogs/models/setting.py:169
+#: tnnt_discordbot_cogs/models/setting.py:179
 msgid "Settings"
 msgstr ""

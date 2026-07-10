@@ -87,13 +87,14 @@ python manage.py esde_load_sde
 |                                         | `admin`  | `add_role_read`     | Add a role as read only to a channel                                                                       |
 |                                         | `admin`  | `clear_empty_roles` | Deletes all roles in the server that have no members                                                       |
 |                                         | `admin`  | `commands`          | Returns a list of all slash commands available to the bot                                                  |
-|                                         | `admin`  | `demote_from_god`   | Remove admin from a role                                                                                   |
+|                                         | `admin`  | `demote_from_god`   | Demote yourself from being a god                                                                           |
+|                                         | `admin`  | `demote_all_gods `  | Demote all current gods                                                                                    |
 |                                         | `admin`  | `empty_roles`       | Returns a list of all roles in the server, including those with no members and those without an auth group |
 |                                         | `admin`  | `force_sync`        | Queue update tasks for a character and all their alts                                                      |
 |                                         | `admin`  | `get_webhooks`      | Returns a list of all webhooks in the channel                                                              |
 |                                         | `admin`  | `new_channel`       | Create a new channel in the specified category and set permissions for the first role                      |
 |                                         | `admin`  | `orphans`           | Returns a list of all users in the server that do not have a corresponding DiscordUser in Auth             |
-|                                         | `admin`  | `promote_to_god`    | Set a role as admin                                                                                        |
+|                                         | `admin`  | `promote_to_god`    | Promote yourself to god                                                                                    |
 |                                         | `admin`  | `rem_role`          | Remove a role from a channel                                                                               |
 |                                         | `admin`  | `stats`             | Returns the bot's task statistics, including uptime, task stats, rate limits, and pending tasks            |
 |                                         | `admin`  | `sync_commands`     | Sync the bot's commands with Discord                                                                       |

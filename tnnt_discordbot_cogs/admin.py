@@ -21,6 +21,10 @@ class SettingAdmin(SingletonModelAdmin):
 
     fieldsets = (
         (
+            _("God Mode settings"),
+            {"fields": ["admin_god_group", "admin_gods"]},
+        ),
+        (
             _("Locator Cog Settings"),
             {"fields": ["locate_channels"]},
         ),
@@ -52,4 +56,4 @@ class SettingAdmin(SingletonModelAdmin):
         ),
     )
 
-    filter_horizontal = ["lookup_channels", "locate_channels"]
+    filter_horizontal = ["lookup_channels", "locate_channels", "admin_gods"]
