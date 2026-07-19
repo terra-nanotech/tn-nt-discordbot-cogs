@@ -43,6 +43,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Honeypot cog to detect and ban malicious users
+
 ### Changed
 
 - God commands improved

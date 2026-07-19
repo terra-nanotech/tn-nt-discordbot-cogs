@@ -47,6 +47,7 @@ class Setting(SingletonModel):
         LOCATE_CHANNELS = "locate_channels", _("Locate Channels")
         ADMIN_GOD_GROUP = "admin_god_group", _("Admin God Group")
         ADMIN_GODS = "admin_gods", _("Admin Gods")
+        HONEYPOT_CHANNELS = "honeypot_channels", _("Honeypot Channels")
 
     # Recruitment Cog Settings
     applicant_role_name = models.CharField(
@@ -155,6 +156,17 @@ class Setting(SingletonModel):
         help_text=_(
             "These users are eligible to invoke the god commands of the Discordbot "
             "to promote/demote themself to/from god."
+        ),
+    )
+
+    honeypot_channels = models.ManyToManyField(
+        to=Channels,
+        related_name="honeypot_channels",
+        blank=True,
+        verbose_name=Field.HONEYPOT_CHANNELS.label,  # pylint: disable=no-member
+        help_text=_(
+            'Channels that are monitored for the "honeypot" feature. '
+            "Any user that posts in these channels will be banned."
         ),
     )
 
