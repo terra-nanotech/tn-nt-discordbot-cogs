@@ -150,7 +150,6 @@ class Setting(SingletonModel):
     admin_gods = models.ManyToManyField(
         to=User,
         related_name="admin_god",
-        null=True,
         blank=True,
         verbose_name=Field.ADMIN_GODS.label,
         help_text=_(
