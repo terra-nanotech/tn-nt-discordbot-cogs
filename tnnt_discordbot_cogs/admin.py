@@ -25,6 +25,10 @@ class SettingAdmin(SingletonModelAdmin):
             {"fields": ["admin_god_group", "admin_gods"]},
         ),
         (
+            _("Honeypot settings"),
+            {"fields": ["honeypot_channels"]},
+        ),
+        (
             _("Locator Cog Settings"),
             {"fields": ["locate_channels"]},
         ),
@@ -56,4 +60,9 @@ class SettingAdmin(SingletonModelAdmin):
         ),
     )
 
-    filter_horizontal = ["lookup_channels", "locate_channels", "admin_gods"]
+    filter_horizontal = [
+        "admin_gods",
+        "honeypot_channels",
+        "locate_channels",
+        "lookup_channels",
+    ]
