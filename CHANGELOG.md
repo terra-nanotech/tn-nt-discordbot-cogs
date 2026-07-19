@@ -43,6 +43,13 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Changed
+
+- God commands improved
+  - `/admin promote_to_god` Now promotes the user to god by adding them to the god group
+  - `/admin demote_from_god` Now demotes the user from god by removing them from the god group
+  - `/admin_demote_all_gods` (New) Demotes all users from god by removing them from the god group
+
 ## [3.2.0] - 2026-07-09
 
 > [!IMPORTANT]

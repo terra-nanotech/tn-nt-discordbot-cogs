@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TN-NT Discordbot Cogs 3.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ppfeufer/tn-nt-discordbot-cogs/issues\n"
-"POT-Creation-Date: 2026-07-10 21:47+0200\n"
+"POT-Creation-Date: 2026-07-19 09:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,17 +150,17 @@ msgid ""
 "privileges."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:157
+#: tnnt_discordbot_cogs/models/setting.py:156
 msgid ""
 "These users are eligible to invoke the god commands of the Discordbot to "
 "promote/demote themself to/from god."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:168
+#: tnnt_discordbot_cogs/models/setting.py:167
 msgid "Setting"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:169
-#: tnnt_discordbot_cogs/models/setting.py:179
+#: tnnt_discordbot_cogs/models/setting.py:168
+#: tnnt_discordbot_cogs/models/setting.py:178
 msgid "Settings"
 msgstr ""

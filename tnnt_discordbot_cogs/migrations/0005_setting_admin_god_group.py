@@ -39,7 +39,6 @@ class Migration(migrations.Migration):
                     "These users are eligible to invoke the god commands of the "
                     "Discordbot to promote/demote themself to/from god."
                 ),
-                null=True,
                 related_name="admin_god",
                 to="authentication.user",
                 verbose_name="Admin Gods",
