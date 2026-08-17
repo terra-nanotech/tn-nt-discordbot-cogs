@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TN-NT Discordbot Cogs 0.11.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ppfeufer/tn-nt-discordbot-cogs/issues\n"
-"POT-Creation-Date: 2026-07-19 10:09+0200\n"
+"POT-Creation-Date: 2026-08-17 10:50+0200\n"
 "PO-Revision-Date: 2026-07-07 12:58+0000\n"
 "Last-Translator: Peter Pfeufer <info@ppfeufer.de>\n"
 "Language-Team: Italian <https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/it/>\n"
@@ -105,63 +105,71 @@ msgstr ""
 msgid "Honeypot Channels"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:57
+#: tnnt_discordbot_cogs/models/setting.py:52
+msgid "Honeypot Report Channel"
+msgstr ""
+
+#: tnnt_discordbot_cogs/models/setting.py:60
 msgid "The name of the role for applicants in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:64
+#: tnnt_discordbot_cogs/models/setting.py:67
 msgid "The ID of the role for applicants in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:73
+#: tnnt_discordbot_cogs/models/setting.py:76
 msgid "The channel used for recruiting in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:80
+#: tnnt_discordbot_cogs/models/setting.py:83
 msgid "The ID of the role for recruiters in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:87
+#: tnnt_discordbot_cogs/models/setting.py:90
 msgid "The ID of the role for leadership in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:98
+#: tnnt_discordbot_cogs/models/setting.py:101
 msgid "The channel to send welcome messages for authenticated users in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:109
+#: tnnt_discordbot_cogs/models/setting.py:112
 msgid "The channel to send welcome messages for unauthenticated users in the Discord server."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:118
+#: tnnt_discordbot_cogs/models/setting.py:121
 msgid "Comma-separated list of Discord roles that are excluded from the welcome message."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:127
+#: tnnt_discordbot_cogs/models/setting.py:130
 msgid "Channels in which the `/lookup` command can be used."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:135
+#: tnnt_discordbot_cogs/models/setting.py:138
 msgid "Channels in which the `/locate` command can be used."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:145
+#: tnnt_discordbot_cogs/models/setting.py:148
 msgid "The group that has god mode access (Admin Mode) in all services. Please ensure to give this group in all connected services the appropriate privileges."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:157
+#: tnnt_discordbot_cogs/models/setting.py:160
 msgid "These users are eligible to invoke the god commands of the Discordbot to promote/demote themself to/from god."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:168
+#: tnnt_discordbot_cogs/models/setting.py:171
 msgid "Channels that are monitored for the \"honeypot\" feature. Any user that posts in these channels will be banned."
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:179
+#: tnnt_discordbot_cogs/models/setting.py:184
+msgid "The channel where reports of users banned by the honeypot feature will be sent."
+msgstr ""
+
+#: tnnt_discordbot_cogs/models/setting.py:194
 msgid "Setting"
 msgstr ""
 
-#: tnnt_discordbot_cogs/models/setting.py:180
-#: tnnt_discordbot_cogs/models/setting.py:190
+#: tnnt_discordbot_cogs/models/setting.py:195
+#: tnnt_discordbot_cogs/models/setting.py:205
 msgid "Settings"
 msgstr ""
