@@ -43,6 +43,8 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [3.4.0] - 2026-08-17
+
 ### Added
 
 - Report channel for honeypot activity reporting
@@ -440,6 +442,7 @@ Section Order:
 [3.1.1]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.0...v3.1.1 "v3.1.1"
 [3.2.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.1...v3.2.0 "v3.2.0"
 [3.3.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.2.0...v3.3.0 "v3.3.0"
-[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.3.0...HEAD "In Development"
+[3.4.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.3.0...v3.4.0 "v3.4.0"
+[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.4.0...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
