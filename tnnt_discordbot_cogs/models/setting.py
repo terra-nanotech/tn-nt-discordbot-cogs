@@ -48,19 +48,22 @@ class Setting(SingletonModel):
         ADMIN_GOD_GROUP = "admin_god_group", _("Admin God Group")
         ADMIN_GODS = "admin_gods", _("Admin Gods")
         HONEYPOT_CHANNELS = "honeypot_channels", _("Honeypot Channels")
+        HONEYPOT_REPORT_CHANNEL = "honeypot_report_channel", _(
+            "Honeypot Report Channel"
+        )
 
     # Recruitment Cog Settings
     applicant_role_name = models.CharField(
         max_length=100,
         default="",
-        verbose_name=Field.APPLICANT_ROLE_NAME.label,  # pylint: disable=no-member,
+        verbose_name=Field.APPLICANT_ROLE_NAME.label,
         help_text=_("The name of the role for applicants in the Discord server."),
     )
 
     applicant_role_id = models.PositiveBigIntegerField(
         null=True,
         default=None,
-        verbose_name=Field.APPLICANT_ROLE_ID.label,  # pylint: disable=no-member
+        verbose_name=Field.APPLICANT_ROLE_ID.label,
         help_text=_("The ID of the role for applicants in the Discord server."),
     )
 
@@ -69,21 +72,21 @@ class Setting(SingletonModel):
         related_name="+",
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=Field.RECRUITING_CHANNEL.label,  # pylint: disable=no-member
+        verbose_name=Field.RECRUITING_CHANNEL.label,
         help_text=_("The channel used for recruiting in the Discord server."),
     )
 
     recruiter_role_id = models.PositiveBigIntegerField(
         null=True,
         default=None,
-        verbose_name=Field.RECRUITER_ROLE_ID.label,  # pylint: disable=no-member
+        verbose_name=Field.RECRUITER_ROLE_ID.label,
         help_text=_("The ID of the role for recruiters in the Discord server."),
     )
 
     leadership_role_id = models.PositiveBigIntegerField(
         null=True,
         default=None,
-        verbose_name=Field.LEADERSHIP_ROLE_ID.label,  # pylint: disable=no-member
+        verbose_name=Field.LEADERSHIP_ROLE_ID.label,
         help_text=_("The ID of the role for leadership in the Discord server."),
     )
 
@@ -93,7 +96,7 @@ class Setting(SingletonModel):
         related_name="+",
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=Field.WELCOME_CHANNEL_AUTHENTICATED.label,  # pylint: disable=no-member
+        verbose_name=Field.WELCOME_CHANNEL_AUTHENTICATED.label,
         help_text=_(
             "The channel to send welcome messages for authenticated users in the Discord server."
         ),
@@ -104,7 +107,7 @@ class Setting(SingletonModel):
         related_name="+",
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=Field.WELCOME_CHANNEL_UNAUTHENTICATED.label,  # pylint: disable=no-member
+        verbose_name=Field.WELCOME_CHANNEL_UNAUTHENTICATED.label,
         help_text=_(
             "The channel to send welcome messages for unauthenticated users in the Discord server."
         ),
@@ -113,7 +116,7 @@ class Setting(SingletonModel):
     welcome_roles_excluded = models.CharField(
         max_length=255,
         default="Member",
-        verbose_name=Field.WELCOME_ROLES_EXCLUDED.label,  # pylint: disable=no-member
+        verbose_name=Field.WELCOME_ROLES_EXCLUDED.label,
         help_text=_(
             "Comma-separated list of Discord roles that are excluded from the welcome message."
         ),
@@ -123,7 +126,7 @@ class Setting(SingletonModel):
         to=Channels,
         related_name="lookup_channels",
         blank=True,
-        verbose_name=Field.LOOKUP_CHANNELS.label,  # pylint: disable=no-member
+        verbose_name=Field.LOOKUP_CHANNELS.label,
         help_text=_("Channels in which the `/lookup` command can be used."),
     )
 
@@ -131,7 +134,7 @@ class Setting(SingletonModel):
         to=Channels,
         related_name="locate_channels",
         blank=True,
-        verbose_name=Field.LOCATE_CHANNELS.label,  # pylint: disable=no-member
+        verbose_name=Field.LOCATE_CHANNELS.label,
         help_text=_("Channels in which the `/locate` command can be used."),
     )
 
@@ -140,7 +143,7 @@ class Setting(SingletonModel):
         related_name="admin_god_group",
         null=True,
         blank=True,
-        verbose_name=Field.ADMIN_GOD_GROUP.label,  # pylint: disable=no-member
+        verbose_name=Field.ADMIN_GOD_GROUP.label,
         help_text=_(
             "The group that has god mode access (Admin Mode) in all services. "
             "Please ensure to give this group in all connected services the "
@@ -163,10 +166,22 @@ class Setting(SingletonModel):
         to=Channels,
         related_name="honeypot_channels",
         blank=True,
-        verbose_name=Field.HONEYPOT_CHANNELS.label,  # pylint: disable=no-member
+        verbose_name=Field.HONEYPOT_CHANNELS.label,
         help_text=_(
             'Channels that are monitored for the "honeypot" feature. '
             "Any user that posts in these channels will be banned."
+        ),
+    )
+
+    honeypot_report_channel = models.ForeignKey(
+        to=Channels,
+        related_name="honeypot_report_channel",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=Field.HONEYPOT_REPORT_CHANNEL.label,
+        help_text=_(
+            "The channel where reports of users banned by the honeypot feature will be sent."
         ),
     )
 
