@@ -43,6 +43,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Added
+
+- Report channel for honeypot activity reporting
+
 ## [3.3.0] - 2026-07-19
 
 ### Added

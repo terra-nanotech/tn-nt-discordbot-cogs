@@ -26,7 +26,7 @@ class SettingAdmin(SingletonModelAdmin):
         ),
         (
             _("Honeypot settings"),
-            {"fields": ["honeypot_channels"]},
+            {"fields": ["honeypot_report_channel", "honeypot_channels"]},
         ),
         (
             _("Locator Cog Settings"),
