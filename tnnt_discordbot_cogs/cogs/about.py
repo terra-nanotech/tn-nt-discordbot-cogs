@@ -19,7 +19,7 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
 from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
-from aadiscordbot.app_settings import get_site_url
+from aadiscordbot.app_settings import get_all_servers, get_site_url
 
 # Terra Nanotech Discordbot Cogs
 from tnnt_discordbot_cogs.helper import unload_cog
@@ -46,7 +46,7 @@ class About(commands.Cog):
     @commands.slash_command(
         name="about",
         description="All about the bot",
-        guild_ids=[int(settings.DISCORD_GUILD_ID)],
+        guild_ids=get_all_servers(),
     )
     async def about(self, ctx):
         """

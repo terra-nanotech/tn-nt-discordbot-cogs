@@ -17,7 +17,7 @@ from allianceauth.eveonline.evelinks.eveimageserver import (
 from allianceauth.services.hooks import get_extension_logger
 
 # Alliance Auth Discord Bot
-from aadiscordbot.app_settings import get_site_url
+from aadiscordbot.app_settings import get_all_servers, get_site_url
 
 # Terra Nanotech Templates
 from tnnt_templates.app_settings import AppSettings
@@ -47,7 +47,7 @@ class Auth(commands.Cog):
     @commands.slash_command(
         name="auth",
         description="Returns a link to TN-NT Auth",
-        guild_ids=[int(settings.DISCORD_GUILD_ID)],
+        guild_ids=get_all_servers(),
     )
     async def auth(self, ctx):
         """

@@ -43,6 +43,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Changed
+
+- Allow slash commands to be used on all available servers
+
 ## [3.4.0] - 2026-08-17
 
 ### Added
