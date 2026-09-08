@@ -7,3 +7,4 @@ __pycache__
 /tnnt_discordbot_cogs/locale/en/
 .esi-compatibility-date
 .make/myauth-path
+/.make/config-overrides.ini
