@@ -43,6 +43,8 @@ Section Order:
 
 <!-- Your changes go here -->
 
+## [3.4.1] - 2026-09-08
+
 ### Changed
 
 - Allow slash commands to be used on all available servers
@@ -447,6 +449,7 @@ Section Order:
 [3.2.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.1.1...v3.2.0 "v3.2.0"
 [3.3.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.2.0...v3.3.0 "v3.3.0"
 [3.4.0]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.3.0...v3.4.0 "v3.4.0"
-[in development]: https://github.com/ppfeufer/tn-nt-discordbot-cogs/compare/v3.4.0...HEAD "In Development"
+[3.4.1]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v3.4.0...v3.4.1 "v3.4.1"
+[in development]: https://github.com/terra-nanotech/tn-nt-discordbot-cogs/compare/v3.4.1...HEAD "In Development"
 [keep a changelog]: http://keepachangelog.com/ "Keep a Changelog"
 [semantic versioning]: http://semver.org/ "Semantic Versioning"
