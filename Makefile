@@ -109,10 +109,10 @@ prepare-release: pot graph-models
 	sed -i "/__version__ = /c\__version__ = \"$$new_version\"" $(GENERAL__PACKAGE)/__init__.py; \
 	echo "Updated version in $(TEXT_BOLD)$(GENERAL__PACKAGE)/__init__.py$(TEXT_BOLD_END)"; \
 	# Update the version in package.json and rebuild node modules \
-	sed -i -E "\|\"version\"\: |s|\"\: .*|\"\: \"$$new_version\",|g" package.json; \
-	rm -rf node_modules; \
+#	sed -i -E "\|\"version\"\: |s|\"\: .*|\"\: \"$$new_version\",|g" package.json; \
+#	rm -rf node_modules; \
 #	rm package-lock.json; \
-	npm install; \
+#	npm install; \
 	if [[ $$new_version =~ (alpha|beta) ]]; then \
 		echo "$(TEXT_COLOR_RED)$(TEXT_BOLD)Pre-release$(TEXT_RESET) version detected!"; \
 		git restore $(DJANGO__TRANSLATION_DIRECTORY)/django.pot; \
