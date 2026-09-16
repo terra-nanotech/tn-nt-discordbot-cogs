@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Terra Nanotech Discordbot Cogs\n"
 "Report-Msgid-Bugs-To: https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/\n"
 "POT-Creation-Date: 2026-09-08 14:23+0200\n"
-"PO-Revision-Date: 2026-07-14 03:22+0000\n"
+"PO-Revision-Date: 2026-09-16 09:03+0000\n"
 "Last-Translator: s0k0l -_- <salarysalo@gmail.com>\n"
 "Language-Team: Ukrainian <https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/uk/>\n"
 "Language: uk\n"
@@ -16,17 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : (n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.7.1\n"
+"X-Generator: Weblate 2026.9.1\n"
 
 #: tnnt_discordbot_cogs/admin.py:24
 msgid "God Mode settings"
 msgstr "Налаштування Адміністратора"
 
 #: tnnt_discordbot_cogs/admin.py:28
-#, fuzzy
-#| msgid "God Mode settings"
 msgid "Honeypot settings"
-msgstr "Налаштування Адміністратора"
+msgstr "Налаштування Ханіпоту"
 
 #: tnnt_discordbot_cogs/admin.py:32
 msgid "Locator Cog Settings"
@@ -105,16 +103,12 @@ msgid "Admin Gods"
 msgstr "Старші Адміністратори"
 
 #: tnnt_discordbot_cogs/models/setting.py:50
-#, fuzzy
-#| msgid "Lookup Channels"
 msgid "Honeypot Channels"
-msgstr "Переглянути Канали"
+msgstr "Канали ханіпотів"
 
 #: tnnt_discordbot_cogs/models/setting.py:52
-#, fuzzy
-#| msgid "Lookup Channels"
 msgid "Honeypot Report Channel"
-msgstr "Переглянути Канали"
+msgstr "Канал репортів Ханіпотів"
 
 #: tnnt_discordbot_cogs/models/setting.py:60
 msgid "The name of the role for applicants in the Discord server."
@@ -166,11 +160,11 @@ msgstr "Ці користувачі можуть викликати адміні
 
 #: tnnt_discordbot_cogs/models/setting.py:171
 msgid "Channels that are monitored for the \"honeypot\" feature. Any user that posts in these channels will be banned."
-msgstr ""
+msgstr "Канали моніторяться фічею \"honeypot\". Будь-який користувач, який постить в ці канали, буде забанений."
 
 #: tnnt_discordbot_cogs/models/setting.py:184
 msgid "The channel where reports of users banned by the honeypot feature will be sent."
-msgstr ""
+msgstr "Канал повідомляє нотифікаціями про репорти юзерів фічею ханіпот."
 
 #: tnnt_discordbot_cogs/models/setting.py:194
 msgid "Setting"
