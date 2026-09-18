@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Terra Nanotech Discordbot Cogs\n"
-"Report-Msgid-Bugs-To: https://weblate.ppfeufer.de/projects/alliance-auth-apps/terra-nanotech-discordbot-cogs/\n"
-"POT-Creation-Date: 2026-09-08 14:23+0200\n"
+"Report-Msgid-Bugs-To: https://weblate.ppfeufer.de/projects/alliance-auth-apps/tn-nt-discordbot-cogs/\n"
+"POT-Creation-Date: 2026-09-18 09:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,21 +130,15 @@ msgid "The ID of the role for leadership in the Discord server."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:101
-msgid ""
-"The channel to send welcome messages for authenticated users in the Discord "
-"server."
+msgid "The channel to send welcome messages for authenticated users in the Discord server."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:112
-msgid ""
-"The channel to send welcome messages for unauthenticated users in the "
-"Discord server."
+msgid "The channel to send welcome messages for unauthenticated users in the Discord server."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:121
-msgid ""
-"Comma-separated list of Discord roles that are excluded from the welcome "
-"message."
+msgid "Comma-separated list of Discord roles that are excluded from the welcome message."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:130
@@ -156,28 +150,19 @@ msgid "Channels in which the `/locate` command can be used."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:148
-msgid ""
-"The group that has god mode access (Admin Mode) in all services. Please "
-"ensure to give this group in all connected services the appropriate "
-"privileges."
+msgid "The group that has god mode access (Admin Mode) in all services. Please ensure to give this group in all connected services the appropriate privileges."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:160
-msgid ""
-"These users are eligible to invoke the god commands of the Discordbot to "
-"promote/demote themself to/from god."
+msgid "These users are eligible to invoke the god commands of the Discordbot to promote/demote themself to/from god."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:171
-msgid ""
-"Channels that are monitored for the \"honeypot\" feature. Any user that "
-"posts in these channels will be banned."
+msgid "Channels that are monitored for the \"honeypot\" feature. Any user that posts in these channels will be banned."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:184
-msgid ""
-"The channel where reports of users banned by the honeypot feature will be "
-"sent."
+msgid "The channel where reports of users banned by the honeypot feature will be sent."
 msgstr ""
 
 #: tnnt_discordbot_cogs/models/setting.py:194
