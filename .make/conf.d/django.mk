@@ -23,6 +23,7 @@ pot: check-python-venv
 	@django-admin makemessages \
 		--locale en \
 		--keep-pot \
+		--no-wrap \
 		--ignore 'build/*' \
 		--ignore 'node_modules/*' \
 		--ignore 'testauth/*' \
@@ -39,6 +40,7 @@ add-translation: check-python-venv
 	django-admin makemessages \
 		--locale $$language_code \
 		--keep-pot \
+		--no-wrap \
 		--ignore 'build/*' \
 		--ignore 'node_modules/*' \
 		--ignore 'testauth/*' \
@@ -57,6 +59,7 @@ translations: check-python-venv
 	@echo "Creating or updating translation files"
 	@django-admin makemessages $(django_locales) \
 		--keep-pot \
+		--no-wrap \
 		--ignore 'build/*' \
 		--ignore 'node_modules/*' \
 		--ignore 'testauth/*' \
