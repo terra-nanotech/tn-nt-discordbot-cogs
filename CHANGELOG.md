@@ -43,6 +43,10 @@ Section Order:
 
 <!-- Your changes go here -->
 
+### Changed
+
+- Switch to `httpx2`
+
 ## [3.4.1] - 2026-09-08
 
 ### Changed
